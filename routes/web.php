@@ -16,5 +16,14 @@ Route::get('/', function () {
 });
 
 
-Route::get('/students', 'StudentsController@index');
+// Routes pour la partie étudiants
+Route::get('/auth', function () {
+    return view('student.studentAuth');
+});
+
+Route::get('/welcome', function () {
+    return view('student.studentWelcome');
+});
+
+
 

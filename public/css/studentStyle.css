@@ -1,0 +1,258 @@
+#formAuthStud{
+	position: absolute;
+	bottom: 50%;
+
+}
+#formSession{
+	position: absolute;
+	bottom: 30%;
+
+}
+
+
+
+
+header{
+	background-color: #c9302c;
+	color:#fff;
+	min-height: 100px;
+	padding-top: 25px;
+}
+
+header form{
+	float:right;
+}
+
+header .logo{
+	float:left;
+}
+ 
+.panel-heading{
+    background-image: linear-gradient(#c9302c, #c9302c 60%, #c9302c);
+    color: #fff !important;
+}
+
+.bubble{
+	position: relative;
+	padding: 5px 10px;
+	background: #fff;
+	
+}
+.bubble hr{
+	margin:0;
+	margin-top:15px;
+	padding:0;
+	background: #000;
+	
+}
+
+
+.post-actions{
+	margin:5px;
+}
+
+.comment-form .form-group{
+	width: 90%;
+}
+
+.comment{
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	padding: 3px;
+	margin: 5px 0;
+	overflow: auto;
+	width:100%;
+}
+
+.comment-form input[type="text"]{
+	width: 100%;
+}
+
+.comment-avatar img{
+	width: 40px;
+	margin-right: 5px;
+}
+
+.friends li{
+	list-style: none;
+	padding:0 5px;
+	display:inline;
+	float:left;
+}
+
+.friends img{
+	width: 55px;
+}
+
+.groups img{
+	width:80px;
+	float:left;
+	margin-right: 15px;
+}
+
+.group-item{
+	padding-bottom: 10px;
+	margin-bottom: 20px;
+	border-bottom: 1px solid #ccc;
+	overflow: auto;
+}
+
+.profile ul{
+	margin-top: 30px;
+}
+
+.profile li{
+	list-style: none;
+	line-height: 1.9em;
+}
+
+.photos{
+	margin: 0;
+	padding: 0;
+}
+
+.photos li{
+	list-style: none;
+	float: left;
+	margin:5px;
+	width: 23%;
+}
+
+.photos img{
+	width:100%;
+}
+
+footer{
+	background: #f4f4f4;
+	height: 90px;
+	color: #c9302c;
+	font-weight: bold;
+	text-align: center;
+	padding-top: 40px;
+	margin-top: 30px;
+	border-top: 7px solid #c9302c;
+}
+
+.members .member-row{
+	border-bottom: 1px solid #ccc;
+	padding-bottom: 20px;
+	margin-bottom: 20px;
+}
+
+.members img{
+	margin-bottom: 5px;
+}
+
+@media(min-width: 991px){
+  .members p{
+	padding-top: 40px;
+	}
+}
+
+.connexion
+{
+	margin: 7% 0;
+	
+}
+
+.register
+{
+	margin-top: 3% ;
+	
+}
+
+.row .tel
+{
+	margin: 80% 0;
+	border-spacing: 50%;
+
+}
+
+.icon_univ
+{
+	margin-top: 0 ;
+	margin-bottom: -8px;
+}
+.bio
+{
+	margin-top: 20px;
+}
+
+.hr-profil
+{
+	margin-top: 0;
+}
+
+ .panel-heading-profil {
+  color: #a94442;
+  background-color: #f2dede;
+  border-color: #ebccd1;
+  border-radius: 2px;
+  border:5px;
+}
+.statu-post
+{
+	padding: 8px;
+}
+.satut-submit
+{
+	padding: 0;
+	margin-top: -10px;
+	margin-bottom: 2px;
+}
+.statu-post textarea:focus
+{
+	/*box-shadow: none;*/
+}
+.message-poster
+{
+	margin-top: 10px;
+}
+.mur
+{
+	
+}
+
+
+/**********************************************************
+*
+		PARSLEY CSS
+*
+*********************************************************/
+
+
+
+input.parsley-success,
+select.parsley-success,
+textarea.parsley-success {
+  color: #468847;
+  background-color: #DFF0D8;
+  border: 1px solid #D6E9C6;
+}
+
+input.parsley-error,
+select.parsley-error,
+textarea.parsley-error {
+  color: #B94A48;
+  background-color: #F2DEDE;
+  border: 1px solid #EED3D7;
+}
+
+.parsley-errors-list {
+  margin: 2px 0 3px;
+  padding: 0;
+  list-style-type: none;
+  font-size: 0.9em;
+  line-height: 0.9em;
+  opacity: 0;
+  color: darkred;
+
+  transition: all .3s ease-in;
+  -o-transition: all .3s ease-in;
+  -moz-transition: all .3s ease-in;
+  -webkit-transition: all .3s ease-in;
+}
+
+.parsley-errors-list.filled {
+  opacity: 1;
+}
