@@ -16,14 +16,9 @@ Route::get('/', function () {
 });
 
 
-// Routes pour la partie étudiants
-Route::get('/auth', function () {
-    return view('student.studentAuth');
+Route::prefix('students')->group(function(){
+
+	Route::resource('welcome','Students\WelcomeController')->only('index','store');
+	Route::resource('auth','Students\AuthController')->only('index','store');
+
 });
-
-Route::get('/welcome', function () {
-    return view('student.studentWelcome');
-});
-
-
-

@@ -24,6 +24,8 @@
     @yield('nav')        
     {{-- Container   --}}
     @yield('container')
+    {{-- Session Flash --}}
+    @yield('msg_flash')
    
     @yield('footer')
      {{-- Script Jquery --}}
