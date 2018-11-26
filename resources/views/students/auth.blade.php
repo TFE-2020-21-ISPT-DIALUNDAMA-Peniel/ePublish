@@ -11,7 +11,8 @@
 				<img class="img-fluid" src="{{ asset('img/logo.png') }}">
 			</h3>
 		</div>	
-			<div class="panel-body">			
+			<div class="panel-body">	
+				@include('partials._msgFlash')		
 				<form    method= 'post' action="" class="form">
 					@csrf
 			        <div class='form-group' >

@@ -15,6 +15,9 @@ class WelcomeController extends Controller
      */
     public function index()
     {
+        //Initialise la session active pour le middleware
+        session(['sessionActive'=> null]);
+
         //Recupération des session active et années academique
         $sessions = DB::table('sessions')->orderBy("idsessions")->get();
         $annees = DB::table('gestion_annees')->orderBy("idgestion_annees")->get();
@@ -33,9 +36,17 @@ class WelcomeController extends Controller
      */
     public function store(Request $request)
     {
+        //Validation
+        $request->validate([
+            'session'=>'required',
+            'annee'=>'required'           
+        ]); 
         //Vérification des donnée soumis
        if($this->sessionsActiveExist(request(['session','annee']))){
         //rendu de la vue d'authentification
+
+        //enregistrement de la session active dans la variable $_SESSION
+        session(['sessionActive' => $request['session']]);
         return redirect()->route('auth.index');
        }
 
