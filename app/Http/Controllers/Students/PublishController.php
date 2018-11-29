@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Students;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;  
+
 
 class PublishController extends Controller
 {
@@ -46,7 +48,7 @@ class PublishController extends Controller
      */
     public function show($id)
     {
-        //
+        // return  Storage::download('pdf.pdf');
     }
 
     /**

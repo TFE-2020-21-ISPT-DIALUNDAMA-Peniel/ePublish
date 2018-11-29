@@ -81,6 +81,7 @@
                 <div class="title m-b-md">
                     {{ config('app.name') }}
                 </div>  
+                    <br><a href="{{ route('welcome.index') }}">Welcome</a>
             </div>
         </div>
     </body>

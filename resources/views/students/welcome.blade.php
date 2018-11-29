@@ -6,43 +6,44 @@
 <link rel="stylesheet" type="text/css" href="{{ asset('css/studentStyle.css') }}">
 @stop
 @section('container')
-<div class="container" >
-	<div class="panel panel-default row justify-content-center ">
-		<div class="col-xs-8 col-sm-10" id="formSession">
-		<div class="panel-heading">
-			<h3 class="panel-title" style="text-align: center;">
-				<img class="img-fluid" src="{{ asset('img/logo.png') }}">
-			</h3>
-		</div>	
-			<div class="panel-body">			
-						{{-- msg-flash --}}
-						@include('partials._msgFlash')
+<div class="container mx-auto xs" id="container" >
+
+	<div class="card text-center bg-transparent border-primary">
+	  <div class="card-header ">
+	    Featured
+	  </div>
+	  <div class="card-body">			
+	    {{-- <h5 class="card-title">Special title treatment</h5> --}}
+				{{-- msg-flash --}}
+				@include('partials._msgFlash')
 				<form    method= 'post' action="" class="form">
 					@csrf
-					<div class="row">
-						<div class="form-group col-md-8 col-xs-8">
-					        <select class="form-control" name="session" id="sessionId" required="required" >
-					        	@foreach ($sessions as $session)
-					        		<option value="{{ $session->idsessions }}">{{ $session->abbr }}</option>
-					        	@endforeach
-					        </select>
-						</div>
-						<div class="form-group col-md-4 col-xs-4">
-							<select class="form-control" name="annee" id="annee" required="required" >
-				        		@foreach ($annees as $annee)
-				        			<option value="{{ $annee->idgestion_annees }}">{{ $annee->annee_format }}</option>
-				        		@endforeach
-				        	</select>
-						</div>
-				       
-				        <div class='form-group col-md-12'>  
-				           <input type='submit' class='btn btn-primary btn-block' name='submit' value="Valider">        
-				        </div>
+					<div class="form-group ">
+				        <select class="custom-select" name="session" id="sessionId" required="required" >
+				        	@foreach ($sessions as $session)
+				        		<option value="{{ $session->idsessions }}">{{ $session->abbr }}</option>
+				        	@endforeach
+				        </select>
+			        	{{-- <div class="input-group-text rounded-circle ">?</div>	 --}}
+
 					</div>
+					<div class="form-group ">
+						<select class="custom-select" name="annee" id="annee" required="required" >
+			        		@foreach ($annees as $annee)
+			        			<option value="{{ $annee->idgestion_annees }}">{{ $annee->annee_format }}</option>
+			        		@endforeach
+			        	</select>
+					</div>
+			       
+			        <div class='form-group '>  
+			           <input type='submit' class='btn btn-primary btn-block' name='submit' value="Valider">        
+			        </div>
+					
 			      </form>			
 			</div>
-		</div>
+	  <div class="card-footer text-muted">
+	    &copy 
+	  </div>
 	</div>
-
 </div>
 @stop 

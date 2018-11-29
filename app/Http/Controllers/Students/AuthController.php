@@ -47,26 +47,6 @@ class AuthController extends Controller
     }
 
 
-     /**
-     * Vérifie si le matricule ou le nom de l'étudiant correpond avec le matricule/codes
-     *
-     * @param  matricule de la table codes
-     * @param  student => le nom ou le matricule de la request
-     * @return boolean
-     */
-
-    private function codeXstudent($matricule,$student){
-        $students = DB::table('etudiants')
-                                          ->where('nom',$student)
-                                          ->orWhere('matricule',$student)
-                                          ->first(['matricule']);
-        if (!empty($students)) {
-            if ($matricule == $students->matricule) {
-                return true;        
-            }
-        }
-        return false;
-    }
 
 
     /**
@@ -80,13 +60,17 @@ class AuthController extends Controller
           //on vérifie si le code existe dans la bd
          $codes = DB::table('codes')->where('code',$request['code'])->first();
             if(!empty($codes)){
-              //on vérifie si il est activé
-               if($codes->active === '1'){
-                //on vérifie s il correpond à la session sélectionée
-                if ($codes->id_sessions == session('sessionActive','-1')) 
-                {
+              //on vérifie s il correpond à la session sélectionée
+              if ($codes->id_sessions == session('sessionActive','-1')) 
+              {
+                 //on vérifie si il est activé
+                 if($codes->active === '1'){
                    //on vérifie s il  conresponds avec le nom ou la matricule 
-                   if($this->codeXstudent($codes->matricule_etudiant,$request['name'])){
+                   if($this->verifiezMatriculeRequetteCorrepondMatriculeTableCodes($codes->matricule_etudiant,$request['name'])){
+                        //Si c'est la prèmiere fois on modifie le statut à 1
+                        if($codes->statut != 1){
+                          DB::table('codes')->where('idcodes', $codes->idcodes)->update(['statut' => '1']);
+                        }
                         return true;
                    }
                    else
@@ -97,27 +81,54 @@ class AuthController extends Controller
                 }
                 else
                 {
-                    $url =route('welcome.index');
-                    $html ='le code entrée ne correpond pas à la session seléctionée <br>';
-                    $html .= "<a href='$url' >Selectionez la Session</a>";
-                    session()->flash('message',$html);
+
+                    $msg = "Le code entrée n'est pas activé. <hr> Veillez contacter votre session.";
+                    session()->flash('message',$msg);
                     return false;
                 }
                 
                }
                else
                {
-                    session()->flash('message','le code n est pas actif');
+                    $url =route('welcome.index');
+                    $html ='le code entrée ne correpond pas à la session seléctionée! <hr>';
+                    $html .= "<a href='$url' >Selectionez la Session</a>";
+                    session()->flash('message',$html);
                     return false;
+                    
                }               
             }
             else
             {
-                    session()->flash('message','le code est invalide');
+                    session()->flash('message',"Code d'accès Invalide");
                     return false;
             }
 
         
     }
-  
+ 
+    /**
+     * Vérifie si le matricule ou le nom de l'étudiant correpond avec le matricule/codes
+     *
+     * @param  matricule de la table codes
+     * @param  student => le nom ou le matricule de la request
+     * @return boolean
+     */
+
+    private function verifiezMatriculeRequetteCorrepondMatriculeTableCodes($matricule,$student){
+        $students = DB::table('etudiants')
+                                          ->where('nom',$student)
+                                          ->orWhere('matricule',$student)
+                                          ->get(['matricule']);
+        //Si la recherche trouve plusieurs noms
+        if (!empty($students)) {
+            foreach ($students as $student) {
+              if ($matricule == $student->matricule) {
+                  return true;        
+              }
+            }
+        }
+        return false;
+    }
+ 
 }

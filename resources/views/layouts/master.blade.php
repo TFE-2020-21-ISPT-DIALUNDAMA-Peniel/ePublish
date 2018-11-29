@@ -20,17 +20,17 @@
 </head>
 
 <body>
-    {{-- nav  --}}
-    @yield('nav')        
+     
     {{-- Container   --}}
+    <div style="margin-top: 50px;"></div>
     @yield('container')
     {{-- Session Flash --}}
     @yield('msg_flash')
-   
-    @yield('footer')
-     {{-- Script Jquery --}}
-    <script src="{{ asset('js/app.js') }}" defer></script> 
-    @yield('script')
-
+    <footer>
+        @yield('footer')
+         {{-- Script Jquery --}}
+        <script src="{{ asset('js/app.js') }}"></script> 
+        @yield('script')
+    </footer>
 </body>
 </html>
