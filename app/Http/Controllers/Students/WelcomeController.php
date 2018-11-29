@@ -49,8 +49,7 @@ class WelcomeController extends Controller
         session(['sessionActive' => $request['session']]);
         return redirect()->route('auth.index');
        }
-
-       session()->flash('message','Les Résultats ne sont pas disponible');
+       session()->flash('message','Les résultats de la session sélectionnée ne sont pas disponible!');
        return redirect()->route('welcome.index');
        
         

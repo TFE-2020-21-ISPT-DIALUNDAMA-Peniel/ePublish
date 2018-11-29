@@ -48,7 +48,7 @@ class PublishController extends Controller
      */
     public function show($id)
     {
-        // return  Storage::download('pdf.pdf');
+        // return  Storage::download('pdf.pdf');    
     }
 
     /**
