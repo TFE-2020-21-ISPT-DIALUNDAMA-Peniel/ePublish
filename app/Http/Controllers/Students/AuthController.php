@@ -8,6 +8,11 @@ use App\Http\Controllers\Controller;
 
 class AuthController extends Controller
 {
+
+
+    private $code;
+    private $student;
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +20,7 @@ class AuthController extends Controller
      */
     public function index()
     {
-      session(['codeAuth' => false]);// initialisation pour la middlware
+      session(['students' => false]);// initialisation pour la middlware
        return view('students.auth');
     }
 
@@ -38,9 +43,11 @@ class AuthController extends Controller
       
         if ($validate) {
            if($this->codeAuth($request)){
-            session(['codeAuth' => true]);//Affectation de la variable pour la middleware
-            return redirect()->route('publish.index');
+              session(['student'=>$this->student]);
+            
+            return redirect()->route('publish.show',$this->student->nom.'?c='.$this->student->code);
            }
+
            return  redirect()->route('auth.index');
 
        }
@@ -71,6 +78,7 @@ class AuthController extends Controller
                         if($codes->statut != 1){
                           DB::table('codes')->where('idcodes', $codes->idcodes)->update(['statut' => '1']);
                         }
+                        $this->student->code = $codes->idcodes; //Initialise l'attribut code
                         return true;
                    }
                    else
@@ -119,11 +127,12 @@ class AuthController extends Controller
         $students = DB::table('etudiants')
                                           ->where('nom',$student)
                                           ->orWhere('matricule',$student)
-                                          ->get(['matricule']);
+                                          ->get(['matricule','nom']);
         //Si la recherche trouve plusieurs noms
         if (!empty($students)) {
             foreach ($students as $student) {
               if ($matricule == $student->matricule) {
+                  $this->student = $student;
                   return true;        
               }
             }

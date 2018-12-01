@@ -16,7 +16,7 @@ class WelcomeController extends Controller
     public function index()
     {
         //Initialise la session active pour le middleware
-        session(['sessionActive'=> null]);
+        session(['student'=> null]);
 
         //Recupération des session active et années academique
         $sessions = DB::table('sessions')->orderBy("idsessions")->get();

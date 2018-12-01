@@ -15,8 +15,12 @@ class CheckAuthCode
      */
     public function handle($request, Closure $next)
     {
-        if(session('sessionActive') != null){
-            if (session('codeAuth')) {
+        // dd($request);
+        if(session('student') != null){
+            if (empty($request['c']) || (session('student')->code!= $request['c']) ) {
+                return redirect()->route('publish.show',session('student')->nom.'?c='.session('student')->code);
+            }
+            if (session('student')->code== $request['c']) {
                 return $next($request);     
             }
             return redirect()->route('auth.index');

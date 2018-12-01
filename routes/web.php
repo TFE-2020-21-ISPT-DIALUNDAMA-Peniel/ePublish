@@ -20,7 +20,7 @@ Route::prefix('students')->group(function(){
 
 	Route::resource('welcome','Students\WelcomeController')->only('index','store');
 	Route::resource('auth','Students\AuthController')->only('index','store')->middleware('sessionActive');
-	Route::resource('publish','Students\PublishController')->only('index','show')->middleware('codeAuth');
+	Route::resource('publish','Students\PublishController')->only('show','store')->middleware('codeAuth');
 
 
 });

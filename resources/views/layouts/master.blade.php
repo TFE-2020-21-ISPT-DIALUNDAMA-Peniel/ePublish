@@ -25,7 +25,7 @@
     @yield('container')
     {{-- Session Flash --}}
     @yield('msg_flash')
-    <footer>
+    <footer class="footer">
         @yield('footer')
          {{-- Script Jquery --}}
         <script src="{{ asset('js/app.js') }}"></script> 
