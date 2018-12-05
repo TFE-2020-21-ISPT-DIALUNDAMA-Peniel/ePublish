@@ -16,7 +16,7 @@ class WelcomeController extends Controller
     public function index()
     {
         //Initialise la session active pour le middleware
-        session(['student'=> null]);
+        session(['student'=> null,'sessionActive'=>null]);
 
         //Recupération des session active et années academique
         $sessions = DB::table('sessions')->orderBy("idsessions")->get();
@@ -50,7 +50,7 @@ class WelcomeController extends Controller
         return redirect()->route('auth.index');
        }
        session()->flash('message','Les résultats de la session sélectionnée ne sont pas disponible!');
-       return redirect()->route('welcome.index');
+       return redirect()->back()->withInput();
        
         
        

@@ -5,7 +5,7 @@
 @section('container')
     <form class="form-signin" method="post">
       <div class="text-center mb-4">
-        <img class="mb-4" src="{{ asset('img/logoIspt.png') }}" alt="" width="90" height="90">
+  @include('partials._logoIspt')
         <h1 class="h3 mb-3 font-weight-normal">Authentification</h1>
         <p>
         	<a data-toggle="collapse" href="#authDoc" role="button" aria-expanded="false" aria-controls="authDoc"><h1>?</h1></a>
@@ -24,7 +24,7 @@
       </div>
 
       <div class="form-label-group">
-        <input type='text' id='inputCode' name='code' class='form-control' placeholder="Code d'accès" required>
+        <input type='password' id='inputCode' name='code' autocomplete="off" class='form-control' placeholder="Code d'accès" required>
         <label for="inputCode">Code d'accès</label>
       </div>
 

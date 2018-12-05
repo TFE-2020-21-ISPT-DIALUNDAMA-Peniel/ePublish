@@ -21,7 +21,8 @@ class AuthController extends Controller
     public function index()
     {
       session(['students' => false]);// initialisation pour la middlware
-       return view('students.auth');
+      $content = view('students.auth')->render();
+       return response($content);
     }
 
 
@@ -35,8 +36,8 @@ class AuthController extends Controller
     {
         //Validation du formulaire
         $validate = $request->validate([
-            'name' => 'required',
-            'code' => 'required'
+            'name.required' => 'Entrez votre nom ou votre matricule ',
+            'code.required' => "Le code d'accès est requis"
         ]);
 
 
@@ -83,7 +84,7 @@ class AuthController extends Controller
                    }
                    else
                    {
-                    session()->flash('message','Le code ne correpond pas au nom');
+                    session()->flash('message',"Le code d'accès ne correpond pas avec le nom ou la matricule entrée");
                     return false;
                    }
                 }

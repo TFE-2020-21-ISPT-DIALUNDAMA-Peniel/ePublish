@@ -19,7 +19,7 @@
 
 </head>
 
-<body>
+<body >
      
     {{-- Container   --}}
     @yield('container')

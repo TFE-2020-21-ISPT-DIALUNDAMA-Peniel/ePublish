@@ -1,6 +1,3 @@
-@php
-	
-@endphp
 @extends('layouts.master',['title'=>'Bienvenu(e)'])	
 @section('stylesheet')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/studentStyle.css') }}">
@@ -9,7 +6,7 @@
 @section('container')
     <form class="form-signin" method= 'post'>
       <div class="text-center mb-4">
-        <img class="mb-4" src="{{ asset('img/logoIspt.png') }}" alt="" width="90" height="90">
+  @include('partials._logoIspt')
         <h1 class="h3 mb-3 font-weight-normal">{{ config('app.name') }}</h1>
         <p>{{config('app.name') }} est une plateforme de publication des résultats, qui vous permet de consulter vos rélèvés des côtes en ligne.
         </p>
@@ -33,7 +30,7 @@
       </div>
 
       <button class="btn btn-lg btn-primary btn-block" type="submit">Valider</button>
-     @include('partials.@copyrith');
+     @include('partials.@copyrith')
     </form>
 @stop
 

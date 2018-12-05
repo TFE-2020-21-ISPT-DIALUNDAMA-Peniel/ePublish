@@ -13,7 +13,7 @@
 @endphp
 @extends('layouts.master',['title'=>'Publish'])	
 @section('container')
-<div class="card container clearfix">
+<div class="card container bg-light">
   <div class="card-header">
 
     	Matricule:  {{ session('student')->matricule }} <br>
@@ -21,12 +21,14 @@
 
   </div>
   <div class="fluid">
-    <img src="{{ Storage::url('bulletins/imgBulletin/').$bulletin->file.'.jpg' }}" class="img-fluid" alt="{{ session('student')->nom }}">
+    <img src="{{ route('viewBulletin',$bulletin->file)}}" class="img-fluid" alt="{{ session('student')->nom }}">
   </div>
   <div class="card-footer text-muted">
-		<a href="#" class="btn btn-primary btn-lg btn-block"> Télécharger </a>
+		<a href="{{ route('dowloadBulletin',$bulletin->file)}}" class="btn btn-primary btn-lg btn-block"> Télécharger </a>
+    <hr>
+    <a href="{{ route('welcome.index') }} " class="btn btn-danger btn-block"> Fermer </a>
   </div>
-   @include('partials.@copyrith')
+   @include('partials.@copyrith')	
 </div>
 @stop
 
