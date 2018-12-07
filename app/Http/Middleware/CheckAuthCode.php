@@ -15,12 +15,11 @@ class CheckAuthCode
      */
     public function handle($request, Closure $next)
     {
-        // dd($request);
         if(session('student') != null){
-            if (empty($request['c']) || (session('student')->code!= $request['c']) ) {
-                return redirect()->route('publish.show',session('student')->nom.'?c='.session('student')->code);
+            if (empty($request['c']) || (session('student')->idcodes != $request['c']) ) {
+                return redirect()->route('publish.show',getPublishUrl());
             }
-            if (session('student')->code== $request['c']) {
+            if (session('student')->idcodes == $request['c']) {
                 return $next($request);     
             }
             return redirect()->route('auth.index');

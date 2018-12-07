@@ -16,7 +16,7 @@ class ViewBulletinMiddleware
     public function handle($request, Closure $next)
     {
         if (!empty($_SERVER['HTTP_REFERER']) && !empty(session('student'))) {
-            if ($_SERVER['HTTP_REFERER'] == route('publish.show',session('student')->nom.'?c='.session('student')->code)) {
+            if ($_SERVER['HTTP_REFERER'] == route('publish.show',getPublishUrl())) {
                     return $next($request);
             }
         }

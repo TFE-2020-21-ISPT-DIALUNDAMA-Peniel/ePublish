@@ -45,3 +45,18 @@
 			return $pathPdf.'.pdf';	
     	
     }
+
+
+      /**
+	 * renvoi le ormat de lien de route publish pour l'etudiant connecté 
+	 * 
+	 * @return string url | null
+	 */
+
+      	function getPublishUrl(){
+			if (!empty(session('student'))) {
+				return session('student')->nom."?c=".session('student')->idcodes;
+			}			
+			return 'welcome.index';	
+    	
+    }

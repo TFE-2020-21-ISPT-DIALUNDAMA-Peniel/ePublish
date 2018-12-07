@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;  
+use App\Models\Bulletin;  
 use App\Http\Controllers\Controller;
 
 
@@ -18,7 +18,7 @@ class PublishController extends Controller
     public function index()
         {
           
-            return redirect()->route('publish.show',session('student')->nom.'?c='.session('student')->code);
+            return redirect()->route('publish.show',getPublishUrl());
            
         }
 
@@ -32,11 +32,14 @@ class PublishController extends Controller
     public function show($id)
     {   
         
-        $idcode = session('student')->code;
+        $idcode = session('student')->idcodes;
         $matricule = session('student')->matricule;
-        $bulletin = DB::table('bulletins')->where('id_code',$idcode)->where('matricule_etudiants',$matricule)->first(); 
+        $bulletin = Bulletin::where('id_code',$idcode)->where('matricule_etudiants',$matricule)->first(); 
+        if ($bulletin != null) {
         $imgBulletin = get_bulletin_img($bulletin->file);
          return view('students.publish',['bulletin'=>$bulletin]);  
+        }
+        return abort(404);
     }
 
    /**

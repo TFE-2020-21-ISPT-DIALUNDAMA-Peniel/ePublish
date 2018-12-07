@@ -84,7 +84,7 @@ return [
     'min'                  => [
         'numeric' => 'La valeur de :attribute doit être supérieure ou égale à :min.',
         'file'    => 'La taille du fichier de :attribute doit être supérieure à :min kilo-octets.',
-        'string'  => 'Le texte :attribute doit contenir au moins :min caractères.',
+        'string'  => 'Le  :attribute doit contenir au moins :min caractères.',
         'array'   => 'Le tableau :attribute doit contenir au moins :min éléments.',
     ],
     'not_in'               => "Le champ :attribute sélectionné n'est pas valide.",
@@ -115,6 +115,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Mes rules de validation 
+    |--------------------------------------------------------------------------
+    |
+    |
+    */
+
+    'code_exist'             => "Code d'accès invalide",
+    'is_code_session_active' => "le code entrée ne correpond pas à la session seléctionée! <hr>
+                                <a href='".route('welcome.index')."' >Selectionez la Session</a>",
+    'code_is_active'         => "Le code entrée n'est pas activé. <hr> Veillez contacter votre section.",
+    'code_equal_student'     => "Le code d'accès ne correpond pas avec le nom ou la matricule entrée",
+
+
+
+
+
+
+    /*
+    |--------------------------------------------------------------------------
     | Custom Validation Language Lines
     |--------------------------------------------------------------------------
     |
@@ -127,6 +146,10 @@ return [
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+        ],
+
+        'code' => [
+            'required' => "Code d'accès",
         ],
     ],
 

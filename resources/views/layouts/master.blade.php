@@ -13,7 +13,7 @@
     <!-- Bootstrap core CSS -->
     <link href="{{ asset('bootstrap/css/bootstrap.css') }}" rel="stylesheet">
     {{-- Styles --}}
-    <link href="{{ asset('bootstrap/css/style.css') }}" rel="stylesheet">
+    {{-- <link href="{{ asset('bootstrap/css/style.css') }}" rel="stylesheet"> --}}
 
     @yield('stylesheet')
 
@@ -29,6 +29,8 @@
         @yield('footer')
          {{-- Script Jquery --}}
         <script src="{{ asset('js/app.js') }}"></script> 
+        {{-- Script Parsley --}}
+        {{-- <script src="{{ asset('js/parsley/parsley.min.js') }}"></script>  --}}
         @yield('script')
     </footer>
 </body>

@@ -148,6 +148,11 @@ return [
         Illuminate\View\ViewServiceProvider::class,
 
         /*
+         * Service Providers Add
+         */
+        App\Providers\ValidatorServiceProvider::class,
+
+         /*
          * Package Service Providers...
          */
 

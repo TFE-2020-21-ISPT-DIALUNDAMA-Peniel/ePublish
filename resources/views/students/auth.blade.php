@@ -1,9 +1,11 @@
 @extends('layouts.master',['title'=>'Authentification'])	
 @section('stylesheet')
 <link rel="stylesheet" type="text/css" href="{{ asset('css/studentStyle.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ asset('bootstrap/css/font-awesome.css') }}">
+
 @stop
 @section('container')
-    <form class="form-signin" method="post">
+    <form class="form-signin" method="post" data-parsley-validate>
       <div class="text-center mb-4">
   @include('partials._logoIspt')
         <h1 class="h3 mb-3 font-weight-normal">Authentification</h1>
@@ -19,13 +21,16 @@
 	@include('partials._msgFlash')
 	@csrf
       <div class="form-label-group">
-        <input type="input" name="name" id="inputName" class="form-control" placeholder="Nom ou Matricule" required autofocus>
+        <input type="input" name="name" value="{{ old('name') }}" minlength="3" maxlength="45" id="inputName" class="form-control" placeholder="Nom ou Matricule" required autofocus>
         <label for="inputName">Nom ou Matricule</label>
       </div>
 
-      <div class="form-label-group">
-        <input type='password' id='inputCode' name='code' autocomplete="off" class='form-control' placeholder="Code d'accès" required>
+      <div class="form-label-group input-group">
+        <input type='password' id='inputCode' name='code' maxlength="10" autocomplete="off" class='form-control' placeholder="Code d'accès" data-toggle="password" required>
         <label for="inputCode">Code d'accès</label>
+       <div class="input-group-append">
+          <span class="input-group-text"><i class="fa fa-eye"></i></span>
+        </div>
       </div>
 
       <div class="checkbox mb-3">
@@ -43,4 +48,34 @@
        @include('partials.@copyrith')
     </form>
 
+@stop
+
+@section('script')
+  <script type="text/javascript">
+    !function ($) {
+    //eyeOpenClass: 'fa-eye',
+    //eyeCloseClass: 'fa-eye-slash',
+        'use strict';
+
+        $(function () {
+            $('[data-toggle="password"]').each(function () {
+                var input = $(this);
+                var eye_btn = $(this).parent().find('.input-group-text');
+                eye_btn.css('cursor', 'pointer').addClass('input-password-hide');
+                eye_btn.on('click', function () {
+                    if (eye_btn.hasClass('input-password-hide')) {
+                        eye_btn.removeClass('input-password-hide').addClass('input-password-show');
+                        eye_btn.find('.fa').removeClass('fa-eye').addClass('fa-eye-slash')
+                        input.attr('type', 'text');
+                    } else {
+                        eye_btn.removeClass('input-password-show').addClass('input-password-hide');
+                        eye_btn.find('.fa').removeClass('fa-eye-slash').addClass('fa-eye')
+                        input.attr('type', 'password');
+                    }
+                });
+            });
+        });
+
+    }(window.jQuery);
+  </script>
 @stop
