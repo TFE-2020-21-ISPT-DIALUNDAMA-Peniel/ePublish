@@ -20,10 +20,13 @@
 	 */
 
   	function get_bulletin_img($file){
-		
-		$pathPdf = storage_path('app'.DS.'bulletins'.DS.'pdf'.DS.$file);
-		$pathImg = storage_path('app'.DS.'bulletins'.DS.'img'.DS.$file);
-		$pdf = new \Spatie\PdfToImage\Pdf('/home/bilwifi/www/ePublish/storage/app/bulletins/pdf/201515_DIALUNDAMA_1.pdf');
+		$pathPdf = storage_path('app'.DS.'bulletins'.DS.'pdf'.DS.$file.'.pdf');
+		$pathImg = storage_path('app'.DS.'bulletins'.DS.'img'.DS.$file.'.jpg');
+		// Si l'img existe on la returne directement 
+		if (file_exists($pathImg)) {
+			return $pathImg;
+		}
+		$pdf = new \Spatie\PdfToImage\Pdf($pathPdf);
 		$pdf->_saveImage($pathImg,$file);
 		$format =$pdf->getOutputFormat();
 	
@@ -48,7 +51,7 @@
 
 
       /**
-	 * renvoi le ormat de lien de route publish pour l'etudiant connecté 
+	 * renvoi le format du lien de route publish pour l'etudiant connecté 
 	 * 
 	 * @return string url | null
 	 */

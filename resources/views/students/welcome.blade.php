@@ -4,7 +4,7 @@
 @stop
 
 @section('container')
-    <form class="form-signin" method= 'post' data-parsley-validate>
+    <form class="form-signin" method= 'post' id='form' data-parsley-validate>
       <div class="text-center mb-4">
   @include('partials._logoIspt')
         <h1 class="h3 mb-3 font-weight-normal">{{ config('app.name') }}</h1>
@@ -33,4 +33,6 @@
      @include('partials.@copyrith')
     </form>
 @stop
-
+@section('script')
+  <script type="text/javascript" src="{{  asset('js/appForm.js')  }}"></script>
+@stop

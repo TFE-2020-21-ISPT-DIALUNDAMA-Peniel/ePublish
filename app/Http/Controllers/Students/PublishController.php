@@ -34,7 +34,7 @@ class PublishController extends Controller
         
         $idcode = session('student')->idcodes;
         $matricule = session('student')->matricule;
-        $bulletin = Bulletin::where('id_code',$idcode)->where('matricule_etudiants',$matricule)->first(); 
+        $bulletin = Bulletin::where('idcodes',$idcode)->where('matricule_etudiants',$matricule)->first(); 
         if ($bulletin != null) {
         $imgBulletin = get_bulletin_img($bulletin->file);
          return view('students.publish',['bulletin'=>$bulletin]);  

@@ -45,7 +45,7 @@ class ValidatorServiceProvider extends ServiceProvider
          */
         Validator::extend('isCodeSessionActive', function ($attribute, $value, $parameters, $validator) {
              if ($this->code !== null) {
-                if ($this->code->id_sessions == $parameters[0]) {
+                if ($this->code->idsession_actives == $parameters[0]) {
                     return true;
                 }
              }
@@ -65,7 +65,7 @@ class ValidatorServiceProvider extends ServiceProvider
         });
 
         /**
-         * Vérifie si le code d'accès correpond avec le nom o la matricule 
+         * Vérifie si le code d'accès correpond avec le nom ou la matricule 
          *
          * @return bolean
          */
@@ -108,6 +108,10 @@ class ValidatorServiceProvider extends ServiceProvider
         if (!empty($students)) {
             foreach ($students as $student) {
               if ($matricule == $student->matricule) {
+                // si c'est la prémière foi on change le statut du code à 1
+                if ($this->code->statut == 0) {
+                    Code::where('idcodes',$this->code->idcodes)->update(['statut'=>'1']);
+                }
                   return true;        
               }
             }

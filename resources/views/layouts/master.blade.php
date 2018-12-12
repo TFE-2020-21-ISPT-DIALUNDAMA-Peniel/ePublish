@@ -11,7 +11,7 @@
     <!-- Fonts -->
 
     <!-- Bootstrap core CSS -->
-    <link href="{{ asset('bootstrap/css/bootstrap.css') }}" rel="stylesheet">
+    <link href="{{ asset('bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
     {{-- Styles --}}
     {{-- <link href="{{ asset('bootstrap/css/style.css') }}" rel="stylesheet"> --}}
 

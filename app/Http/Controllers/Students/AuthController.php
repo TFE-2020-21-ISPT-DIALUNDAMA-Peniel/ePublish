@@ -25,7 +25,7 @@ class AuthController extends Controller
 
 
     /**
-     * Store a newly created resource in storage.
+     * Traitement du formulaire
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
@@ -33,6 +33,7 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         //Validation du formulaire
+        // App\Providers\ValidatorServiceProvider
         $validate = $request->validate([
             'name.required' => 'Entrez votre nom ou votre matricule ',
             'code' => "bail|
@@ -49,7 +50,10 @@ class AuthController extends Controller
         if ($validate) {
 
            $student = Code::getStudentAndCode($request['code']);
-           session(['student' => $student]);
+           session(['student' => $student]); 
+           if ($request->ajax()) {
+               return route('publish.show',getPublishUrl());
+           }
            return redirect()->route('publish.show',getPublishUrl());
             
        }

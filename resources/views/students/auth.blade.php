@@ -5,15 +5,15 @@
 
 @stop
 @section('container')
-    <form class="form-signin" method="post" data-parsley-validate>
+    <form class="form-signin" method="post" id='form' data-parsley-validate>
       <div class="text-center mb-4">
   @include('partials._logoIspt')
         <h1 class="h3 mb-3 font-weight-normal">Authentification</h1>
         <p>
-        	<a data-toggle="collapse" href="#authDoc" role="button" aria-expanded="false" aria-controls="authDoc"><h1>?</h1></a>
+        	<a data-toggle="collapse" href="#authDoc" role="button" aria-expanded="false" aria-controls="authDoc"><h3><span class="fa fa-question-circle"></span></h3></a>
         	<div class="collapse" id="authDoc">
 			  <div class="card card-body alert alert-info">
-			     l'authentification vous permet d'avoir accès à votre rélèvé de côte moyennant votre Nom ou votre Matricule et un code d'accès qui vous a été fourni par votre section.
+			     l'authentification vous permet d'avoir accès à votre relevé de côte moyennant votre Nom ou votre Matricule et un code d'accès qui vous a été fourni par votre section.
 			  </div>
 			</div>    
     	 </p>
@@ -21,7 +21,7 @@
 	@include('partials._msgFlash')
 	@csrf
       <div class="form-label-group">
-        <input type="input" name="name" value="{{ old('name') }}" minlength="3" maxlength="45" id="inputName" class="form-control" placeholder="Nom ou Matricule" required autofocus>
+        <input type="input" name="name" value="{{ old('name') }}"  maxlength="45" id="inputName" class="form-control" placeholder="Nom ou Matricule" required autofocus>
         <label for="inputName">Nom ou Matricule</label>
       </div>
 
@@ -39,7 +39,7 @@
         </label>
 		<div class="collapse" id="collapseExample">
 		  <div class="card card-body alert alert-warning">
-		    Si vous n'avez pas de code d'accès, veillez contacter votre section.
+		    Si vous n'avez pas un code d'accès, veillez en procurer auprès de votre section.
 		  </div>
 		</div>
       </div>
@@ -47,7 +47,6 @@
       <button class="btn btn-lg btn-primary btn-block" type="submit">Valider</button>
        @include('partials.@copyrith')
     </form>
-
 @stop
 
 @section('script')
@@ -78,4 +77,7 @@
 
     }(window.jQuery);
   </script>
+
+  <script type="text/javascript" src="{{  asset('js/appForm.js')  }}"></script>
+
 @stop
