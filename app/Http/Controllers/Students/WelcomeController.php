@@ -16,21 +16,24 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        //Initialise la session active pour le middleware
-        session(['student'=> null,'sessionActive'=>null]);
+        session()->flush();
+        session()->regenerate();
 
-        //Recupération des session active et années academique
+        //Recupération des session active, auditoire années academique
+        $auditoires = DB::table('auditoires')->orderBy("idpromotions")->get();
         $sessions = DB::table('sessions')->orderBy("idsessions")->get();
-        $annees = DB::table('gestion_annees')->orderBy("idgestion_annees")->get();
-        if($sessions != null AND $annees != null){
-            return view('students.welcome',[
+        $annees = DB::table('gestion_annees')->orderBy("annee_debut","DESC")->get();
+        if($sessions->isNotEmpty()  AND $annees->isNotEmpty()){
+            return view('frontend.students.welcome',[
+                'auditoires'=>$auditoires,
                 'sessions'=>$sessions,
                 'annees' => $annees
             ]);
         }
         /////////////////////////////////////////////
-        //  RETOURNEZ UNE VUE AUCUNE SESSIONN ACTIVE
+        //  RETOURNEZ UNE VUE AUCUNE SESSION ACTIVE
         /////////////////////////////////////////////
+        return view('frontend.students.noPublish');
 
     }
 
@@ -46,12 +49,12 @@ class WelcomeController extends Controller
         //Validation
         $request->validate([
             'session'=>'required',
+            'auditoire'=>'required',
             'annee'=>'required'           
         ]); 
         //Vérification des donnée soumis
-       if(Session_active::isActive(request('session'),request('annee'))){
-        //enregistrement de la session active dans la variable $_SESSION
-        session(['sessionActive' => $request['session']]);
+       if(Session_active::isActive(request('session'),request('auditoire'),request('annee'))){
+
         //Si la requette est en ajax; on renvoi le lien de redirection
         if($request->ajax()){
             return route('auth.index');

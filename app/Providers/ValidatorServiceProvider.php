@@ -73,6 +73,7 @@ class ValidatorServiceProvider extends ServiceProvider
             if ($this->code!== null) {
              return $this->verifiezMatriculeRequetteCorrepondMatriculeTableCodes($this->code->matricule_etudiant,$parameters[0]);              
             }
+
             return false;
         });
 

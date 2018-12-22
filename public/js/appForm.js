@@ -8,6 +8,7 @@ $(function(){
         method: $(this).attr('method'),
         url: $(this).attr('action'),
         data: $(this).serialize(),
+        global: true,
       
         success :function(data) {
         location = data;
@@ -21,5 +22,9 @@ $(function(){
         }
 
       });
+    $('body').ajaxStart(function(){
+      alert('a'); 
+    });
+
   });
 });

@@ -7,7 +7,7 @@ use Closure;
 class CheckAuthCode
 {
     /**
-     * Handle an incoming request.
+     * Verifie si l'étudiant est bien authentifié avec un code d'accès
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \Closure  $next

@@ -10,6 +10,16 @@ use App\Models\Code;
 class AuthController extends Controller
 {
 
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['sessionActive']);
+    }
+
 
     /**
      * Display a listing of the resource.
@@ -19,7 +29,7 @@ class AuthController extends Controller
     public function index()
     {
       session(['student' => false]);// initialisation pour la middlware
-      $content = view('students.auth')->render();
+      $content = view('frontend.students.auth')->render();
        return response($content);
     }
 
@@ -41,7 +51,8 @@ class AuthController extends Controller
                         min:6|
                         codeExist|
                         isCodeSessionActive:".session('sessionActive')."|
-                        codeIsActive|codeEqualStudent:".$request['name']
+                        codeIsActive|
+                        codeEqualStudent:".$request['name']
 
         ]);
 

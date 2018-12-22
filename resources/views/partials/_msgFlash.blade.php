@@ -1,6 +1,6 @@
 @if (session()->has('message'))
 	<div class="alert alert-danger">
-	 	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	 	{{-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> --}}
 	 	{!! session()->get('message') !!}
 	</div>
 
@@ -8,7 +8,7 @@
 
 @if ($errors->any())
 	<div class="alert alert-danger">
-		<ul>
+		<ul class="list-unstyled">
 			@foreach ($errors->all() as $error)
 				<li>{!! $error !!}</li>
 			@endforeach
@@ -17,6 +17,6 @@
 @endif
 
 <div class="alert alert-danger" id='msgErrors' hidden>
-	<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+	{{-- <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button> --}}
 	<p class="msgErrors"></p>
 </div>

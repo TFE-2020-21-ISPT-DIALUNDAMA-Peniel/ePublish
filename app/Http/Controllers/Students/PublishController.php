@@ -9,7 +9,20 @@ use App\Http\Controllers\Controller;
 
 class PublishController extends Controller
 {
-      /**
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware(['codeAuth','noCache'])->except(['viewBulletin','dowloadBulletin']);;
+        $this->middleware('viewBulletin', ['only' => 'viewBulletin']);
+        $this->middleware('viewBulletin', ['only' => 'dowloadBulletin']);
+    }
+
+    /**
      * Rédirige vers la Show methode
      * Pour corriger une bug
      * @return redirection
@@ -34,10 +47,9 @@ class PublishController extends Controller
         
         $idcode = session('student')->idcodes;
         $matricule = session('student')->matricule;
-        $bulletin = Bulletin::where('idcodes',$idcode)->where('matricule_etudiants',$matricule)->first(); 
+        $bulletin = Bulletin::where('idcodes',$idcode)->where('matricule_etudiant',$matricule)->first(); 
         if ($bulletin != null) {
-        $imgBulletin = get_bulletin_img($bulletin->file);
-         return view('students.publish',['bulletin'=>$bulletin]);  
+            return view('frontend.students.publish',['bulletin'=>$bulletin]);  
         }
         return abort(404);
     }
@@ -50,7 +62,7 @@ class PublishController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function viewBulletin($pathToFile){
-        $response = response()->file(get_bulletin_img($pathToFile));
+        $response = response()->file(get_path_bulletin_img($pathToFile));
         return $response;
     }
 
@@ -62,7 +74,7 @@ class PublishController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function dowloadBulletin($pathToFile){
-        return response()->download(get_bulletin_pdf($pathToFile));
+        return response()->download(get_path_bulletin_pdf($pathToFile));
             
     }
     

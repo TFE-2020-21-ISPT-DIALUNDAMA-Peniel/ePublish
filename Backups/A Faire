@@ -1,2 +1,24 @@
 Verifier le statut de l'etudiant à l'authentification
 Ajouter contraite unique à la BD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+fonctionnalité suplementaire
+////////////////////////////
+
+1/publication automatisé prédefinis 
+2/si le nom ne correspond pas au code plus de 3fois/on offre la possibilité d'entre plusieur option pour la requette
+3/ notification par SMS

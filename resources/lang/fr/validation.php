@@ -115,15 +115,15 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Mes rules de validation 
+    | Règles de validation pour le code d'accès 
     |--------------------------------------------------------------------------
     |
     |
     */
 
     'code_exist'             => "Code d'accès invalide",
-    'is_code_session_active' => "le code entrée ne correpond pas à la session seléctionée! <hr>
-                                <a href='".route('welcome.index')."' >Selectionez la Session</a>",
+    'is_code_session_active' => "le code entrée ne correpond pas à la session ou la classe seléctionée! <hr>
+                                <a href='".route('welcome.index')."' >Selectionez la session et votre classe</a>",
     'code_is_active'         => "Le code entrée n'est pas activé. <hr> Veillez contacter votre section.",
     'code_equal_student'     => "Le code d'accès ne correpond pas avec le nom ou la matricule entrée",
 

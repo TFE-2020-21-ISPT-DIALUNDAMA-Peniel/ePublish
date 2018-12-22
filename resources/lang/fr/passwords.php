@@ -17,4 +17,5 @@ return [
     'sent'     => 'Nous vous avons envoyé par email le lien de réinitialisation du mot de passe !',
     'token'    => "Ce jeton de réinitialisation du mot de passe n'est pas valide.",
     'user'     => "Aucun utilisateur n'a été trouvé avec cette adresse email.",
+    'userName' => "Aucun utilisateur n'a été trouvé avec ce nom d'utilisateur.",
 ];
