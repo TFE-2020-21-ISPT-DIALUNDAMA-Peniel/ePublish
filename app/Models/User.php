@@ -34,21 +34,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    /**
-     * Get the name of the unique identifier for the user.
-     *
-     * @return string
-     */
-    // public function getAuthIdentifierName()
-    // {
-    //     return 'idusers';
-    // }
 
-    // public function getAuthIdentifier()
-    // {
-    //     return $this->users;
-    // }
-    
+
 
 
 }

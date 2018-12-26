@@ -52,13 +52,10 @@ class CreationDesTables extends Migration
             $table->string('abbr',65);
             $table->unsignedInteger('idfacultes');
             $table->unsignedInteger('idpromotions');
-            $table->unsignedInteger('idsections');
             $table->foreign('idfacultes')
                   ->references('idfacultes')->on('facultes');
             $table->foreign('idpromotions')
                   ->references('idpromotions')->on('promotions');
-            $table->foreign('idsections')
-                  ->references('idsections')->on('sections');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -82,20 +79,11 @@ class CreationDesTables extends Migration
             $table->string('nom',65);
             $table->string('postnom',65)->nullable();
             $table->string('prenom',65)->nullable();
-            $table->unsignedInteger('idpromotions');
-            $table->unsignedInteger('idfacultes');
-            $table->unsignedInteger('idsections');
             $table->unsignedInteger('idauditoires');
             $table->unsignedInteger('annee_acad');
             $table->boolean('statut')->default(false);
             $table->timestamps();
             $table->primary('matricule');
-            $table->foreign('idpromotions')
-                  ->references('idpromotions')->on('promotions');
-            $table->foreign('idfacultes')
-                  ->references('idfacultes')->on('facultes');
-            $table->foreign('idsections')
-                  ->references('idsections')->on('sections');
             $table->foreign('idauditoires')
                   ->references('idauditoires')->on('auditoires');
             $table->foreign('annee_acad')
@@ -116,8 +104,8 @@ class CreationDesTables extends Migration
             $table->collation = 'utf8_unicode_ci';
         });
 
-        Schema::create('publications', function (Blueprint $table) {
-            $table->increments('idpublications');
+        Schema::create('session_actives', function (Blueprint $table) {
+            $table->increments('idsession_actives');
             $table->unsignedInteger('idsessions');
             $table->unsignedInteger('idauditoires');
             $table->unsignedInteger('annee');
@@ -135,45 +123,19 @@ class CreationDesTables extends Migration
             $table->collation = 'utf8_unicode_ci';
         });
 
-         Schema::create('etudiants_succes', function (Blueprint $table) {
-            $table->unsignedInteger('matricule_etudiant');
-            $table->unsignedInteger('idsessions');
-            $table->unsignedInteger('idgestion_annees');
-            $table->timestamps();
-
-            $table->primary(['matricule_etudiant','idgestion_annees']);
-            $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants');
-            $table->foreign('idsessions')
-                  ->references('idsessions')->on('sessions');
-            $table->foreign('idgestion_annees')
-                  ->references('idgestion_annees')->on('gestion_annees');
-
-            $table->engine = 'InnoDB';
-            $table->charset = 'utf8';
-            $table->collation = 'utf8_unicode_ci';
-        });
-
         Schema::create('codes', function (Blueprint $table) {
             $table->increments('idcodes');
             $table->string('code',45);
             $table->unsignedInteger('matricule_etudiant');
-            $table->unsignedInteger('idsessions');
-            $table->unsignedInteger('idsections');
-            $table->unsignedInteger('idauditoires');
+            $table->unsignedInteger('idsession_actives');
             $table->boolean('active')->default(false);
             $table->boolean('statut')->default(false);
             $table->timestamps();
             $table->unique('code');
-;
             $table->foreign('matricule_etudiant')
                   ->references('matricule')->on('etudiants');
-            $table->foreign('idsessions')
-                  ->references('idsessions')->on('sessions');
-            $table->foreign('idsections')
-                  ->references('idsections')->on('sections');
-            $table->foreign('idauditoires')
-                  ->references('idauditoires')->on('auditoires');
+            $table->foreign('idsession_actives')
+                  ->references('idsession_actives')->on('session_actives');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -185,14 +147,14 @@ class CreationDesTables extends Migration
             $table->string('file',255);
             $table->unsignedInteger('matricule_etudiant');
             $table->unsignedInteger('idcodes');
-            $table->unsignedInteger('idpublications');
+            $table->unsignedInteger('idsession_actives');
             $table->timestamps();
             $table->foreign('matricule_etudiant')
                   ->references('matricule')->on('etudiants');
             $table->foreign('idcodes')
                   ->references('idcodes')->on('codes');
-            $table->foreign('idpublications')
-                  ->references('idpublications')->on('publications');
+            $table->foreign('idsession_actives')
+                  ->references('idsession_actives')->on('session_actives');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -211,7 +173,7 @@ class CreationDesTables extends Migration
 
         Schema::create('users', function (Blueprint $table) {
             $table->increments('idusers');
-            $table->string('username',45)->unique();
+            $table->string('user_name',45)->unique();
             $table->string('name',65);
             $table->string('first_name',65);
             $table->string('email',65)->nullable()->unique();
@@ -234,13 +196,10 @@ class CreationDesTables extends Migration
         Schema::create('ventes', function (Blueprint $table) {
             $table->increments('idventes');
             $table->unsignedInteger('idusers');
-            $table->unsignedInteger('matricule_etudiant');
             $table->unsignedInteger('idcodes');
             $table->timestamps();
             $table->foreign('idusers')
                   ->references('idusers')->on('users');
-            $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants');
             $table->foreign('idcodes')
                   ->references('idcodes')->on('codes');
 
@@ -266,7 +225,7 @@ class CreationDesTables extends Migration
         Schema::dropIfExists('gestion_annees');
         Schema::dropIfExists('etudiants');
         Schema::dropIfExists('sessions');
-        Schema::dropIfExists('publications');
+        Schema::dropIfExists('session_actives');
         Schema::dropIfExists('codes');
         Schema::dropIfExists('bulletins');
         Schema::dropIfExists('users_roles');

@@ -45,6 +45,28 @@ return [
             'driver' => 'token',
             'provider' => 'users',
         ],
+
+        //guards pour les roles des utilisateurs
+        // 'admin' => [
+        //     'driver' => 'session',
+        //     'provider' => 'users',
+        // ],
+
+        // 'jury' => [
+        //     'driver' => 'session',
+        //     'provider' => 'users',
+        // ],
+
+        // 'section' => [
+        //     'driver' => 'session',
+        //     'provider' => 'users',
+        // ],
+
+        // 'users' => [
+        //     'driver' => 'session',
+        //     'provider' => 'users',
+        // ],
+
     ],
 
     /*

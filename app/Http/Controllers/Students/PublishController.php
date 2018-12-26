@@ -51,7 +51,12 @@ class PublishController extends Controller
         if ($bulletin != null) {
             return view('frontend.students.publish',['bulletin'=>$bulletin]);  
         }
+
         return abort(404);
+        /////////////////////////////////////////////
+        //  RETOURNEZ UNE VUE PAS DE BULLETIN
+        /////////////////////////////////////////////
+        // return view('frontend.students.noPublish');
     }
 
    /**

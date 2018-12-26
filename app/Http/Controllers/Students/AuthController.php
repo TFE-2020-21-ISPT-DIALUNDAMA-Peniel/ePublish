@@ -28,7 +28,6 @@ class AuthController extends Controller
      */
     public function index()
     {
-      session(['student' => false]);// initialisation pour la middlware
       $content = view('frontend.students.auth')->render();
        return response($content);
     }
@@ -50,7 +49,7 @@ class AuthController extends Controller
                         required|
                         min:6|
                         codeExist|
-                        isCodeSessionActive:".session('sessionActive')."|
+                        isCodeSessionActive:".session('idsessions')."|
                         codeIsActive|
                         codeEqualStudent:".$request['name']
 

@@ -19,6 +19,7 @@ class Kernel extends HttpKernel
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         \App\Http\Middleware\TrustProxies::class,
+        
     ];
 
     /**
@@ -35,6 +36,7 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
+
 
         ],
 
@@ -65,5 +67,6 @@ class Kernel extends HttpKernel
         'codeAuth' => \App\Http\Middleware\CheckAuthCode::class,
         'noCache' => \App\Http\Middleware\NoCacheMiddleware::class,
         'viewBulletin' => \App\Http\Middleware\ViewBulletinMiddleware::class,
+        'checkUserRole' => \App\Http\Middleware\CheckUserRole::class,
     ];
 }

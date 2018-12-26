@@ -45,7 +45,7 @@ class ValidatorServiceProvider extends ServiceProvider
          */
         Validator::extend('isCodeSessionActive', function ($attribute, $value, $parameters, $validator) {
              if ($this->code !== null) {
-                if ($this->code->idsession_actives == $parameters[0]) {
+                if ($this->code->idsessions == $parameters[0]) {
                     return true;
                 }
              }

@@ -36,4 +36,14 @@ class ResetPasswordController extends Controller
     {
         $this->middleware('guest');
     }
+    /**
+     * Définie la logique de rédirection par rapport au rôle de l'utilisateur 
+     *
+     * @return string
+    */
+
+    protected function redirectTo()
+    {
+        return redirectToDashboard();
+    }
 }

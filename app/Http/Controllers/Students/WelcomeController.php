@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use Illuminate\Http\Request;
-use App\Models\Session_active;
+use App\Models\Publication;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
@@ -20,7 +20,7 @@ class WelcomeController extends Controller
         session()->regenerate();
 
         //Recupération des session active, auditoire années academique
-        $auditoires = DB::table('auditoires')->orderBy("idpromotions")->get();
+        $auditoires = DB::table('auditoires')->orderBy("idpromotions")->orderBy("idsections")->orderBy("idauditoires")->get();
         $sessions = DB::table('sessions')->orderBy("idsessions")->get();
         $annees = DB::table('gestion_annees')->orderBy("annee_debut","DESC")->get();
         if($sessions->isNotEmpty()  AND $annees->isNotEmpty()){
@@ -48,12 +48,15 @@ class WelcomeController extends Controller
 
         //Validation
         $request->validate([
-            'session'=>'required',
-            'auditoire'=>'required',
-            'annee'=>'required'           
+            'session'=>'required|int',
+            'auditoire'=>'required|int',
+            'annee'=>'required|int'           
         ]); 
         //Vérification des donnée soumis
-       if(Session_active::isActive(request('session'),request('auditoire'),request('annee'))){
+       if(Publication::isPublished(request('session'),request('auditoire'),request('annee'))){
+            
+            // session(['sessionActive' => request('session')]); //pour gerer le middleware
+            session(['idsessions' => request('session')]); //pour gerer le middleware
 
         //Si la requette est en ajax; on renvoi le lien de redirection
         if($request->ajax()){

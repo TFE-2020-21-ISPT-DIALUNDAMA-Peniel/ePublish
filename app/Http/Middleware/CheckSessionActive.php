@@ -15,7 +15,7 @@ class CheckSessionActive
      */
     public function handle($request, Closure $next)
     {
-        if (session('sessionActive') != null) {
+        if (session('idsessions') != null) {
             return $next($request);
         }   
 

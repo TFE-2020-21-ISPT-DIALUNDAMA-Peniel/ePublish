@@ -40,6 +40,7 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
+
     /**
      * Get a validator for an incoming registration request.
      *
@@ -77,5 +78,17 @@ class RegisterController extends Controller
             'idusers_roles' => $data['idusers_roles'],
 
         ]);
+    }
+
+    /**
+     * Définie la logique de rédirection par rapport au rôle de l'utilisateur 
+     *
+     * @return string
+    */
+
+    protected function redirectTo()
+    {
+
+        return redirectToDashboard();
     }
 }

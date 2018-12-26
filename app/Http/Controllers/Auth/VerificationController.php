@@ -39,4 +39,15 @@ class VerificationController extends Controller
         $this->middleware('signed')->only('verify');
         $this->middleware('throttle:6,1')->only('verify', 'resend');
     }
+    /**
+     * Définie la logique de rédirection par rapport au rôle de l'utilisateur 
+     *
+     * @return void
+    */
+
+    protected function redirectTo()
+    {
+
+        return redirectToDashboard();
+    }
 }
