@@ -6,6 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Publication extends Model
 {
+
+    /**
+     * définit la clé primaire personalisée.
+     *
+     * @var array
+     */
+    protected $primaryKey = 'idpublications';
+
+
+
    	/**
      * Verifie si le resultat de la session demandée est  publieés
      *
@@ -15,12 +25,21 @@ class Publication extends Model
      * @return bolean
      */
     public static function isPublished($idSession,$idAuditoire,$idAnnee){
-       return $idpublication = self::where('publications.statut','1')
+       return self::where('publications.statut','1')
 		                        ->where([
 		                                    'publications.idsessions' => $idSession,
 		                                    'publications.idauditoires'	=> $idAuditoire,
 		                                    'publications.annee'	=> $idAnnee
 		                        ])//contraite de la requette
 		                        ->exists(['idpublications']);
+    }
+
+    /**
+     * Renvoi la dernière publication
+     *
+     * @return publication
+     */
+    public static function lastPublished(){
+      return self::find(self::max('idpublications'));
     }
 }

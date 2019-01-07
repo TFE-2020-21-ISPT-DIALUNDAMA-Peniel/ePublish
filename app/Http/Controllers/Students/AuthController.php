@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Students;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\StudentAuthFormRequest;
 use App\Http\Controllers\Controller;
 use App\Models\Code;
 
@@ -39,33 +40,15 @@ class AuthController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StudentAuthFormRequest $request)
     {
-        //Validation du formulaire
-        // App\Providers\ValidatorServiceProvider
-        $validate = $request->validate([
-            'name.required' => 'Entrez votre nom ou votre matricule ',
-            'code' => "bail|
-                        required|
-                        min:6|
-                        codeExist|
-                        isCodeSessionActive:".session('idsessions')."|
-                        codeIsActive|
-                        codeEqualStudent:".$request['name']
 
-        ]);
-
-        //Si la requette est valide
-      
-        if ($validate) {
-
-           $student = Code::getStudentAndCode($request['code']);
-           session(['student' => $student]); 
-           if ($request->ajax()) {
-               return route('publish.show',getPublishUrl());
-           }
-           return redirect()->route('publish.show',getPublishUrl());
-            
+       $student = Code::getStudentAndCode($request['code']);
+       session(['student' => $student]); 
+       if ($request->ajax()) {
+           return route('publish.show',getPublishUrl());
        }
+       return redirect()->route('publish.show',getPublishUrl());
+
     }
 }

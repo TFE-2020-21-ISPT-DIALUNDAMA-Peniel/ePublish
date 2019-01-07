@@ -18,8 +18,8 @@
 			</div>    
     	 </p>
       </div>
-	@include('frontend.partials._msgFlash')
-	@csrf
+  	@include('frontend.partials._msgFlash')
+  	@csrf
       <div class="form-label-group">
         <input type="input" name="name" value="{{ old('name') }}"  maxlength="45" id="inputName" class="form-control" placeholder="Nom ou Matricule" required autofocus>
         <label for="inputName">Nom ou Matricule</label>

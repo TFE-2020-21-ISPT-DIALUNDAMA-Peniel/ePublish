@@ -39,8 +39,7 @@ class CreationDesTables extends Migration
             $table->string('abbr',65);
             $table->unsignedInteger('idsections'); 
             $table->foreign('idsections')
-                  ->references('idsections')->on('sections')
-                  ->onDelete('cascades');
+                  ->references('idsections')->on('sections');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -71,7 +70,6 @@ class CreationDesTables extends Migration
             $table->year('annee_debut');
             $table->year('annee_fin');
             $table->string('annee_format',10);
-            $table->boolean('statut');
             $table->timestamps();
 
             $table->engine = 'InnoDB';
@@ -84,15 +82,24 @@ class CreationDesTables extends Migration
             $table->string('nom',65);
             $table->string('postnom',65)->nullable();
             $table->string('prenom',65)->nullable();
+            $table->unsignedInteger('idpromotions');
+            $table->unsignedInteger('idfacultes');
+            $table->unsignedInteger('idsections');
             $table->unsignedInteger('idauditoires');
             $table->unsignedInteger('annee_acad');
             $table->boolean('statut')->default(false);
             $table->timestamps();
             $table->primary('matricule');
+            $table->foreign('idpromotions')
+                  ->references('idpromotions')->on('promotions');
+            $table->foreign('idfacultes')
+                  ->references('idfacultes')->on('facultes');
+            $table->foreign('idsections')
+                  ->references('idsections')->on('sections');
             $table->foreign('idauditoires')
-                  ->references('idauditoires')->on('auditoires')->onDelete('cascades');
+                  ->references('idauditoires')->on('auditoires');
             $table->foreign('annee_acad')
-                  ->references('idgestion_annees')->on('gestion_annees')->onDelete('cascades');
+                  ->references('idgestion_annees')->on('gestion_annees');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -136,11 +143,11 @@ class CreationDesTables extends Migration
 
             $table->primary(['matricule_etudiant','idgestion_annees']);
             $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants')->onDelete('cascades');
+                  ->references('matricule')->on('etudiants');
             $table->foreign('idsessions')
-                  ->references('idsessions')->on('sessions')->onDelete('cascades');
+                  ->references('idsessions')->on('sessions');
             $table->foreign('idgestion_annees')
-                  ->references('idgestion_annees')->on('gestion_annees')->onDelete('cascades');
+                  ->references('idgestion_annees')->on('gestion_annees');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -153,17 +160,20 @@ class CreationDesTables extends Migration
             $table->unsignedInteger('matricule_etudiant');
             $table->unsignedInteger('idsessions');
             $table->unsignedInteger('idsections');
+            $table->unsignedInteger('idauditoires');
             $table->boolean('active')->default(false);
             $table->boolean('statut')->default(false);
             $table->timestamps();
             $table->unique('code');
+;
             $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants')->onDelete('cascades');
+                  ->references('matricule')->on('etudiants');
             $table->foreign('idsessions')
-                  ->references('idsessions')->on('sessions')->onDelete('cascades');
+                  ->references('idsessions')->on('sessions');
             $table->foreign('idsections')
-                  ->references('idsections')->on('sections')->onDelete('cascades');
-         
+                  ->references('idsections')->on('sections');
+            $table->foreign('idauditoires')
+                  ->references('idauditoires')->on('auditoires');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -213,9 +223,9 @@ class CreationDesTables extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('idsections')
-                  ->references('idsections')->on('sections')->onDelete('cascades');
+                  ->references('idsections')->on('sections');
             $table->foreign('idusers_roles')
-                  ->references('idusers_roles')->on('users_roles')->onDelete('cascades');
+                  ->references('idusers_roles')->on('users_roles');
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
@@ -228,11 +238,11 @@ class CreationDesTables extends Migration
             $table->unsignedInteger('idcodes');
             $table->timestamps();
             $table->foreign('idusers')
-                  ->references('idusers')->on('users')->onDelete('set null');
+                  ->references('idusers')->on('users');
             $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants')->onDelete('set null');
+                  ->references('matricule')->on('etudiants');
             $table->foreign('idcodes')
-                  ->references('idcodes')->on('codes')->onDelete('set null');
+                  ->references('idcodes')->on('codes');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';

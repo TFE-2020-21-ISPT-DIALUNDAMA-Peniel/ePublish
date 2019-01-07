@@ -30,8 +30,59 @@ class Code extends Model
      * @return App\Models\Code
      */
 
-    public static function getBySection($idSection){
-        return self::where('idsections',$idSection)->get();
+    public static function getBySection($idsection,$where = null){
+        $sql = self::where('idsections',$idsection);
+        if ($where !== null) {
+            $sql->where(key($where),$where);
+        }
+
+        return $sql;
+
+    }
+
+    /**
+     * Recupere les codes tenant compte de la section et la session
+     *
+     * @param  $idSection identifiant de la section 
+     * @return App\Models\Code
+     */
+
+    public static function getBySectionAndSession($idsection,$idsession,$where = null){
+        $sql = self::leftJoin('etudiants_succes', 'codes.matricule_etudiant', '=', 'etudiants_succes.matricule_etudiant')
+                    ->where('codes.idsections',$idsection)
+                    ->where('codes.idsessions',$idsession)
+                    ->whereRaw('(etudiants_succes.matricule_etudiant is NULL  OR etudiants_succes.idsessions >='.$idsession.')');
+        if ($where !== null) {
+            $sql->where(key($where),$where);
+        }
+
+        return $sql;
+    }
+
+
+    /**
+     * Recupere les codes tenant compte de la section, la session et l'auditoire
+     *
+     * @param  $idSection identifiant de la section 
+     * @return App\Models\Code
+     */
+
+    public static function getBySectionSessionAndAuditoire($idSection,$idsession,$idauditoire,$where=null){
+        $sql = self::join('etudiants','codes.matricule_etudiant','etudiants.matricule')
+                    ->join('auditoires','auditoires.idauditoires','etudiants.idauditoires')
+                    ->leftJoin('etudiants_succes', 'codes.matricule_etudiant', '=', 'etudiants_succes.matricule_etudiant')
+                    ->where('codes.idsessions',$idsession)
+                    ->where('auditoires.idsections',$idSection)
+                    ->where('auditoires.idauditoires',$idauditoire)
+                    ->whereRaw('(etudiants_succes.matricule_etudiant is NULL  OR etudiants_succes.idsessions >='.$idsession.')');
+
+        if ($where !== null) {
+            foreach ($where as $key => $value) {
+                $sql->where($key,$value);
+            }
+        }
+        return $sql;
+
     }
 
 

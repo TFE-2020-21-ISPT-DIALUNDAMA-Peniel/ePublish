@@ -15,6 +15,7 @@ class Auditoire extends Model
 
     
     public static function getBySection($idSection){
-    	return self::where('idsections',$idSection)->orderBy("idpromotions")->get();
+    	return self::where('idsections',$idSection)->orderBy("idpromotions")
+    				->get(['idauditoires','lib']);
     }
 }

@@ -7,7 +7,7 @@
                     @foreach ($sessions as $session)
                         <!-- Column -->
                     
-                        <a href="{{ route('section.show',$session->idsessions ) }}" class="col-md-6 col-lg-3">
+                        <a href="{{ route('section.show',$session->idsessions) }}" class="col-md-6 col-lg-3">
                             <div class="card card-hover">
                                 @if ($session->idsessions % 2 != 0)
                                 <div class="box bg-cyan text-center">

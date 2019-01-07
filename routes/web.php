@@ -6,11 +6,16 @@
 |--------------------------------------------------------------------------
 */
 
+	// Route::get("test",function(){
+	// return getUniqueCode();
 
+	// 	// return Response::json($jso);
+	// 	// $return null;
+	// });
 
 	/**************************************
 	|
-	| ROUTES POUR LE FROTEND
+	| ROUTES POUR LE FRONTEND
 	|
 	**************************************/
 Route::domain('publication.ispt-kin.com')->group(function(){
@@ -93,7 +98,12 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 		Route::prefix('section')->group(function(){ //@prefixe prefixé le lien url
 			Route::name('section.')->group(function () { //@name pour prefixé les intinairaire 
 				Route::get('/','Backend\Sections\DashboardController@index')->name('index');
-				Route::get('/{idsession}','Backend\Sections\DashboardController@show')->name('show')->where('idsession', '[0-9]+');;
+				Route::get('/session/{idsession}','Backend\Sections\DashboardController@show')->name('show')->where('idsession', '[0-9]+');
+				Route::match(['get', 'post'],'/session/{idsession}/auditoire/{idauditoire}','Backend\Sections\DashboardController@showAuditoire')
+						->name('show_auditoire')->where(["idsession" => "[0-9]+","idauditoire" => "[0-9]+"]);
+				Route::post('/codeActivated','Backend\Sections\DashboardController@codeActivated')
+						->name('code_activated')->where(["idcode" => "[0-9]+"]);
+
 			});
 
 		// Route::prefix('sections')->group(function(){
@@ -109,7 +119,7 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 	|  Routes Welcome domain name
 	|
 	**************************************/
-	Route::get('/test/test', function () {
+	Route::get('/', function () {
 	    return view('welcome');
 	});
 

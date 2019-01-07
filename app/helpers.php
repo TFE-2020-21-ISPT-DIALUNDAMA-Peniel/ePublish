@@ -185,7 +185,7 @@
 	 **/ 
 
 
-    function filterNbrCorrespondantEloquents($eloquent1,$eloquent2,$name){
+    function filterNbrCorrespondantEloquents($eloquent1,$eloquent2){
     	if ($eloquent1->isNotEmpty()) {	
 	    	foreach ($eloquent1 as $value) {
 	            $id = $value->getAttributeValue($value->getKeyName());
@@ -200,4 +200,27 @@
 	        return $Eloquents;  
     	}
     	return false;
+	}
+
+	// renvoi une chaine des caractères unique
+
+	function getUniqueCode(){
+		$code = strtoupper(str_random(8));
+		if(DB::table('codes')->where('code',$code)->count() != 0){
+			return getUniqueCode();
+		}
+		return $code;
+	}
+
+	//----------------------------
+	//Pour le test seed
+
+	// renvoi une matricule unique
+
+	function getUniqueMatricule(){
+		$matricule = random_int(20150000, 20180000);
+		if(DB::table('etudiants')->where('matricule',$matricule)->first()){
+			return getUniqueMatricule();
+		}
+		return $matricule;
 	}

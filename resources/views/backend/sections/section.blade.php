@@ -39,8 +39,6 @@
                         </div>
                     @endforeach
                 </div>
-                
-
 
          <div class="row">
             <div class="col-12">
@@ -61,17 +59,25 @@
                             </tr>
                           </thead>
                           <tbody>
-                         @foreach ($dataAuditoires as $auditoire)
-                            <tr>
-                              <th scope="row">{{ $auditoire['id'] }}</th>
-                              <td>{{ $auditoire['lib'] }}</td>
-                              <td>{{ $auditoire['nbrEtudiants'] }}</td>
-                              <td>{{ $auditoire['nbrCodes'] }}</td>
-                              <td>{{ $auditoire['nbrCodesActifs'] }}</td>
-                              <td>{{ $auditoire['nbrCodesNoActifs'] }}</td>
-                              <td>{{ $auditoire['nbrCodesUtilises'] }}</td>
-                            </tr>
-                          @endforeach
+                            @if ($dataAuditoires->isNotEmpty())
+                              @foreach ($dataAuditoires as $auditoire)
+                                  <tr>
+                                    <th scope="row">{{ $auditoire['id'] }}</th>
+                                    <td>
+                                      <a href="{{ route('section.show_auditoire',[$idsession,$auditoire['idauditoires']]) }} ">
+                                        {{ $auditoire['lib'] }}
+                                      </a>
+                                    </td>
+                                    <td>{{ $auditoire['nbrEtudiants'] }}</td>
+                                    <td>{{ $auditoire['nbrCodes'] }}</td>
+                                    <td>{{ $auditoire['nbrCodesActifs'] }}</td>
+                                    <td>{{ $auditoire['nbrCodesNoActifs'] }}</td>
+                                    <td>{{ $auditoire['nbrCodesUtilises'] }}</td>
+                                  </tr>
+                              @endforeach
+                            @else
+                              <td colspan="7"><strong>Aucun auditoire disponible</strong></td>
+                            @endif
                           </tbody>
                     </table>
                 </div>

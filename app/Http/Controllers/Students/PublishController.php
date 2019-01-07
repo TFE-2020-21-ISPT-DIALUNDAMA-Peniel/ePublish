@@ -17,7 +17,8 @@ class PublishController extends Controller
      */
     public function __construct()
     {
-        $this->middleware(['codeAuth','noCache'])->except(['viewBulletin','dowloadBulletin']);;
+        $this->middleware(['codeAuth'])->except(['viewBulletin','dowloadBulletin']);
+        $this->middleware('noCache',['only' => 'show']);
         $this->middleware('viewBulletin', ['only' => 'viewBulletin']);
         $this->middleware('viewBulletin', ['only' => 'dowloadBulletin']);
     }
@@ -44,6 +45,9 @@ class PublishController extends Controller
      */
     public function show($id)
     {   
+        /////////////////////////////////////////////
+        // !!!gerer les fichier dirrectement au serveur
+        /////////////////////////////////////////////
         
         $idcode = session('student')->idcodes;
         $matricule = session('student')->matricule;
