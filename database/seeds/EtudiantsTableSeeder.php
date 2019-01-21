@@ -18,7 +18,7 @@ class EtudiantsTableSeeder extends Seeder
 
 		$auditoires = DB::table('auditoires')->get();
 		foreach ($auditoires as $auditoire) {
-			$nbr = random_int(150, 200);
+			$nbr = random_int(25, 100);
 			for ($i=0; $i < $nbr ; $i++) {
 				DB::table('etudiants')->insert([
 					'matricule' => getUniqueMatricule(),
@@ -26,9 +26,6 @@ class EtudiantsTableSeeder extends Seeder
 			        'postnom' => $faker->lastName(),
 			        'prenom' => $faker->firstName(),
 			        'idauditoires' => $auditoire->idauditoires,
-			        'idpromotions' => $auditoire->idpromotions,
-			        'idfacultes' => $auditoire->idfacultes,
-			        'idsections' => $auditoire->idsections,
 			        'annee_acad' => 1,
 			        'statut' => 1,
 				

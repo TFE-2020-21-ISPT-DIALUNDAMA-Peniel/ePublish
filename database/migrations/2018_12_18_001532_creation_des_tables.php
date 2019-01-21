@@ -40,7 +40,7 @@ class CreationDesTables extends Migration
             $table->unsignedInteger('idsections'); 
             $table->foreign('idsections')
                   ->references('idsections')->on('sections')
-                  ->onDelete('cascades');
+                  ->onDelete('cascade');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -71,7 +71,7 @@ class CreationDesTables extends Migration
             $table->year('annee_debut');
             $table->year('annee_fin');
             $table->string('annee_format',10);
-            $table->boolean('statut');
+            $table->boolean('statut')->default(false);
             $table->timestamps();
 
             $table->engine = 'InnoDB';
@@ -80,7 +80,8 @@ class CreationDesTables extends Migration
         });
 
          Schema::create('etudiants', function (Blueprint $table) {
-            $table->unsignedInteger('matricule');
+            $table->increments('idetudiants');
+            $table->string('matricule',10)->unique();
             $table->string('nom',65);
             $table->string('postnom',65)->nullable();
             $table->string('prenom',65)->nullable();
@@ -88,11 +89,10 @@ class CreationDesTables extends Migration
             $table->unsignedInteger('annee_acad');
             $table->boolean('statut')->default(false);
             $table->timestamps();
-            $table->primary('matricule');
             $table->foreign('idauditoires')
-                  ->references('idauditoires')->on('auditoires')->onDelete('cascades');
+                  ->references('idauditoires')->on('auditoires')->onDelete('cascade');
             $table->foreign('annee_acad')
-                  ->references('idgestion_annees')->on('gestion_annees')->onDelete('cascades');
+                  ->references('idgestion_annees')->on('gestion_annees')->onDelete('cascade');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -129,18 +129,18 @@ class CreationDesTables extends Migration
         });
 
          Schema::create('etudiants_succes', function (Blueprint $table) {
-            $table->unsignedInteger('matricule_etudiant');
+            $table->unsignedInteger('idetudiants');
             $table->unsignedInteger('idsessions');
             $table->unsignedInteger('idgestion_annees');
             $table->timestamps();
 
-            $table->primary(['matricule_etudiant','idgestion_annees']);
-            $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants')->onDelete('cascades');
+            $table->primary(['idetudiants','idgestion_annees']);
+            $table->foreign('idetudiants')
+                  ->references('idetudiants')->on('etudiants')->onDelete('cascade');
             $table->foreign('idsessions')
-                  ->references('idsessions')->on('sessions')->onDelete('cascades');
+                  ->references('idsessions')->on('sessions')->onDelete('cascade');
             $table->foreign('idgestion_annees')
-                  ->references('idgestion_annees')->on('gestion_annees')->onDelete('cascades');
+                  ->references('idgestion_annees')->on('gestion_annees')->onDelete('cascade');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -150,19 +150,16 @@ class CreationDesTables extends Migration
         Schema::create('codes', function (Blueprint $table) {
             $table->increments('idcodes');
             $table->string('code',45);
-            $table->unsignedInteger('matricule_etudiant');
+            $table->unsignedInteger('idetudiants');
             $table->unsignedInteger('idsessions');
-            $table->unsignedInteger('idsections');
             $table->boolean('active')->default(false);
             $table->boolean('statut')->default(false);
             $table->timestamps();
             $table->unique('code');
-            $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants')->onDelete('cascades');
+            $table->foreign('idetudiants')
+                  ->references('idetudiants')->on('etudiants')->onDelete('cascade');
             $table->foreign('idsessions')
-                  ->references('idsessions')->on('sessions')->onDelete('cascades');
-            $table->foreign('idsections')
-                  ->references('idsections')->on('sections')->onDelete('cascades');
+                  ->references('idsessions')->on('sessions')->onDelete('cascade');
          
 
             $table->engine = 'InnoDB';
@@ -173,16 +170,16 @@ class CreationDesTables extends Migration
         Schema::create('bulletins', function (Blueprint $table) {
             $table->increments('idbulletins');
             $table->string('file',255);
-            $table->unsignedInteger('matricule_etudiant');
+            $table->unsignedInteger('idetudiants');
             $table->unsignedInteger('idcodes');
             $table->unsignedInteger('idpublications');
             $table->timestamps();
-            $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants');
+            $table->foreign('idetudiants')
+                  ->references('idetudiants')->on('etudiants')->onDelete('cascade');
             $table->foreign('idcodes')
-                  ->references('idcodes')->on('codes');
+                  ->references('idcodes')->on('codes')->onDelete('cascade');
             $table->foreign('idpublications')
-                  ->references('idpublications')->on('publications');
+                  ->references('idpublications')->on('publications')->onDelete('cascade');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -213,9 +210,9 @@ class CreationDesTables extends Migration
             $table->rememberToken();
             $table->timestamps();
             $table->foreign('idsections')
-                  ->references('idsections')->on('sections')->onDelete('cascades');
+                  ->references('idsections')->on('sections')->onDelete('cascade');
             $table->foreign('idusers_roles')
-                  ->references('idusers_roles')->on('users_roles')->onDelete('cascades');
+                  ->references('idusers_roles')->on('users_roles')->onDelete('cascade');
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
             $table->collation = 'utf8_unicode_ci';
@@ -224,15 +221,15 @@ class CreationDesTables extends Migration
         Schema::create('ventes', function (Blueprint $table) {
             $table->increments('idventes');
             $table->unsignedInteger('idusers');
-            $table->unsignedInteger('matricule_etudiant');
+            $table->unsignedInteger('idetudiants');
             $table->unsignedInteger('idcodes');
             $table->timestamps();
             $table->foreign('idusers')
-                  ->references('idusers')->on('users')->onDelete('set null');
-            $table->foreign('matricule_etudiant')
-                  ->references('matricule')->on('etudiants')->onDelete('set null');
+                  ->references('idusers')->on('users')->raw('ON DELETE SET NULL');
+            $table->foreign('idetudiants')
+                  ->references('idetudiants')->on('etudiants')->raw('ON DELETE SET NULL');
             $table->foreign('idcodes')
-                  ->references('idcodes')->on('codes')->onDelete('set null');
+                  ->references('idcodes')->on('codes')->raw('ON DELETE SET NULL');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';

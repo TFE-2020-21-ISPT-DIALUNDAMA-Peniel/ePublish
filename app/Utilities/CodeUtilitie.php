@@ -5,7 +5,7 @@ namespace App\Utilities;
 
 use App\Models\Code; 
 
-class UCode
+class CodeUtilitie
 {
 
 

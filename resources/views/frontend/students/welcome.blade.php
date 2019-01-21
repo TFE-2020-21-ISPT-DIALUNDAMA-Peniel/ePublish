@@ -43,8 +43,8 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Valider</button>
       @else
         <div class="msg">
-          <div class="alert alert-info">
-            <strong>Aucune publication disponible pour l'instant !!!</strong>
+          <div class="alert alert-info" style="text-align: center;">
+            <strong >Aucune publication disponible pour l'instant !</strong>
           </div>
         </div>
       @endif

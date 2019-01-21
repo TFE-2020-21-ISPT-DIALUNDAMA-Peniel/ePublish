@@ -40,6 +40,9 @@ class Publication extends Model
      * @return publication
      */
     public static function lastPublished(){
-      return self::find(self::max('idpublications'));
+      $id = self::max('idpublications') ? self::max('idpublications') : -1;
+      // dd($id);
+      $lastPub = self::where('idpublications',$id)->first();
+      return $lastPub != null ? $lastPub : false;
     }
 }

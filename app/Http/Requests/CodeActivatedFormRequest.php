@@ -14,7 +14,7 @@ class CodeActivatedFormRequest extends FormRequest
      */
     public function authorize()
     {   
-        if(Code::getBySection(request()->user()->idsections, ['idcodes'=>request()->idcode])->exists()){
+        if(Code::getBySection(request()->user()->idsections, ['idcodes'=>request()->code->idcodes])->exists()){
             return true;
         }
         return false;
@@ -28,7 +28,7 @@ class CodeActivatedFormRequest extends FormRequest
     public function rules()
     {
         return [
-            'idcode' => 'required|int'
+           
         ];
     }
 }

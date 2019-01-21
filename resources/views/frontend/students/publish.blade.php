@@ -11,7 +11,7 @@
 @php
 	
 @endphp
-@extends('frontend.layouts.master',['title'=>'Publish'])	
+@extends('frontend.layouts.master',['title'=>'Bulletin'])	
 @section('container')
 <div class="card container bg-light">
   <div class="card-header">

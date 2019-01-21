@@ -5,13 +5,11 @@
 | Web Routes
 |--------------------------------------------------------------------------
 */
-
-	// Route::get("test",function(){
-	// return getUniqueCode();
-
-	// 	// return Response::json($jso);
-	// 	// $return null;
-	// });
+	use App\Models\Auditoire;
+	Route::get("test",function(){
+	return Auditoire::getDataAuditoireBySectionAndSession(1,1);
+		// $return null;
+	});
 
 	/**************************************
 	|
@@ -85,7 +83,7 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 		Route::prefix('jury')->group(function(){
 			Route::name('jury.')->group(function () {
 				Route::get('/', function () {
-					return 'PAGE JURY';
+					return view('backend.jury.index');
 				})->name('index');
 			});
 		});
@@ -98,11 +96,13 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 		Route::prefix('section')->group(function(){ //@prefixe prefixé le lien url
 			Route::name('section.')->group(function () { //@name pour prefixé les intinairaire 
 				Route::get('/','Backend\Sections\DashboardController@index')->name('index');
-				Route::get('/session/{idsession}','Backend\Sections\DashboardController@show')->name('show')->where('idsession', '[0-9]+');
-				Route::match(['get', 'post'],'/session/{idsession}/auditoire/{idauditoire}','Backend\Sections\DashboardController@showAuditoire')
-						->name('show_auditoire')->where(["idsession" => "[0-9]+","idauditoire" => "[0-9]+"]);
-				Route::post('/codeActivated','Backend\Sections\DashboardController@codeActivated')
-						->name('code_activated')->where(["idcode" => "[0-9]+"]);
+				Route::get('/session/{session}','Backend\Sections\DashboardController@show')->name('show');
+				
+				Route::match(['get', 'post'],'/session/{session}/auditoire/{auditoire}','Backend\Sections\DashboardController@showAuditoire')
+						->name('show_auditoire');
+
+				Route::match(['get', 'post'],'/codeActivated/{code}','Backend\Sections\DashboardController@codeActivated')
+						->name('code_activated');
 
 			});
 

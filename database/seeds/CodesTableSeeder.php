@@ -13,13 +13,11 @@ class CodesTableSeeder extends Seeder
     {
         $etudiants = DB::table('etudiants')->get();
         foreach ($etudiants as $etudiant) {
-        	for ($i=1; $i < 5 ; $i++) { 
+        	for ($i=1; $i < 3 ; $i++) { 
 	        	DB::table('codes')->insert([
 	        		'code' => getUniqueCode(),
-	        		'matricule_etudiant' => $etudiant->matricule,
+	        		'idetudiants' => $etudiant->idetudiants,
 	        		'idsessions' => $i,
-	        		'idauditoires' => $etudiant->idauditoires,
-	        		'idsections' => $etudiant->idsections, 
 	        		'active' => 0,
 	        		'statut' => 0,
 	        	]);

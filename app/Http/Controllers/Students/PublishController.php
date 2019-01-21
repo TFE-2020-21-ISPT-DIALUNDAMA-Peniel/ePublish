@@ -50,9 +50,12 @@ class PublishController extends Controller
         /////////////////////////////////////////////
         
         $idcode = session('student')->idcodes;
-        $matricule = session('student')->matricule;
-        $bulletin = Bulletin::where('idcodes',$idcode)->where('matricule_etudiant',$matricule)->first(); 
+        $idetudiants = session('student')->idetudiants;
+        $bulletin = Bulletin::where('idcodes',$idcode)->where('idetudiants',$idetudiants)->first(); 
         if ($bulletin != null) {
+        /////////////////////////////////////////////
+        //  Mettre l' etat dans la table code a 1 ici
+        /////////////////////////////////////////////
             return view('frontend.students.publish',['bulletin'=>$bulletin]);  
         }
 

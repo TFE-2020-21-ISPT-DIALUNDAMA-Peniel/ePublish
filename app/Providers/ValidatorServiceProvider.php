@@ -14,7 +14,7 @@ class ValidatorServiceProvider extends ServiceProvider
 
 
     private $code;
-
+    private $student;
 
 
     /**
@@ -30,7 +30,7 @@ class ValidatorServiceProvider extends ServiceProvider
          * @return bolean
          */
         Validator::extend('codeExist', function ($attribute, $value, $parameters, $validator) {
-            $this->code = Code::where('code',$value)->first();
+            $this->code = Code::where('code',strtoupper($value))->first();
             if ($this->code !== null) {
              return true;
             }
@@ -71,11 +71,28 @@ class ValidatorServiceProvider extends ServiceProvider
          */
         Validator::extend('codeEqualStudent', function ($attribute, $value, $parameters, $validator) {
             if ($this->code!== null) {
-             return $this->verifiezMatriculeRequetteCorrepondMatriculeTableCodes($this->code->matricule_etudiant,$parameters[0]);              
+             return $this->verifiezMatriculeRequetteCorrepondMatriculeTableCodes($this->code->idetudiants,$parameters[0]);              
             }
 
             return false;
         });
+
+         /**
+         * Vérifie si l'étudiant esten ordre
+         *
+         * @return bolean
+         */
+        Validator::extend('studentIsActive', function ($attribute, $value, $parameters, $validator) {
+             if ($this->code !== null) {
+                // si c'est la prémière foi on change le statut du code à 1
+                if ($this->code->statut == 0) {
+                    Code::where('idcodes',$this->code->idcodes)->update(['statut'=>'1']);
+                }
+                 return $this->student->statut == 1;
+             }
+             return false;
+        });
+
 
 
     }
@@ -100,19 +117,16 @@ class ValidatorServiceProvider extends ServiceProvider
      * @return boolean
      */
 
-    private function verifiezMatriculeRequetteCorrepondMatriculeTableCodes($matricule,$student){
+    private function verifiezMatriculeRequetteCorrepondMatriculeTableCodes($code_idetudiants,$student){
         $students = DB::table('etudiants')
                                           ->where('nom',$student)
                                           ->orWhere('matricule',$student)
-                                          ->get(['matricule','nom']);
+                                          ->get();
         //Si la recherche trouve plusieurs noms
         if (!empty($students)) {
             foreach ($students as $student) {
-              if ($matricule == $student->matricule) {
-                // si c'est la prémière foi on change le statut du code à 1
-                if ($this->code->statut == 0) {
-                    Code::where('idcodes',$this->code->idcodes)->update(['statut'=>'1']);
-                }
+              if ($code_idetudiants == $student->idetudiants) {
+                  $this->student = $student;
                   return true;        
               }
             }

@@ -17,16 +17,18 @@ class WelcomeController extends Controller
      */
     public function index()
     {
-        session(['idsessions'=>null]);
-        //Recupération des session active, auditoire années academique
-        $auditoires = DB::table('auditoires')->orderBy("idpromotions")->orderBy("idsections")->orderBy("idauditoires")->get();
-        $sessions = DB::table('sessions')->orderBy("idsessions")->get();
-        $annees = DB::table('gestion_annees')->orderBy("annee_debut","DESC")->get();
+        if (Publication::exists()) {
+            session(['idsessions'=>null]);
+            //Recupération des session active, auditoire années academique
+            $auditoires = DB::table('auditoires')->orderBy("idpromotions")->orderBy("idsections")->orderBy("idauditoires")->get();
+            $sessions = DB::table('sessions')->orderBy("idsessions")->get();
+            $annees = DB::table('gestion_annees')->orderBy("annee_debut","DESC")->get();
         
+        }
             return view('frontend.students.welcome',[
-                'auditoires'=>$auditoires,
-                'sessions'=>$sessions,
-                'annees' => $annees
+                'auditoires'=>isset($auditoires) ? $auditoires: collect([]),
+                'sessions'=>isset($sessions) ? $sessions : collect([]),
+                'annees' => isset($annees) ? $annees : collect([])
             ]);
         
 

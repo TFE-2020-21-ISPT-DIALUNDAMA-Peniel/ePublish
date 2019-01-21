@@ -124,8 +124,10 @@ return [
     'code_exist'             => "Code d'accès invalide",
     'is_code_session_active' => "le code entrée ne correpond pas à la session ou la classe seléctionée! <hr>
                                 <a href='".route('welcome.index')."' >Selectionez la session et votre classe</a>",
-    'code_is_active'         => "Le code entrée n'est pas activé. <hr> Veillez contacter votre section.",
+    'code_is_active'         => "Votre code n'est pas activé. <hr> Veillez contacter votre section.",
     'code_equal_student'     => "Le code d'accès ne correpond pas avec le nom ou la matricule entrée",
+    'student_is_active'        => "Vous n'êtes pas autorisé de consulter le bulletin!
+                                <hr> Veillez vous présentez à la comptabilité muni de vos preuves de paiements",
 
 
 

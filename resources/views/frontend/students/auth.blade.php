@@ -26,7 +26,7 @@
       </div>
 
       <div class="form-label-group input-group">
-        <input type='password' id='inputCode' name='code' maxlength="10" autocomplete="off" class='form-control' placeholder="Code d'accès" data-toggle="password" required>
+        <input type='password' id='inputCode' name='code' maxlength="10" autocomplete="off" class='form-control text-uppercase' placeholder="Code d'accès" data-toggle="password" required>
         <label for="inputCode">Code d'accès</label>
        <div class="input-group-append">
           <span class="input-group-text"><i class="fa fa-eye"></i></span>

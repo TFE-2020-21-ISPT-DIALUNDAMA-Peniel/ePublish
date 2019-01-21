@@ -6,7 +6,13 @@
 	*
 	*******************/
 	define('DS', DIRECTORY_SEPARATOR);
+  	
 
+  	function getNbr($value,$default=0){
+  		
+		return $value ? $value : $default;
+    	
+    }
 
 	/**
 	 * converti un fichier pdf en img
@@ -133,74 +139,74 @@
     	}
     }
 
-     /**
-	 * filtre une instance eloquent recupérée sousforme de collections
-	 * la fonction récupere les élément qui passe un teste de vérite
-	 * passé en parametre dans une instace de collection eloquent
-	 * @param $eloquent une instance eloquent | un tableau de collection
-	 * @param array filter clause pour filtrer  ex: [id=>3]
-	 * @param $bolean opérateur  ex: true:id == 3 | false id != 3
-	 * @return Tableau de collection filtré 
-	 **/ 
+ //     /**
+	//  * filtre une instance eloquent recupérée sousforme de collections
+	//  * la fonction récupere les élément qui passe un teste de vérite
+	//  * passé en parametre dans une instace de collection eloquent
+	//  * @param $eloquent une instance eloquent | un tableau de collection
+	//  * @param array filter clause pour filtrer  ex: [id=>3]
+	//  * @param $bolean opérateur  ex: true:id == 3 | false id != 3
+	//  * @return Tableau de collection filtré 
+	//  **/ 
 
-     /*|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
-     |
-     | A AMELIORE
-     |
-     |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
+ //     /*|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+ //     |
+ //     | A AMELIORE
+ //     |
+ //     |||||||||||||||||||||||||||||||||||||||||||||||||||||||||||*/
 
-    function filterEloquent($eloquent,array $filter,$boolean = true){
-        //on enregistre les paramètre dans une variable global
-		//pour les faire passée à l'interieur de fonction
-        session([
-            'tmp'=>[
-                    'filter'=>$filter,
-                    'boolean'=>$boolean
-                ]
-        ]);
+ //    function filterEloquent($eloquent,array $filter,$boolean = true){
+ //        //on enregistre les paramètre dans une variable global
+	// 	//pour les faire passée à l'interieur de fonction
+ //        session([
+ //            'tmp'=>[
+ //                    'filter'=>$filter,
+ //                    'boolean'=>$boolean
+ //                ]
+ //        ]);
 
-        $filtre = $eloquent->filter(function($value){
+ //        $filtre = $eloquent->filter(function($value){
 
-            if (session('tmp')['boolean'] != true) {
-                return $value->getAttribute(key(session('tmp')['filter'])) != session('tmp')['filter'][key(session('tmp')['filter'])];    
-            }else{
-                return $value->getAttribute(key(session('tmp')['filter'])) == session('tmp')['filter'][key(session('tmp')['filter'])];
-            }
+ //            if (session('tmp')['boolean'] != true) {
+ //                return $value->getAttribute(key(session('tmp')['filter'])) != session('tmp')['filter'][key(session('tmp')['filter'])];    
+ //            }else{
+ //                return $value->getAttribute(key(session('tmp')['filter'])) == session('tmp')['filter'][key(session('tmp')['filter'])];
+ //            }
 
-    	});  
-        //on supprime les variable
-       session()->forget('tmp');
-       return $filtre;   
-	}
-
-
-     /**
-	 * Calcul les nombres des correspondances entre deux table
-	 * renvoi dans un tableau chaque Id tab1 => Nbr correpondace tab2
-	 * passé en parametre dans une instace de collection eloquent
-	 * @param $eloquent1 prèmière table
-	 * @param $eloquent2 deuxième table
-	 * @param $name le nom de la clé du tableau associatif
-	 * @return Tableau de collection 
-	 **/ 
+ //    	});  
+ //        //on supprime les variable
+ //       session()->forget('tmp');
+ //       return $filtre;   
+	// }
 
 
-    function filterNbrCorrespondantEloquents($eloquent1,$eloquent2){
-    	if ($eloquent1->isNotEmpty()) {	
-	    	foreach ($eloquent1 as $value) {
-	            $id = $value->getAttributeValue($value->getKeyName());
-	            if ($eloquent2->isEmpty()) {
-	           		 $Eloquents[$id]= 0;
+ //     /**
+	//  * Calcul les nombres des correspondances entre deux table
+	//  * renvoi dans un tableau chaque Id tab1 => Nbr correpondace tab2
+	//  * passé en parametre dans une instace de collection eloquent
+	//  * @param $eloquent1 prèmière table
+	//  * @param $eloquent2 deuxième table
+	//  * @param $name le nom de la clé du tableau associatif
+	//  * @return Tableau de collection 
+	//  **/ 
+
+
+ //    function filterNbrCorrespondantEloquents($eloquent1,$eloquent2){
+ //    	if ($eloquent1->isNotEmpty()) {	
+	//     	foreach ($eloquent1 as $value) {
+	//             $id = $value->getAttributeValue($value->getKeyName());
+	//             if ($eloquent2->isEmpty()) {
+	//            		 $Eloquents[$id]= 0;
 	            	
-	            }else{
+	//             }else{
 
-	           		 $Eloquents[$id]= filterEloquent($eloquent2,[$value->getKeyName() => $id])->count(); 	
-	            }
-	        }
-	        return $Eloquents;  
-    	}
-    	return false;
-	}
+	//            		 $Eloquents[$id]= filterEloquent($eloquent2,[$value->getKeyName() => $id])->count(); 	
+	//             }
+	//         }
+	//         return $Eloquents;  
+ //    	}
+ //    	return false;
+	// }
 
 	// renvoi une chaine des caractères unique
 

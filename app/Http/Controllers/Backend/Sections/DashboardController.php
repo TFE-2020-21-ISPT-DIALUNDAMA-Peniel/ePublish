@@ -6,13 +6,18 @@ use Illuminate\Http\Request;
 use App\Http\Requests\CodeActivatedFormRequest;
 use App\Http\Requests\FindStudentFormRequest;
 use App\Http\Controllers\Controller;
-use App\Utilities\Section;
-use App\Utilities\UCode;
+use App\Models\Auditoire;
+use App\Models\Session;
+use App\Models\Section;
+use App\Models\Etudiant;
+use App\Models\Code;
+use App\Utilities\CodeUtilitie;
 
 
 
 class DashboardController extends Controller
 {
+
 
     /****
     * Renvoi la vue index avec les sessions
@@ -22,7 +27,7 @@ class DashboardController extends Controller
     public function index()
     {
         $lastPublished = \App\Models\Publication::lastPublished();
-        if ($lastPublished->exists()) {
+        if ($lastPublished) {
             return redirect()->route('section.show',$lastPublished->idsessions);
         }
     	$session = \App\Models\Session::get();
@@ -39,32 +44,61 @@ class DashboardController extends Controller
     * @param $id identifiant de la Session 
     */
 
-    public function show(Section $section, $idsession)
+    public function show(Section $section,Session $session)
     {
-        $dataStat = $section->getStatData($idsession);
-        $dataAuditoires = $section->getDataAuditoire($idsession);
+        $idsections = request()->user()->idsections;
+        $idsession = $session->idsessions;
+        // $dataStat = $section->getStatData($idsession);
+        // dd(\App\Models\Section::getDataSectionBySectionAndSession(1,1));
+        $dataStat = Section::getDataSectionBySectionAndSession($idsections,$idsession);
+        $dataAuditoires = Auditoire::getDataAuditoireBySectionAndSession($idsections,$idsession);
+        // $dataAuditoires = $section->getDataAuditoire($idsession);
         $content = view('backend.sections.section',
                     [
-                        'dataStat'=>$dataStat,
-                        'dataAuditoires' => $dataAuditoires,
+                        'section'=>$dataStat,
+                        // 'dataStat'=>$dataStat,
+                        // 'dataAuditoires' => $dataAuditoires,
+                        'auditoires' => $dataAuditoires,
                         'idsession' => $idsession,
                     ])->render();
         return response($content);
     }
 
+    /**
+    * renvoi le donnée d'un auditoire specifique
+    *
+    **/
+    public function showAuditoire(Session $session, Auditoire $auditoire){
+        $idsections = request()->user()->idsections;
+        $idsession = $session->idsessions;
+        $idauditoire = $auditoire->idauditoires;
 
-    public function showAuditoire(Section $section,$idsession,$idauditoire){
         if (request()->isMethod('post')) {
            request()->validate(['name' => 'required|max:45']);
         }
-        $dataStat = $section->getStatData($idsession,$idauditoire);
-        $dataEtudiants = $section->getDataEtudiant($idsession,$idauditoire);
 
+
+
+        $dataStat = Auditoire::getDataAuditoireBySectionAndSession($idsections,$idsession,$idauditoire);
+        // $dataStat = $section->getStatData($idsession,$idauditoire);
+        // $dataEtudiants = $section->getDataEtudiant($idsession,$idauditoire);
+        $dataEtudiants = \App\Utilities\SectionsUtilitie::getDataEtudiant($idsections,$idsession,$idauditoire);
+
+        /** 
+        * Si l' auditoire n'est pas trouvé 
+        * donc l'idsection de l'utilisateur ne correspond pas
+        * au idsection de l'auditoire
+        * @return on bloque l'accès
+        **/
+        if ($dataStat == null) {
+            abort(401);
+        }
         $content = view('backend.sections.auditoire',[
-                'dataStat'=>$dataStat,
-                'dataEtudiants' => $dataEtudiants['data'],
-                'paginate' => $dataEtudiants['paginate'],
-                // 'idsession' => $idsession,
+                'section'=>$dataStat,
+                // 'dataEtudiants' => $dataEtudiants['data'],
+                'etudiants' => $dataEtudiants,
+                // 'paginate' => $dataEtudiants['paginate'],
+                'auditoire' => \App\Models\Auditoire::find($idauditoire),
             ])->render();
     
 
@@ -73,9 +107,13 @@ class DashboardController extends Controller
 
     }
 
-
-    public function codeActivated(CodeActivatedFormRequest $request, UCode $code){
-        $code->updateActivated(request()->idcode);
+    /**
+    * l'activation ou la désactivation d'un code d'accès
+    *
+    **/
+    public function codeActivated(CodeActivatedFormRequest $codeRequest, Code $code){
+        $code->active = $code->active == 0  ? 1 : 0;
+        $code->save();
         return redirect()->back();
     }
 

@@ -11,7 +11,7 @@ class Etudiant extends Model
      *
      * @var array
      */
-    protected $primaryKey = 'matricule';
+    protected $primaryKey = 'idetudiants';
 
 
 
@@ -24,10 +24,11 @@ class Etudiant extends Model
 
     public static function getBySectionAndSession($idsection,$idsession){
 
-        return Etudiant::leftJoin('etudiants_succes', 'etudiants.matricule', '=', 'etudiants_succes.matricule_etudiant')
-                    	->whereRaw('(etudiants_succes.matricule_etudiant is NULL  OR etudiants_succes.idsessions >='.$idsession.')')
+        return self::leftJoin('etudiants_succes', 'etudiants.idetudiants', '=', 'etudiants_succes.idetudiants')
+                        ->join('auditoires','etudiants.idauditoires','=','auditoires.idauditoires')
+                    	->whereRaw('(etudiants_succes.idetudiants is NULL  OR etudiants_succes.idsessions >='.$idsession.')')
                     	->where([
-                            ['etudiants.idsections','=',$idsection]
+                            ['auditoires.idsections','=',$idsection]
                         ]);
                     	
 
@@ -42,7 +43,7 @@ class Etudiant extends Model
 
     public static function getBySectionSessionAndAuditoire($idsection,$idsession,$idauditoire,$name=''){
 
-        $sql =self::getBySectionAndSession($idsection,$idsession)->where('idauditoires',$idauditoire);
+        $sql =self::getBySectionAndSession($idsection,$idsession)->where('etudiants.idauditoires',$idauditoire);
         if ($name !== '') {
             $sql->where('nom','like',$name.'%')->orWhere('etudiants.matricule',$name);
         }
@@ -52,7 +53,21 @@ class Etudiant extends Model
 
     }
 
+    
 
+    public static function getStudentAndCodeBySectionSectionAndAuditoire($idsection,$idsession,$idauditoire,$name=''){
+
+        $code = Code::getBySectionSessionAndAuditoire($idsection,$idsession,$idauditoire)
+                ->select(['codes.idcodes','codes.code','codes.idetudiants','codes.idsessions','codes.statut as code.statut','codes.active as code.active']);
+
+        $sql = self::getBySectionSessionAndAuditoire($idsection,$idsession,$idauditoire,$name)
+            ->leftJoinSub($code, 'code', function ($join) {
+                        $join->on('etudiants.idetudiants', '=', 'code.idetudiants');
+                    })  ;        
+                      // ->where('codes.idsessions',$idsession);
+        return $sql->where('auditoires.idsections',$idsection)->where('auditoires.idauditoires',$idauditoire);
+
+    }
 
 
 

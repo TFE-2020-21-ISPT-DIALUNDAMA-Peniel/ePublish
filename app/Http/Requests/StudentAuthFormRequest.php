@@ -31,7 +31,9 @@ class StudentAuthFormRequest extends FormRequest
                         codeExist|
                         isCodeSessionActive:".session('idsessions')."|
                         codeIsActive|
-                        codeEqualStudent:".request('name')
+                        codeEqualStudent:".request('name')."|
+                        studentIsActive"
+
         ];
     }
 }
