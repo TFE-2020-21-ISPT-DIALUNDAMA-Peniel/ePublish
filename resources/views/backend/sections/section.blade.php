@@ -8,7 +8,7 @@
 <!-- Start Page Content -->
 <!-- ============================================================== -->
 
-<div class="row">
+{{-- <div class="row">
         <!-- Column -->         
   <div class="widget-box widget-plain">
     <div class="center">
@@ -80,7 +80,7 @@
           </ul>
     </div>
   </div>
-</div>
+</div> --}}
 
 <div class="row">
   <div class="col-12">

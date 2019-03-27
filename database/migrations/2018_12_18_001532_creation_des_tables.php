@@ -37,7 +37,8 @@ class CreationDesTables extends Migration
             $table->increments('idfacultes');
             $table->string('lib',65);
             $table->string('abbr',65);
-            $table->unsignedInteger('idsections'); 
+            $table->unsignedInteger
+            ('idsections'); 
             $table->foreign('idsections')
                   ->references('idsections')->on('sections')
                   ->onDelete('cascade');

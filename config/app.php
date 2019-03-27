@@ -156,6 +156,9 @@ return [
          * Package Service Providers...
          */
 
+         Yajra\DataTables\DataTablesServiceProvider::class,
+         Yajra\DataTables\HtmlServiceProvider::class,
+
 
         /*
          * Application Service Providers...
@@ -218,6 +221,8 @@ return [
         /*
          * Package Facades...
          */
+
+        'DataTables' => Yajra\DataTables\Facades\DataTables::class, 
 
     
 

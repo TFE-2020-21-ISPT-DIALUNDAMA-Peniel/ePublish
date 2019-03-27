@@ -13,7 +13,7 @@ use App\Models\Etudiant;
 use App\Models\Code;
 use App\Utilities\CodeUtilitie;
 
-
+use Yajra\Datatables\Datatables;
 
 class DashboardController extends Controller
 {
@@ -39,7 +39,7 @@ class DashboardController extends Controller
 
     /**
     * affiche les infos des statistiques de la section au session selectionée 
-    *
+    * la listes des auditoires de la  section
     *
     * @param $id identifiant de la Session 
     */
@@ -50,12 +50,12 @@ class DashboardController extends Controller
         $idsession = $session->idsessions;
         // $dataStat = $section->getStatData($idsession);
         // dd(\App\Models\Section::getDataSectionBySectionAndSession(1,1));
-        $dataStat = Section::getDataSectionBySectionAndSession($idsections,$idsession);
+        // $dataStat = Section::getDataSectionBySectionAndSession($idsections,$idsession);
         $dataAuditoires = Auditoire::getDataAuditoireBySectionAndSession($idsections,$idsession);
         // $dataAuditoires = $section->getDataAuditoire($idsession);
         $content = view('backend.sections.section',
                     [
-                        'section'=>$dataStat,
+                        // 'section'=>$dataStat,
                         // 'dataStat'=>$dataStat,
                         // 'dataAuditoires' => $dataAuditoires,
                         'auditoires' => $dataAuditoires,
@@ -105,6 +105,25 @@ class DashboardController extends Controller
         return response($content);
 
 
+    }
+
+    
+
+    /**
+     * Process datatables ajax request.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function etudiantDataTable()
+    {
+        // $sql = \App\Models\Etudiant::query();
+        // ----------------------------------------------------------------------------------
+        $sql = \App\Models\Etudiant::getStudentAndCodeBySectionSectionAndAuditoire(1,1,1);
+        // -----------------------------------------------------------------------------------
+        // dd($sql->first());   
+        return Datatables::of($sql)->make();
+
+        // return  response()->json($sql);
     }
 
     /**

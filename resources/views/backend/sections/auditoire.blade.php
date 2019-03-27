@@ -1,8 +1,15 @@
 @extends('backend.layouts.master') 
 @section('stylesheet')
-<link rel="stylesheet" type="text/css" href=" {{ asset('backend/dist/css/matrix-style.css') }} ">
+
+{{-- DataTable --}}
 <link href="{{ asset('backend/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet">
+<link href="{{ asset('backend/assets/libs/datatables.net-bs4/css/dataTables.min.css') }}" rel="stylesheet">
+
+
+<link rel="stylesheet" type="text/css" href=" {{ asset('backend/dist/css/matrix-style.css') }} ">
+
 <link href="{{ asset('css/bootstrap4-toggle.min.css') }}" rel="stylesheet">
+
 @stop
 
 @section('container')  
@@ -11,7 +18,15 @@
 <!-- Start Page Content -->
 <!-- ============================================================== -->
 {{-- Data Stat Dashboard --}}
-<div class="row">
+{{-- <div class="row">
+
+
+  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+  | INCLUSION DANS UNE PARTIALS QUI RECOIT DE PARAMETRE
+  | ICONE, NOM , NBR
+  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+
+
 
         <!-- Column -->         
   <div class="widget-box widget-plain">
@@ -74,7 +89,7 @@
   </div>
 
 
-</div>
+</div> --}}
 {{-- Table  --}}
 <div class="row">
   <div class="card col-12">
@@ -82,7 +97,7 @@
       <h5 class="card-title">{{ strtoupper($auditoire->lib) }}</h5>
       <div class="table-responsive">
           <div id="zero_config_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4">
-            <div class="row">
+{{--             <div class="row">
               <form action="{{ request()->server()['PATH_INFO'] }}" method="POST" id="formFiltres" class="form-inline col-12">
                  @csrf
                 <div class="col-sm-12 col-md-6">
@@ -101,8 +116,8 @@
                 </div>
                 <div class="col-sm-12 col-md-6">
                   <div id="zero_config_filter" class="float-right">
-                   {{--  <form action="{{ request()->server()['PATH_INFO'] }}" method="POST" class="form-inline">
-                        @csrf --}}
+                    <form action="{{ request()->server()['PATH_INFO'] }}" method="POST" class="form-inline">
+                        @csrf 
                     <div class="form-group">
                       <input type="search" name="name" id="nameFiltre" class="form-control" placeholder="Nom ou  Matricule" required>
                       <button type= 'submit' name="searchStudent" value="searchStudent" class="btn"><i class="fa fa-search"></i></button>
@@ -110,10 +125,10 @@
                   </div>
                 </div>
               </form>
-            </div>
+            </div> --}}
             <div class="row">
               <div class="col-sm-12">
-                <table id="zero_config" class=" table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info" style="font-size: 1rem;">
+                <table id="zero_config" class="table table-striped table-bordered dataTable" role="grid" aria-describedby="zero_config_info" style="font-size: 1rem;">
                   <thead>
                       <tr role="row">
                         <th class="" style="width: 143px;font-size: 1rem;">
@@ -136,7 +151,7 @@
                         </th>
                       </tr>
                   </thead>
-                  <tbody>  
+  {{--                 <tbody>  
                     @if ($etudiants->isNotEmpty())
                     @foreach ($etudiants as $etudiant) 
                     <tr role="row" class="odd" id="etudiant" data-student >
@@ -171,7 +186,7 @@
                     @else
                       <td colspan='6' style="text-align: center;"><strong >Aucun Etudiant trouvé</strong></td>
                     @endif
-                  </tbody>
+                  </tbody> --}}
                   <tfoot>
                     <tr>
                       <th rowspan="1" colspan="1">
@@ -184,20 +199,20 @@
                         Postnoms et Prénoms
                       </th>
                       <th rowspan="1" colspan="1">
-                        Codes
+                        Codes d'accès 
                       </th>
                       <th rowspan="1" colspan="1">
                         Activation
                       </th>
                       <th rowspan="1" colspan="1">
                         Etat 
-                      </th>
+                      </th> 
                     </tr>
                   </tfoot>
                 </table>
               </div>
             </div>
-            <div class="row">
+{{--             <div class="row">
               <div class="col-sm-12 col-md-5">
                 @if (!isset(request()->searchStudent))
                 <div class="dataTables_info" id="zero_config_info" role="status" aria-live="polite">
@@ -210,12 +225,12 @@
                 {{ $etudiants->links()}} 
                 </div>
               </div>
-            </div>
-            <div class="row">
+            </div> --}}
+{{--             <div class="row">
               @if (isset(request()->searchStudent))
                 <a href="" class="btn btn-secondary ">Afficher tout les étudiants</a>
               @endif
-            </div>
+            </div> --}}
           </div>
       </div>
     </div>
@@ -275,9 +290,47 @@
 
 @stop
 @section('script')
-{{-- <script src={{ asset('backend/assets/libs/datatables.net-bs4/js/datatables.min.js') }}></script>  --}}
+
+{{-- Data Table Script --}}
+<script src='{{ asset('backend/assets/libs/datatables.net-bs4/js/dataTables.bootstrap.min.js') }}'></script>
+<script src='{{ asset('backend/assets/libs/datatables.net-bs4/js/jquery.dataTables.js') }}'></script>
+<script>
+
+  
+$(function() {
+    $('#zero_config').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: '{!! route('etudiantDataTable') !!}',
+        columns: [
+            { data: 'matricule', name: 'matricule' },
+            { data: 'nom', name: 'nom' },
+            { data: 'postnom', name: 'postnom' },
+            { data: 'code', name: 'code' },
+            { data: 'code-active', name: 'code-active' },
+            { data: 'code-statut', name: 'code-statut' },
+ 
+        ]
+    });
+});
+
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+<script src={{ asset('backend/assets/libs/datatables.net-bs4/js/datatables.min.js') }}></script> 
+
 <script src={{ asset('js/bootstrap4-toggle.min.js') }}></script>
-<script type="text/javascript">
+{{-- <script type="text/javascript">
   jQuery(function(){
     $('#etudiant[data-student]').on('click', function(){
     
@@ -343,5 +396,5 @@
 
   });
 </script>
-
+ --}}
 @stop

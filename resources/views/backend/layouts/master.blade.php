@@ -11,6 +11,8 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ !empty ($title) ? $title .' | '. config('app.name') : config('app.name') }}  </title>
+
+    @yield('stylesheet1')
         <!-- Custom CSS -->
     <link href="{{ asset('backend/dist/css/style.min.css') }}" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->

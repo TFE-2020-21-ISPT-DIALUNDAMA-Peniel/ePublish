@@ -947,7 +947,7 @@ hr{ border-top-color:#dadada;}
 	max-width: 76%;
 }
 /* Tables */
-tr:hover{ background:#f6f6f6;}
+/*tr:hover{ background:#f6f6f6;}
 span.icon .checker {
 	margin-top: -5px;
 	margin-right: 0;
@@ -979,7 +979,7 @@ span.icon .checker {
 	padding: 4px 10px !important;
 	border-style: solid;
 	border-width: 1px;
-	border-color: #dddddd #dddddd #cccccc; /* for IE < 9 */
+	border-color: #dddddd #dddddd #cccccc; /* for IE < 9 
 	border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
 	display: inline-block;
 	line-height: 16px;
@@ -1031,6 +1031,7 @@ div.dataTables_wrapper .ui-widget-header {
 .dataTables_filter input {
 	margin-bottom: 0;
 }
+*/
 .table th {
 	height: auto;
 	font-size: 10px;
@@ -1054,6 +1055,7 @@ div.dataTables_wrapper .ui-widget-header {
 .table tr.checked td {
 	background-color: #FFFFE3 !important;
 }
+
 /* Misc */
 .nopadding {
 	padding: 0 !important;

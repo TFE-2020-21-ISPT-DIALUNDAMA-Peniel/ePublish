@@ -5,11 +5,19 @@
 | Web Routes
 |--------------------------------------------------------------------------
 */
-	use App\Models\Auditoire;
+	use App\Models\Etudiant;
 	Route::get("test",function(){
-	return Auditoire::getDataAuditoireBySectionAndSession(1,1);
+	$users = Etudiant::all();
+	return view('backend.sections.dataTable',['users'=>$users]);
 		// $return null;
 	});
+
+Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDataTable')->name('etudiantDataTable');
+
+
+
+
+
 
 	/**************************************
 	|
@@ -100,6 +108,8 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 				
 				Route::match(['get', 'post'],'/session/{session}/auditoire/{auditoire}','Backend\Sections\DashboardController@showAuditoire')
 						->name('show_auditoire');
+
+				Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDataTable')->name('etudiantDataTable');
 
 				Route::match(['get', 'post'],'/codeActivated/{code}','Backend\Sections\DashboardController@codeActivated')
 						->name('code_activated');

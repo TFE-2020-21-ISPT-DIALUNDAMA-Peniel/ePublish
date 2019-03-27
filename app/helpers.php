@@ -135,8 +135,11 @@
     						'section' => $user_section ? $user_section->lib : null,
     				]
     			]);
+
+    			return true;
     		}
     	}
+    	return false;
     }
 
  //     /**
