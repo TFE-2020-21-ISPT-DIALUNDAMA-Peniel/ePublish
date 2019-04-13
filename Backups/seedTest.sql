@@ -87,7 +87,10 @@ INSERT INTO `auditoires` (`idauditoires`, `lib`, `abbr`, `idfacultes`, `idpromot
 (30, 'L2 TELECOMMUNICATION', 'L2 TEL', 10, 6, 3),
 (31, 'L2 ELECTRO-ENERGETIQUE', 'L2 EE', 11, 6, 3),
 (32, 'L2 MECANIQUE DE PRODUCTION', 'L2 MP', 12, 6, 4),
-(33, 'L2 MECANIQUE APPLIQUEE', 'L2 MA', 13, 6, 4);
+(33, 'L2 MECANIQUE APPLIQUEE', 'L2 MA', 13, 6, 4),
+(34, 'PRÉPARATOIRE C', 'PRÉPO C', 1, 1, 1);
+
+
 
 --
 -- Contenu de la table `gestion_annees`
@@ -173,6 +176,6 @@ INSERT INTO `users` (`idusers`, `username`, `name`, `first_name`, `email`, `emai
 (3, 'secinformatique', 'informatique', 'informatique', 'info@ispt.com', NULL, '$2y$10$FXHR6JC3.aJzTvGE8prLROZA1S5fmPjAVRH8t4BoA/jT0GA1BjWn6', 2, 1, 1, 'kbQaTcIJLRBM0yp1o3CbkV8pTF1orzGpTGJtHtDgDsCaJjW7ufYXT1HF0D3w', '2018-12-22 20:36:52', '2018-12-22 20:36:52'),
 (4, 'secmecanique', 'mecanique', 'mecanique', 'mec@ispt.com', NULL, '$2y$10$FXHR6JC3.aJzTvGE8prLROZA1S5fmPjAVRH8t4BoA/jT0GA1BjWn6', 4, 1, 1, 'MTThzkVeqxRigVdhpzCRfPCEvhRqcIfIE1nokzmVNwB2w3eTLXWTBerWxVze', '2018-12-22 20:41:44', '2018-12-22 20:41:44'),
 (5, 'secelectricite', 'electricite', 'electricite', 'elect@ispt.com', NULL, '$2y$10$FXHR6JC3.aJzTvGE8prLROZA1S5fmPjAVRH8t4BoA/jT0GA1BjWn6', 3, 1, 1, 'Q14opnKeCfTR6tEvD8widpUwdPHUAV7gniPE35SKeViXvFATH8y5xk7VyMv0', NULL, NULL),
-(6, 'secprepo', 'secprepo', 'secprepo', 'secprepo@ispt.kin', NULL, '$2y$10$FXHR6JC3.aJzTvGE8prLROZA1S5fmPjAVRH8t4BoA/jT0GA1BjWn6', NULL, 1, 1, 'y4DjJupAFwa9wb7fKL9D4O45igJ8AuJsbmXqSqXNlAnlOGk9QjddQEzguQ0s', NULL, NULL),
+(6, 'secprepo', 'secprepo', 'secprepo', 'secprepo@ispt.kin', NULL, '$2y$10$FXHR6JC3.aJzTvGE8prLROZA1S5fmPjAVRH8t4BoA/jT0GA1BjWn6', 1, 1, 1, 'y4DjJupAFwa9wb7fKL9D4O45igJ8AuJsbmXqSqXNlAnlOGk9QjddQEzguQ0s', NULL, NULL),
 (7, 'secjury', 'jury', 'jury', 'jury@ispt.kin', NULL, '$2y$10$FXHR6JC3.aJzTvGE8prLROZA1S5fmPjAVRH8t4BoA/jT0GA1BjWn6', NULL, 2, 1, 'y4DjJupAFwa9wb7fKL9D4O45igJ8AuJsbmXqSqXNlAnlOGk9QjddQEzguQ0s', NULL, NULL),
 (8, 'admin', 'admin', 'admin', 'admin@ispt.com', NULL, '$2y$10$FXHR6JC3.aJzTvGE8prLROZA1S5fmPjAVRH8t4BoA/jT0GA1BjWn6', NULL, 3, 1, '2mN9rAkx2yreGdIv0dZFl9L13NZVmfp1aEvqzmkO8io7GdWG6JBobsIZAf9v', NULL, NULL);

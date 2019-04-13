@@ -1,4 +1,4 @@
-
+{{-- MENU POUR L'INTERFACE SECTION --}}
  @if (session('user')['role'] == 'section')
  @inject('session', 'App\Models\Session')
 
@@ -10,4 +10,9 @@
     </ul>
 </li>
 
+ @endif
+
+ {{-- MENU POUR L'INTERFACE JURY --}}
+ @if (session('user')['role'] == 'jury')
+<li class="sidebar-item"> <a href="{{ route('jury.showAuditoires') }}" class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false"><i class="mdi mdi-view-dashboard"></i><span class="hide-menu">Gestions Etudiants</span></a></li>
  @endif

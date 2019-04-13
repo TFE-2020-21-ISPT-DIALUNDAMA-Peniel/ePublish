@@ -1,15 +1,26 @@
-@if ($dataEtudiants->isNotEmpty())
-  @foreach ($dataEtudiants as $etudiant)
-  <tr role="row" class="odd" id="etudiant" data-student >
-    <th  scope="row" data-toggle="modal" data-target="#Modal2" style="font-size: 1rem;">{{ $etudiant['matricule'] }}</th>
-    <td data-toggle="modal" data-target="#Modal2">{{ $etudiant['nom'] }}</td>
-    <td data-toggle="modal" data-target="#Modal2">{{ $etudiant['postnom'] }}  {{ $etudiant['prenom'] }}</td>
-    <td data-toggle="modal" data-target="#Modal2" >{{ $etudiant['code'] }}</td>
-    <td ><a href="{{ route('section.code_activated', $etudiant['idcode'] ) }}" >{{ $etudiant['codeIsActive'] }}</a></td>
-    <td data-toggle="modal" data-target="#Modal2" id = "codeStatut" data-codeStatut ="{{ $etudiant['codeStatut'] }}">{{ $etudiant['codeStatut'] }}</td>
-    <td style="display: none;">{{ route('section.code_activated', $etudiant['idcode'] ) }}</td>
- </tr>
-  @endforeach     
-@else
-  <td colspan='6' style="text-align: center;"><strong >Aucun étudiant trouvé</strong></td>
-@endif
+@extends('backend.layouts.master') 
+@section('stylesheet')
+
+{{-- DataTable --}}
+<link href="{{ asset('backend/assets/libs/datatables.net-bs4/css/dataTables.bootstrap4.css') }}" rel="stylesheet">
+<link href="{{ asset('backend/assets/libs/datatables.net-bs4/css/datatables.min.css') }}" rel="stylesheet">
+
+
+<link rel="stylesheet" type="text/css" href=" {{ asset('backend/dist/css/matrix-style.css') }} ">
+
+<link href="{{ asset('css/bootstrap4-toggle.min.css') }}" rel="stylesheet">
+
+@stop
+
+@section('container')  
+
+{!! $dataTable->table(['class' => 'table table-bordered ']); !!}
+
+@stop
+@section('script')
+
+<script src={{ asset('backend/assets/libs/datatables.net-bs4/js/datatables.min.js') }}></script> 
+{!! $dataTable->scripts(); !!}
+
+
+@stop

@@ -1,129 +1,78 @@
 <?php
 
-namespace App\Http\Controllers\BackEnd\Sections;
+namespace App\Http\Controllers\Backend\Sections;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\CodeActivatedFormRequest;
-use App\Http\Requests\FindStudentFormRequest;
 use App\Http\Controllers\Controller;
-use App\Models\Auditoire;
+
+use App\Models\Publication;
 use App\Models\Session;
 use App\Models\Section;
-use App\Models\Etudiant;
+use App\Models\Auditoire;
 use App\Models\Code;
-use App\Utilities\CodeUtilitie;
+use App\DataTables\Section\ListAuditoiresBySectionDataTable;
+use App\DataTables\Section\ListEtudiantsByAuditoireDataTable;
+use App\Http\Requests\CodeActivatedFormRequest;
 
-use Yajra\Datatables\Datatables;
 
 class DashboardController extends Controller
 {
 
-
     /****
-    * Renvoi la vue index avec les sessions
+    * Renvoi la vue index 
+    * avec les sessions disponibles
     *
     ****/
-
-    public function index()
+ 	public function index()
     {
-        $lastPublished = \App\Models\Publication::lastPublished();
-        if ($lastPublished) {
+        // redirection vers la dernière session publiée
+        if (Publication::lastPublished()) {
+
             return redirect()->route('section.show',$lastPublished->idsessions);
         }
-    	$session = \App\Models\Session::get();
+
+    	$session = Session::get();
     	if($session->isNotEmpty()){
       		return view('backend.sections.index',['sessions'=>$session]);    
     	}
            abort(500);
     }
 
+
     /**
-    * affiche les infos des statistiques de la section au session selectionée 
-    * la listes des auditoires de la  section
-    *
-    * @param $id identifiant de la Session 
+    * affiche un tableau avec la liste des auditoires 
+    * en tenant compte de la section
+    * @param Session $session 
+    * @return Vue liste des auditoires
     */
 
-    public function show(Section $section,Session $session)
+    public function getAuditoiresBySection(Session $session, ListAuditoiresBySectionDataTable $listAuditoiresDataTable)
     {
-        $idsections = request()->user()->idsections;
-        $idsession = $session->idsessions;
-        // $dataStat = $section->getStatData($idsession);
-        // dd(\App\Models\Section::getDataSectionBySectionAndSession(1,1));
-        // $dataStat = Section::getDataSectionBySectionAndSession($idsections,$idsession);
-        $dataAuditoires = Auditoire::getDataAuditoireBySectionAndSession($idsections,$idsession);
-        // $dataAuditoires = $section->getDataAuditoire($idsession);
-        $content = view('backend.sections.section',
-                    [
-                        // 'section'=>$dataStat,
-                        // 'dataStat'=>$dataStat,
-                        // 'dataAuditoires' => $dataAuditoires,
-                        'auditoires' => $dataAuditoires,
-                        'idsession' => $idsession,
-                    ])->render();
-        return response($content);
+    	return $listAuditoiresDataTable->with([
+                                                'idsections'=>request()->user()->idsections,
+                                                'idsessions'=>$session->idsessions
+                                            ])      
+    								  ->render('backend.sections.listAuditoires');
+
     }
 
     /**
-    * renvoi le donnée d'un auditoire specifique
-    *
-    **/
-    public function showAuditoire(Session $session, Auditoire $auditoire){
-        $idsections = request()->user()->idsections;
-        $idsession = $session->idsessions;
-        $idauditoire = $auditoire->idauditoires;
+    * affiche la liste des etudiants d'un auditoire
+    * en tenant compte de la section et la session
+    * @param Session $session 
+    * @return Vue liste des etudiants d'un auditoire
+    */
 
-        if (request()->isMethod('post')) {
-           request()->validate(['name' => 'required|max:45']);
-        }
+    public function getEtudiantsByAuditoire(Session $session, Auditoire $auditoire, ListEtudiantsByAuditoireDataTable $listEtudiantsDataTable){
+    	
+         return $listEtudiantsDataTable->with([
+    											'idauditoires'=> $auditoire->idauditoires,
+    											'idsessions'=> $session->idsessions,
+    											'idsections' => request()->user()->idsections,
+                                                'auditoires_lib'=> $auditoire->lib,
 
-
-
-        $dataStat = Auditoire::getDataAuditoireBySectionAndSession($idsections,$idsession,$idauditoire);
-        // $dataStat = $section->getStatData($idsession,$idauditoire);
-        // $dataEtudiants = $section->getDataEtudiant($idsession,$idauditoire);
-        $dataEtudiants = \App\Utilities\SectionsUtilitie::getDataEtudiant($idsections,$idsession,$idauditoire);
-
-        /** 
-        * Si l' auditoire n'est pas trouvé 
-        * donc l'idsection de l'utilisateur ne correspond pas
-        * au idsection de l'auditoire
-        * @return on bloque l'accès
-        **/
-        if ($dataStat == null) {
-            abort(401);
-        }
-        $content = view('backend.sections.auditoire',[
-                'section'=>$dataStat,
-                // 'dataEtudiants' => $dataEtudiants['data'],
-                'etudiants' => $dataEtudiants,
-                // 'paginate' => $dataEtudiants['paginate'],
-                'auditoire' => \App\Models\Auditoire::find($idauditoire),
-            ])->render();
-    
-
-        return response($content);
-
-
-    }
-
-    
-
-    /**
-     * Process datatables ajax request.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function etudiantDataTable()
-    {
-        // $sql = \App\Models\Etudiant::query();
-        // ----------------------------------------------------------------------------------
-        $sql = \App\Models\Etudiant::getStudentAndCodeBySectionSectionAndAuditoire(1,1,1);
-        // -----------------------------------------------------------------------------------
-        // dd($sql->first());   
-        return Datatables::of($sql)->make();
-
-        // return  response()->json($sql);
+    										])
+    								  ->render('backend.sections.listEtudiants');
     }
 
     /**
@@ -136,6 +85,5 @@ class DashboardController extends Controller
         return redirect()->back();
     }
 
-
-
 }
+		

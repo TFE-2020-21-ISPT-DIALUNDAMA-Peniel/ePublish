@@ -22,6 +22,9 @@
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
     @yield('stylesheet')
+    <!-- Coustom styleSheet--->
+    @stack('stylesheets')
+
 
 </head>
 
@@ -57,7 +60,14 @@
     <!-- Bootstrap tether Core JavaScript -->
     <script src={{ asset('backend/assets/libs/popper.js/dist/umd/popper.min.js') }}></script>
     <script src={{ asset('backend/assets/libs/bootstrap/dist/js/bootstrap.min.js') }}></script>
+    
+    <!--JavaScript Perso -->
+   
+    @stack('scripts')
+    
     @yield('script')
+
+
     <!-- slimscrollbar scrollbar JavaScript -->
     <script src={{ asset('backend/assets/libs/perfect-scrollbar/dist/perfect-scrollbar.jquery.min.js') }}></script>
     <!-- <script src="assets/extra-libs/sparkline/sparkline.js"></script> -->

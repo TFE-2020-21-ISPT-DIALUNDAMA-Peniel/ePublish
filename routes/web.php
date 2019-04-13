@@ -12,7 +12,12 @@
 		// $return null;
 	});
 
+Route::get('/testDatatable','Backend\Sections\DashboardController@testTable');
+
+
 Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDataTable')->name('etudiantDataTable');
+
+
 
 
 
@@ -24,7 +29,7 @@ Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDa
 	| ROUTES POUR LE FRONTEND
 	|
 	**************************************/
-Route::domain('publication.ispt-kin.com')->group(function(){
+Route::domain('publication.ispt-kin.local')->group(function(){
 	
 	//Accueil 
 	Route::get('/', function () {
@@ -64,7 +69,7 @@ Route::domain('publication.ispt-kin.com')->group(function(){
 Route::group(['middleware'=>['auth','checkUserRole']],function(){
 
 
-	Route::domain('jury.ispt-kin.com')->group(function(){
+	Route::domain('jury.ispt-kin.local')->group(function(){
 		Route::get('/', function () {
 		    return redirect()->route('login');
 		});
@@ -90,9 +95,10 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 		
 		Route::prefix('jury')->group(function(){
 			Route::name('jury.')->group(function () {
-				Route::get('/', function () {
-					return view('backend.jury.index');
-				})->name('index');
+				Route::get('/','Backend\Jury\DashboardController@index')->name('index');
+				Route::get('/getAuditoires','Backend\Jury\DashboardController@showAuditoires')->name('showAuditoires');
+				Route::get('/getAuditoires/{auditoire}','Backend\Jury\DashboardController@showEtudiantsByAuditoires')->name('showEtudiants');
+
 			});
 		});
 
@@ -104,18 +110,18 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 		Route::prefix('section')->group(function(){ //@prefixe prefixé le lien url
 			Route::name('section.')->group(function () { //@name pour prefixé les intinairaire 
 				Route::get('/','Backend\Sections\DashboardController@index')->name('index');
-				Route::get('/session/{session}','Backend\Sections\DashboardController@show')->name('show');
+				Route::get('/session/{session}','Backend\Sections\DashboardController@getAuditoiresBySection')->name('show');
 				
-				Route::match(['get', 'post'],'/session/{session}/auditoire/{auditoire}','Backend\Sections\DashboardController@showAuditoire')
+				Route::match(['get', 'post'],'/session/{session}/auditoire/{auditoire}','Backend\Sections\DashboardController@getEtudiantsByAuditoire')
 						->name('show_auditoire');
 
-				Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDataTable')->name('etudiantDataTable');
+				// Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDataTable')->name('etudiantDataTable');
 
 				Route::match(['get', 'post'],'/codeActivated/{code}','Backend\Sections\DashboardController@codeActivated')
 						->name('code_activated');
 
 			});
-
+			
 		// Route::prefix('sections')->group(function(){
 		// 	Route::resource('/','Backend\Sections\DashboardController');
 		});

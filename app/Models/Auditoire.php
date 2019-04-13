@@ -20,6 +20,16 @@ class Auditoire extends Model
     }
 
     /**
+    * Auditoires groupés par section 
+    */
+
+    public static function getAuditoireGroupBySection(){
+
+        return self::join('sections','sections.idsections','=','auditoires.idsections')->get(['idauditoires','auditoires.lib','auditoires.abbr','sections.idsections','sections.lib as section_lib'])->groupBy('idsections');
+
+    }
+
+    /**
     * 
     * @return 
     */
@@ -89,4 +99,20 @@ class Auditoire extends Model
             ]) ;
 
     }
+
+
+    /**********
+    * SCOPES 
+    **********/
+
+    /**
+    * Auditoires par section 
+    */
+
+    public static function scopeGetAuditoireBySection($query,$idsections){
+
+        return $query->where('idsections',$idsections);
+
+    }
+
 }

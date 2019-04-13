@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -141,7 +140,7 @@ class Etudiant extends Model
 
     /**
     * recupere  les étudiants en tenant compte de la session 
-    * l'étudiant qui ont reussi ne serons pas récupéré au session suivante 
+    * l'étudiant qui ont reussi ne seront pas récupéré au session suivante 
     * @param $idsession identifiant de la session  selectionnée 
     */
 
@@ -154,17 +153,32 @@ class Etudiant extends Model
     }
 
     /**
-    * cherche une entrée par champ
-    * par nom ou matricule
-    * @param $fild champ de recherche
+    * recupere  les étudiants en tenant compte de la session 
+    * l'étudiant qui ont reussi ne seront pas récupéré au session suivante 
+    * @param $idsession identifiant de la session  selectionnée 
     */
 
-    public static function scopeEtudiantSearch($query,$field){
+    public static function scopeEtudiantCodeParSession($query,$idsession){
 
-        return $query->where('nom','like',$field.'%')->orWhere('etudiants.matricule',$field);
+        return $query->leftJoin('codes', 'codes.idetudiants', '=', 'etudiants.idetudiants')
+                        ->where('codes.idsessions',$idsession);
                         
 
     }
+
+
+    // /**
+    // * cherche une entrée par champ
+    // * par nom ou matricule
+    // * @param $fild champ de recherche
+    // */
+
+    // public static function scopeEtudiantSearch($query,$field){
+
+    //     return $query->where('nom','like',$field.'%')->orWhere('etudiants.matricule',$field);
+                        
+
+    // }
 
 
 
