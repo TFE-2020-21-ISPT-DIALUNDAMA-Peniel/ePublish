@@ -15,8 +15,11 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        return datatables($query);
-            // ->addColumn('action', 'jury/listetudiantsbyauditoire.action');
+        return datatables($query)
+            ->addColumn('action',function($query){
+                return $this->editorBtn($query);  
+            }
+            );
     }
 
     /**
@@ -41,17 +44,6 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
                     ->columns($this->getColumns())
                     ->minifiedAjax()
                     ->addAction(['width' => '80px'])
-                    ->addAction([
-                        'defaultContent' => $this->editorBtn(),
-                        'data'           => 'action',
-                        'name'           => 'action',
-                        'title'          => 'Edition',
-                        'orderable'      => false,
-                        'searchable'     => false,
-                        'exportable'     => false,
-                        'printable'      => true,
-                        'footer'         => '',
-                    ])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -92,11 +84,11 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
     }
 
 
-    private function editorBtn(){
-        return '<button class="edit-modal btn btn-info">
+    private function editorBtn(Etudiant $query){
+        return '<button class="edit-modal btn btn-info" data-info="'.$query->idetudiants.','.$query->nom.','.$query->postnom.','.$query->prenom.'">
                     <span class="fa fa-edit"></span> Edit
                 </button>
-                <button class="delete-modal btn btn-danger">
+                <button class="delete-modal btn btn-danger" daata-info="'.$query->idetudiants.','.$query->nom.','.$query->postnom.','.$query->prenom.'">
                  <span class="fa fa-trash"></span> Delete
                 </button>';
     }
