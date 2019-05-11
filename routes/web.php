@@ -98,6 +98,8 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 				Route::get('/','Backend\Jury\DashboardController@index')->name('index');
 				Route::get('/getAuditoires','Backend\Jury\DashboardController@showAuditoires')->name('showAuditoires');
 				Route::get('/getAuditoires/{auditoire}','Backend\Jury\DashboardController@showEtudiantsByAuditoires')->name('showEtudiants');
+				Route::resource('etudiant','Backend\EtudiantController');
+
 
 			});
 		});

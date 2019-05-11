@@ -13,6 +13,7 @@ use App\Models\Code;
 use App\DataTables\Section\ListAuditoiresBySectionDataTable;
 use App\DataTables\Section\ListEtudiantsByAuditoireDataTable;
 use App\Http\Requests\CodeActivatedFormRequest;
+use Flashy;
 
 
 class DashboardController extends Controller
@@ -26,7 +27,7 @@ class DashboardController extends Controller
  	public function index()
     {
         // redirection vers la dernière session publiée
-        if (Publication::lastPublished()) {
+        if ($lastPublished = Publication::lastPublished()) {
 
             return redirect()->route('section.show',$lastPublished->idsessions);
         }
@@ -82,6 +83,7 @@ class DashboardController extends Controller
     public function codeActivated(CodeActivatedFormRequest $codeRequest, Code $code){
         $code->active = $code->active == 0  ? 1 : 0;
         $code->save();
+        $code->active == 1 ? Flashy::success('Code d\'accès activer') : Flashy::success('Code d\'accès désactiver');
         return redirect()->back();
     }
 

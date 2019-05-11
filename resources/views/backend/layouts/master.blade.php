@@ -80,5 +80,9 @@
     <!-- this page js -->
      
 
+    {{-- PACKAGES --}}
+    <!--Flashy -->
+    @include('flashy::message')
+
 </body>
 </html>

@@ -55,6 +55,7 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
     protected function getColumns()
     {
         return [
+            'idetudiants',
             'matricule',
             'nom',
             'postnom',
@@ -85,11 +86,23 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
 
 
     private function editorBtn(Etudiant $query){
-        return '<button class="edit-modal btn btn-info" data-info="'.$query->idetudiants.','.$query->nom.','.$query->postnom.','.$query->prenom.'">
-                    <span class="fa fa-edit"></span> Edit
-                </button>
-                <button class="delete-modal btn btn-danger" daata-info="'.$query->idetudiants.','.$query->nom.','.$query->postnom.','.$query->prenom.'">
+        return '
+        <div class = "inline">
+                <button type="button" class="edit-modal btn btn-info" data-toggle="modal" data-target="#editModal"  data-info="'.$query->idetudiants.','.$query->matricule.','.$query->nom.','.$query->postnom.','.$query->prenom.','.$query->idauditoires.'">
+                  <span class="fa fa-edit"></span> Edit
+                </button>'
+                .
+                '<button class="delete-modal btn btn-danger" data-info="'.$query->idetudiants.','.$query->matricule.','.$query->nom.','.$query->postnom.','.$query->prenom.','.$query->idauditoires.'">
                  <span class="fa fa-trash"></span> Delete
-                </button>';
+                </button>
+        </div>'
+
+
+
+
+
+
+
+                ;
     }
 }

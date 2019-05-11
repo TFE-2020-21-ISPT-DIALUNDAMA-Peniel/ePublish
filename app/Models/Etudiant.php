@@ -11,7 +11,27 @@ class Etudiant extends Model
      * @var array
      */
     protected $primaryKey = 'idetudiants';
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'matricule','nom','postnom','prenom','idauditoires'
+    ];
 
+    /**
+     * Evénement éloquent lors de la creation d'un étudiant
+     * l'année academique en cours est recuperée automatique
+     */
+    protected static function boot(){
+        parent::boot();
+
+        static::creating(function($etudiant){
+            $etudiant->annee_acad = Gestion_annee::getAnneeAcademiqueEnCours()->idgestion_annees;
+
+        });
+    }
 
 
     /**
@@ -70,20 +90,6 @@ class Etudiant extends Model
 
 
 
-    // public static function getBySection($idsection){
-
-    //   return self::join('auditoires','etudiants.idauditoires','auditoires.idauditoires')
-    //             ->where('auditoires.idsections',$idsection);
-                        
-    // }
-
-
-    public static function maman(){
-
-        return self::EtudiantActif()->EtudiantParAuditoire(10)->get();
-                        
-
-    }
 
     /**********
     * SCOPES 
@@ -165,20 +171,6 @@ class Etudiant extends Model
                         
 
     }
-
-
-    // /**
-    // * cherche une entrée par champ
-    // * par nom ou matricule
-    // * @param $fild champ de recherche
-    // */
-
-    // public static function scopeEtudiantSearch($query,$field){
-
-    //     return $query->where('nom','like',$field.'%')->orWhere('etudiants.matricule',$field);
-                        
-
-    // }
 
 
 

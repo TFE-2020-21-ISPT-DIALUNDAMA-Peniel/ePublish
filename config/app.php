@@ -151,6 +151,7 @@ return [
          * Service Providers Add
          */
         App\Providers\ValidatorServiceProvider::class,
+        MercurySeries\Flashy\FlashyServiceProvider::class,
 
          /*
          * Package Service Providers...
@@ -223,6 +224,7 @@ return [
          */
 
         'DataTables' => Yajra\DataTables\Facades\DataTables::class, 
+        'Flashy' => MercurySeries\Flashy\Flashy::class,
 
     
 

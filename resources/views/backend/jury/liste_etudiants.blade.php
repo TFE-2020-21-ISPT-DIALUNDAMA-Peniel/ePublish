@@ -8,6 +8,15 @@
 @stop
 
 @section('container')
+<div class="card-title">
+	<h5>{{ strtoupper($auditoire->lib) }}</h5>
+	<hr>
+</div>
+<div class="create">
+	<button type="button" class="addModal btn btn-info" data-toggle="modal" data-target="#editModal">
+  		 <span class="fa fa-plus"> </span> Ajouter un étudiant
+	</button>
+</div>
 	{!!$dataTable->table() !!}
 
 
@@ -17,49 +26,15 @@
 
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
   Launch demo modal
 </button>
-
-<!-- Modal -->
-<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Modal title</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        ...
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
-      </div>
-    </div>
-  </div>
-</div>
+{{-- Modal Formulaire ajout Etudiant --}}
+@include('backend.partials.includes.formulaires.ajoutEtudiantForm',['idauditoireSelected'=>$auditoire->idauditoires])
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+yyys
 
 
 
@@ -75,7 +50,24 @@
 	{!!$dataTable->scripts() !!}
 	{{-- <script src={{ asset('js/bootstrap4-toggle.min.js') }}></script> --}}
 <script type="text/javascript">
+	
+	{{-- Ajout étudiant formulaire --}}
+	$(document).on('click', '.addModal', function() {
+	    $('#msgErrors').html('');
+  		$('#msgErrors').attr('hidden','true');
+
+		$('.modal-title').text('Ajouter');
+		// resetmodalData()
+		$('.form-horizontal').trigger("reset");
+		$('.form-horizontal').show();
+		$('#myModal').modal('show');
+		});
+
+	{{-- edition du formulaire --}}
 	$(document).on('click', '.edit-modal', function() {
+		    $('#msgErrors').html('');
+      		$('#msgErrors').attr('hidden','true');
+
 			$('#footer_action_button').text(" Update");
 			$('#footer_action_button').addClass('fa fa-check');
 			$('#footer_action_button').removeClass('fa fa-trash');
@@ -83,7 +75,7 @@
 			$('.actionBtn').removeClass('btn-danger');
 			$('.actionBtn').removeClass('delete');
 			$('.actionBtn').addClass('edit');
-			$('.modal-title').text('Edit');
+			$('.modal-title').text('Modifier');
 			$('.deleteContent').hide();
 			$('.form-horizontal').show();
 			var stuff = $(this).data('info').split(',');
@@ -91,11 +83,27 @@
 			$('#myModal').modal('show');
 			});
 
+	// remplissage formulaire par les donnée d'une ligne selectionée
 	function fillmodalData(details){
-			$('#fid').val(details[0]);
-			$('#fname').val(details[1]);
-			$('#lname').val(details[2]);
-			$('#email').val(details[3]);
+			$('#fidetudiants').val(details[0]);
+			$('#fmatricule').val(details[1]);
+			$('#fnom').val(details[2]);
+			$('#fpostnom').val(details[3]);
+			$('#fprenom').val(details[4]);
+			$('#fidauditoires').val(details[5]);
+			// $('#fidauditoires').val(details[4]);
+			// $('#gender').val(details[4]);
+			// $('#country').val(details[5]);
+			// $('#salary').val(details[6]);
+			}
+
+	function resetmodalData(){
+			$('#fidetudiants').val('');
+			$('#fmatricule').val('');
+			$('#fnom').val('');
+			$('#fpostnom').val('');
+			$('#fprenom').val('');
+			// $('#fidauditoires').val('');
 			// $('#gender').val(details[4]);
 			// $('#country').val(details[5]);
 			// $('#salary').val(details[6]);
@@ -103,51 +111,62 @@
 
 
 
-	$('.modal-footer').on('click', '.edit', function() {
-$.ajax({
-	type: 'post',
-	url: '/editItem',
-	data: {
-		'_token': $('input[name=_token]').val(),
-		'id': $("#fid").val(),
-		'fname': $('#fname').val(),
-		'lname': $('#lname').val(),
-		'email': $('#email').val(),
-		// 'gender': $('#gender').val(),
-		// 'country': $('#country').val(),
-		// 'salary': $('#salary').val()
-		},
-	success: function(data) {
-		if (data.errors){
-			$('#myModal').modal('show');
-		if(data.errors.fname) {
-			$('.fname_error').removeClass('hidden');
-			$('.fname_error').text("First namecan't be empty !");
-		}
-		if(data.errors.lname) {
-			$('.lname_error').removeClass('hidden');
-			$('.lname_error').text("Last namecan't be empty !");
-		}
-		if(data.errors.email) {
-			$('.email_error').removeClass('hidden');
-			$('.email_error').text("Email mustbe a valid one !");
-		}
-		// if(data.errors.country) {
-		// 	$('.country_error').removeClass('hidden');
-		// 	$('.country_error').text("Countrymust be a valid one !");
-		// }
-		// if(data.errors.salary) {
-		// 	$('.salary_error').removeClass('hidden');
-		// 	$('.salary_error').text("Salary mustbe a valid format ! (ex: #.##)");
-		// 	}
-		}
-		else {
-			$('.error').addClass('hidden');
-			$('.item' + data.id).replaceWith("<trclass='item" + data.id + "'><td>" +data.id + "</td><td>" +data.first_name +
-			"</td><td>" + data.last_name + "</td><td>" + data.email + "</td><td>" +data.gender + "</td><td>" +data.country + "</td><td>" + data.salary +"</td><td><button class='edit-modal btn btn-info' data-info='" +data.id+","+data.first_name+","+data.last_name+","+data.email+","+"' ><spanclass='fa fa-trash'></span> Delete</button></td></tr>");
-			}}
+	$('#etudiantForm').on('submit', function(e) {
+		e.preventDefault();
+		$('#msgErrors').html('');
+      	$('#msgErrors').attr('hidden','true');
+
+		$.ajax({
+			type: 'post',
+			url: '{{ route('jury.etudiant.store') }}',
+			data: {
+				'_token': $('input[name=_token]').val(),
+				'idetudiants': $("#fidetudiants").val(),
+				'matricule': $("#fmatricule").val(),
+				'nom': $('#fnom').val(),
+				'postnom': $('#fpostnom').val(),
+				'postnom': $('#fprenom').val(),
+				'idauditoires': $('#fidauditoires').val(),
+				// 'gender': $('#gender').val(),
+				// 'country': $('#country').val(),	
+				// 'salary': $('#salary').val()
+				},
+
+			success: function(data) {
+				$('#editModal').modal('hide');
+				flashy('Etudiant OK!!!!','#');
+				// on actualise la ligne
+				$('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" +data.id + "</td><td>" +data.first_name +
+					"</td><td>" + data.last_name + "</td><td>" + data.email + "</td><td>" +data.gender + "</td><td>" +data.country + "</td><td>" + data.salary +"</td><td><button class='edit-modal btn btn-info' data-info='" +data.id+","+data.first_name+","+data.last_name+","+data.email+","+"' ><spanclass='fa fa-trash'></span> Delete</button></td></tr>");
+			},
+
+	        error:function(data) {
+		        var errors = data.responseJSON.errors;
+		          $.each(errors, function (key, value) {
+		          	document.getElementById('msgErrors').innerHTML += "<li>"+value+"</li>"
+		            $('#msgErrors').removeAttr('hidden');
+		        });
+		    }
+		});
 	});
-});
+
+	{{-- Suppression  --}}
+	$(document).on('click', '.delete-modal', function() {
+		$('#footer_action_button').text(" Delete");
+		$('#footer_action_button').removeClass('glyphicon-check');
+		$('#footer_action_button').addClass('glyphicon-trash');
+		$('.actionBtn').removeClass('btn-success');
+		$('.actionBtn').addClass('btn-danger');
+		$('.actionBtn').removeClass('edit');
+		$('.actionBtn').addClass('delete');
+		$('.modal-title').text('Delete');
+		$('.deleteContent').show();
+		$('.form-horizontal').hide();
+		var stuff = $(this).data('info').split(',');
+		$('.did').text(stuff[0]);
+		$('.dname').html(stuff[1] +" "+stuff[2]);
+		$('#myModal').modal('show');
+	});
 
 </script>
 

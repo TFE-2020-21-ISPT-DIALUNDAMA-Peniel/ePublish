@@ -37,16 +37,15 @@ class DashboardController extends Controller
 
 
     /****
-    * Affiche la liste des auditoires
-    * Répartis par section 
-    *
+    * Affiche la liste des etudiant
+    * d'un auditoire
     ****/
 
     public function showEtudiantsByAuditoires(Auditoire $auditoire, ListEtudiantsByAuditoireDataTable $dataTables)
     {
         // $auditoires = Auditoire::getAuditoireGroupBySection();
         return $dataTables->with(['idauditoires' => $auditoire->idauditoires])
-                            ->render('backend.jury.liste_etudiants');
+                            ->render('backend.jury.liste_etudiants',['auditoire'=>$auditoire]);
 
         // return view('backend.jury.liste_auditoires',compact('auditoires'));
     }
