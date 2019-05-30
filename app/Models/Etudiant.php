@@ -172,6 +172,19 @@ class Etudiant extends Model
 
     }
 
+    /**
+    * recupere  les étudiants avec son bulletin
+    * Il faur préalablement recuperer les etudiant par session
+    */
+
+    public static function scopeEtudiantGetBulletin($query,$idsessions){
+
+        return $query->leftJoin('bulletins', 'bulletins.idetudiants', '=', 'etudiants.idetudiants')
+                   ;
+                        
+
+    }
+
 
 
 

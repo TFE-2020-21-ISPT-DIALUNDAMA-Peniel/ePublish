@@ -104,6 +104,7 @@ class CreationDesTables extends Migration
             $table->increments('idsessions');
             $table->string('lib',65);
             $table->string('abbr',65);
+            $table->string('folder',65);
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';
@@ -115,7 +116,8 @@ class CreationDesTables extends Migration
             $table->unsignedInteger('idsessions');
             $table->unsignedInteger('idauditoires');
             $table->unsignedInteger('annee');
-            $table->boolean('statut')->default(false);
+            $table->boolean('statut')->default(1);
+            $table->dateTime('date_publication')->default('NOW()');
             $table->timestamps();
             $table->foreign('annee')
                   ->references('idgestion_annees')->on('gestion_annees');
@@ -170,17 +172,17 @@ class CreationDesTables extends Migration
 
         Schema::create('bulletins', function (Blueprint $table) {
             $table->increments('idbulletins');
-            $table->string('file',255);
+            $table->text('file',255);
             $table->unsignedInteger('idetudiants');
             $table->unsignedInteger('idcodes');
-            $table->unsignedInteger('idpublications');
+            $table->unsignedInteger('idsessions'); // AAAAAAAAAAAAAAA SUPPRIMER
             $table->timestamps();
             $table->foreign('idetudiants')
                   ->references('idetudiants')->on('etudiants')->onDelete('cascade');
             $table->foreign('idcodes')
                   ->references('idcodes')->on('codes')->onDelete('cascade');
-            $table->foreign('idpublications')
-                  ->references('idpublications')->on('publications')->onDelete('cascade');
+            $table->foreign('idsessions')
+                  ->references('idsessions')->on('sessions')->onDelete('cascade');
 
             $table->engine = 'InnoDB';
             $table->charset = 'utf8';

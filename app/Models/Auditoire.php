@@ -25,7 +25,43 @@ class Auditoire extends Model
 
     public static function getAuditoireGroupBySection(){
 
-        return self::join('sections','sections.idsections','=','auditoires.idsections')->get(['idauditoires','auditoires.lib','auditoires.abbr','sections.idsections','sections.lib as section_lib'])->groupBy('idsections');
+        return self::TrieAuditoire()->join('sections','sections.idsections','=','auditoires.idsections')->get(['idauditoires','auditoires.lib','auditoires.abbr','sections.idsections','sections.lib as section_lib'])->groupBy('idsections');
+
+    }
+
+    /**
+    * Auditoires non publié par session groupés par section 
+    */
+
+    public static function getAuditoireNonPublieGroupBySection($idsessions){
+
+        return self::TrieAuditoire()->GetAuditoireNonPublieBySession($idsessions)->join('sections','sections.idsections','=','auditoires.idsections')->get(['auditoires.idauditoires','auditoires.lib','auditoires.abbr','sections.idsections','sections.lib as section_lib'])->groupBy('idsections');
+
+    }
+
+    public static function getStatPublication($idsessions,$idauditoires){
+
+        $nbrEtudiant = Etudiant::EtudiantParAuditoire($idauditoires)
+                                ->EtudiantParSession($idsessions)
+                                ->selectRaw('count(*) as nbrEtudiant,idauditoires as nbrEtudiant_idauditoires')
+                                ->groupBy('idauditoires');
+        $nbrBulletin = Bulletin::BulletinParAuditoire($idauditoires)
+                            ->BulletinParSession($idsessions)
+                            ->selectRaw('count(*) as nbrBulletin,idauditoires as nbrBulletin_idauditoires')
+                        ->groupBy('idauditoires');
+
+      
+
+
+        $data = self::leftJoinSub($nbrEtudiant, 'nbrEtudiant', function ($join) {
+                        $join->on('auditoires.idauditoires', '=', 'nbrEtudiant.nbrEtudiant_idauditoires');
+                    })
+                    ->leftJoinSub($nbrBulletin, 'nbrBulletin', function ($join) {
+                        $join->on('auditoires.idauditoires', '=', 'nbrBulletin.nbrBulletin_idauditoires');
+                    });
+                    
+       
+        return $data->first() ;
 
     }
 
@@ -114,5 +150,33 @@ class Auditoire extends Model
         return $query->where('idsections',$idsections);
 
     }
+
+
+    /**
+    * Auditoires non publié par session
+    */
+
+    public static function scopeGetAuditoireNonPublieBySession($query,$idsessions){
+
+        return $query->leftJoin('publications','publications.idauditoires','=','auditoires.idauditoires')->where('publications.idsessions','!=',$idsessions)->orWhere('publications.idpublications','=',null);
+
+    }
+
+
+    /**
+    * Auditoires trié
+    */
+
+    public static function scopeTrieAuditoire($query){
+
+        return $query->orderBy('idsections','ASC')
+                     ->orderBy('idpromotions','ASC')
+                     ->orderBy('idfacultes','ASC')
+                     ->orderBy('idauditoires','ASC');
+
+    }
+
+
+
 
 }

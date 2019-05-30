@@ -233,3 +233,19 @@
 		}
 		return $matricule;
 	}
+
+
+	 /**
+	 * renvoi le lien du pdf stoquer dans storage/bulletin/pdf
+	 * 
+	 * @param le lien du fichier 
+	 * @return url de pdf
+	 * 
+	 */
+
+  	function get_path_bulletin_pdf_by_etudiant($annee,$session,$auditoire,$matricule){
+		$pathPdf = storage_path('app'.DS.'bulletins'.DS.$annee.DS.$session.DS.$auditoire.DS.$matricule);
+		
+		return $pathPdf.'.pdf';	
+    	
+    }

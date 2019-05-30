@@ -1,20 +1,5 @@
 
-@extends('backend.layouts.master',['title'=>'Auditoires'])
-@push('stylesheets')
-@endpush
-
-@section('container')
-<div class="create">
-	<button type="button" class="addModal btn btn-info" data-toggle="modal" data-target="#editModal">
-  		 <span class="fa fa-plus"> </span> Ajouter un étudiant
-	</button>
-</div>
-<br><br><br>
-<div class="row">
-	<div class="col-3">
-
-		{{-- Affichage de la liste des auditoires --}}
-		@foreach ($auditoires as $section)
+		@foreach (App\Models\Auditoire::getAuditoireGroupBySection() as $section)
 		<div class="accordion" id="accordionExample">
 			<div class="card m-b-0">
 			    <div class="card-header" id="headingOne">
@@ -29,7 +14,7 @@
 			      <div class="card-body">
 			        <ul>
 			        	@foreach ($section as $auditoire)
-			        	<a href="{{ route('jury.showEtudiants',$auditoire->idauditoires) }}" class="">
+			        	<a href="{{ $route .'/auditoire/'.$auditoire->idauditoires }}" class="">
 			        		<li>{{ $auditoire->lib }}</li>
 			        	</a>
 			        	@endforeach
@@ -39,18 +24,3 @@
 			</div>
 		</div>
 		@endforeach
-	</div>
-	<div class="col-9">
-		{{-- {!!$dataTable->table() !!}	 --}}
-	</div>
-</div>
-{{-- Modal Formulaire ajout Etudiant --}}
-@include('backend.partials.includes.formulaires.ajoutEtudiantForm')
-
-
-
-@stop
-
-@push("scripts")
-{{-- {!!$dataTable->scripts() !!} --}}
-@endpush

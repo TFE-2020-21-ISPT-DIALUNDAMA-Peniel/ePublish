@@ -7,6 +7,7 @@ return [
     'table' => [
         'class' => 'table',
         'id'    => 'dataTableBuilder',
+        'width' => '100%',
     ],
 
     /*

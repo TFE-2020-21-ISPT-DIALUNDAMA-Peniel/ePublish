@@ -5,11 +5,11 @@
 | Web Routes
 |--------------------------------------------------------------------------
 */
-	use App\Models\Etudiant;
 	Route::get("test",function(){
-	$users = Etudiant::all();
-	return view('backend.sections.dataTable',['users'=>$users]);
-		// $return null;
+		$idsessions=1;
+		$idsections=2;
+		$idauditoires=10;
+		return App\Models\Auditoire::GetAuditoireNonPublieBySession($idsessions)->get();
 	});
 
 Route::get('/testDatatable','Backend\Sections\DashboardController@testTable');
@@ -96,9 +96,23 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 		Route::prefix('jury')->group(function(){
 			Route::name('jury.')->group(function () {
 				Route::get('/','Backend\Jury\DashboardController@index')->name('index');
-				Route::get('/getAuditoires','Backend\Jury\DashboardController@showAuditoires')->name('showAuditoires');
-				Route::get('/getAuditoires/{auditoire}','Backend\Jury\DashboardController@showEtudiantsByAuditoires')->name('showEtudiants');
+				// Etudiants
+				Route::get('/getAuditoires','Backend\Jury\DashboardController@showAuditoiresEtudiant')->name('showAuditoires');
+				Route::get('/getAuditoires/auditoire/{auditoire}','Backend\Jury\DashboardController@showEtudiantsByAuditoires')->name('showEtudiants');
 				Route::resource('etudiant','Backend\EtudiantController');
+
+				// Bulletin
+				Route::get('/getBulletin/session/{session}','Backend\Jury\DashboardController@showAuditoiresByBulletin')->name('getBulletinBySession');
+				Route::get('/getBulletin/session/{session}/auditoire/{auditoire}','Backend\Jury\DashboardController@showBulletinByAuditoireAndSession')->name('getBulletinByAuditoire');
+
+				Route::post('/upload/bulletins/{annee}/{session}/{auditoire}','Backend\Jury\DashboardController@storeBulletin')->name('storeBulletin');
+
+				Route::post('getBulletinImg','Backend\Jury\DashboardController@showBulletinImg')->name('showBulletinImg');
+				// Publication
+
+				Route::get('/getPublication/session/{session}','Backend\Jury\DashboardController@getPublicationBySession')->name('getPublicationBySession');
+				Route::post('/publish','Backend\Jury\DashboardController@publish')->name('publish');
+
 
 
 			});

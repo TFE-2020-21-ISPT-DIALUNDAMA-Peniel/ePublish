@@ -95,14 +95,6 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
                 '<button class="delete-modal btn btn-danger" data-info="'.$query->idetudiants.','.$query->matricule.','.$query->nom.','.$query->postnom.','.$query->prenom.','.$query->idauditoires.'">
                  <span class="fa fa-trash"></span> Delete
                 </button>
-        </div>'
-
-
-
-
-
-
-
-                ;
+        </div>' ;
     }
 }

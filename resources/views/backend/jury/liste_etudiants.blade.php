@@ -24,20 +24,8 @@
 
 
 
-
-<!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#editModal">
-  Launch demo modal
-</button>
 {{-- Modal Formulaire ajout Etudiant --}}
 @include('backend.partials.includes.formulaires.ajoutEtudiantForm',['idauditoireSelected'=>$auditoire->idauditoires])
-
-
-
-yyys
-
-
-
 
 
 
@@ -69,8 +57,8 @@ yyys
       		$('#msgErrors').attr('hidden','true');
 
 			$('#footer_action_button').text(" Update");
-			$('#footer_action_button').addClass('fa fa-check');
-			$('#footer_action_button').removeClass('fa fa-trash');
+			$('#footer_action_button').addClass('fas fa-check');
+			$('#footer_action_button').removeClass('fas fa-trash');
 			$('.actionBtn').addClass('btn-success');
 			$('.actionBtn').removeClass('btn-danger');
 			$('.actionBtn').removeClass('delete');
