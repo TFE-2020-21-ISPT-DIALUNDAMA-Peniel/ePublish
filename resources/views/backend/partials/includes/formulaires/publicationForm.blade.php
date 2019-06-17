@@ -28,7 +28,7 @@
 	                <div class="form-group">
 	                    <label for="auditoire"  class="col-sm-2 control-label">Auditoire</label>
 	                    <div class="col-sm-12">
-	                        {{-- <input type="text" id="auditoire" class="form-control" id="auditoire" name="auditoire" placeholder="Entrer auditoire étudiant"  maxlength="50" required="required"> --}}
+	                        <input type="text" id="fauditoires" class="form-control" disabled="" hidden="">
 	                        <select class="form-control" id="fidauditoires" name="idauditoires" required="">
 	                            @foreach($auditoires::getAuditoireNonPublieGroupBySection($session->idsessions) as $sections)
 	                                <optgroup label="{{ $sections[0]->section_lib  }}">
@@ -49,7 +49,7 @@
 	                    <div class="col-sm-12">
 	                        {{-- <input type="text" id="auditoire" class="form-control" id="auditoire" name="auditoire" placeholder="Entrer auditoire étudiant"  maxlength="50" required="required"> --}}
 	                        <select class="form-control"  name="mode_publication" required="">
-	                           <option value="immediatement">Immédiatement</option>
+	                           <option id="immediatement" value="immediatement">Immédiatement</option>
 	                           <option id="planifier" value="planifier">Plannifier</option>
 	                    	</select>
 	                    </div>
@@ -57,7 +57,7 @@
 	                <div class="form-group" id="date_publication" hidden="">
 	                    <label for="date_publication"  class="col-sm-12 control-label">Date et Heure de publication</label>
 	                	<div class="input-group col-sm-12">
-	                        <input type="text" name="date_publication"  data-format="DD/MM/YYYY HH:mm" class="datapicker form-control" id="datepicker-autoclose" placeholder="jj/mm/aaaa hh:mm">
+	                        <input type="text" name="date_publication"  data-format="DD/MM/YYYY HH:mm" class="datapicker form-control" id="datepicker-autoclose" placeholder="jj/mm/aaaa hh:mm" autocomplete="off">
 	                        {{-- <input type="datetime-local" class=" form-control" id="" placeholder="mm/dd/yyyy" min /> --}}
 	                        <div class="input-group-append">
 	                            <span class="input-group-text"><i class="fa fa-calendar"></i></span>
@@ -117,28 +117,23 @@
 	{{-- ajout publication --}}
 	$(document).on('click', '#addPublication', function() {
 		    $('#suspendre_publication_label').attr('hidden',true);
-			$('#fidauditoires').attr('disabled',false);
+			$('#fidauditoires').attr('hidden',false);
+			$('#fauditoires').attr('hidden',true);
+			$('#mode_publication').attr('hidden',false);
+			$('#immediatement').attr('selected','selected');
 
       		
 			});
 		{{-- edition du formulaire --}}
 	$(document).on('click', '.edit-modal', function() {
-		    $('#msgErrors').html('');
-      		$('#msgErrors').attr('hidden','true');
 
-			$('#footer_action_button').text(" Update");
-			$('#footer_action_button').addClass('fas fa-check');
-			$('#footer_action_button').removeClass('fas fa-trash');
-			$('.actionBtn').addClass('btn-success');
-			$('.actionBtn').removeClass('btn-danger');
-			$('.actionBtn').removeClass('delete');
-			$('.actionBtn').addClass('edit');
-			$('.modal-title').text('Modifier');
-			$('.deleteContent').hide();
 			$('#suspendre_publication_label').attr('hidden',false);
-			$('#fidauditoires').attr('disabled',true);
+			$('#fidauditoires').attr('hidden',true);
+			$('#fauditoires').attr('hidden',false);
 			$('.form-horizontal').show();
 			var stuff = $(this).data('info').split(',');
+			// On determine le champ a affiché selon le statut
+			// A  faire
 			fillmodalData(stuff)
 			$('#exampleModalCenter').modal('show');
 			});
@@ -146,8 +141,16 @@
 	// remplissage formulaire par les donnée d'une ligne selectionée
 	function fillmodalData(details){
 			$('#idpublications').val(details[0]);
+			$('#fauditoires').val(details[5]);
 			// $('#fidauditoires').val(details[1]);
-			$('#auditoire-'+details[1]).prop('selected', true);
+			if ( $('#idaudi').val() != undefined) { 
+				$('#idaudi').val(details[1]);
+			}else{
+
+			$('.form-horizontal').append('<input id="idaudi" name="idauditoires" value="'+details[1]+'" hidden>');
+			}
+
+			// $('#auditoire-'+details[1]).prop('selected', true);
 			$('#fstatut').val(details[2]);
 			$('#datepicker-autoclose').val(details[3]);
 			}
@@ -171,7 +174,9 @@
 	    	
 		}else {
 			$("#mode_publication").attr('hidden',false);
-			$("#date_publication").attr('hidden',false);
+			if ($('#mode_publication option:selected').val() == "planifier") {
+				$("#date_publication").removeAttr('hidden');
+			}
 		}
 	});
 	</script>

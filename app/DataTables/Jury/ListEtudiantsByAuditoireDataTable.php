@@ -19,6 +19,7 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
             ->addColumn('action',function($query){
                 return $this->editorBtn($query);  
             }
+           
             );
     }
 
@@ -30,7 +31,7 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
      */
     public function query(Etudiant $model)
     {
-        return $model::EtudiantParAuditoire($this->idauditoires)->get();
+        return $model::EtudiantParAuditoire($this->idauditoires)->EtudiantJoinAuditoire()->get();
     }
 
     /**
@@ -43,7 +44,7 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px'])
+                    ->addAction(['width' => '100px'])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -55,13 +56,32 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'idetudiants',
             'matricule',
             'nom',
             'postnom',
             'prenom',
-            'idauditoires',
-            'statut'
+            'abbr'=>[
+                'name' => 'abbr',
+                'data' => 'abbr',
+                'title' => 'Auditoire',
+                'searchable' => true,
+                'orderable' => false,
+                'exportable' => true,
+                'printable' => true,
+            ],
+            'statut'=>[
+                        'defaultContent' => '<input type="checkbox"/>s',
+                        'title'          => '',
+                        'data'           => 'statut',
+                        'name'           => 'statut',
+                        'type'           => 'checkbox',
+                        'orderable'      => false,
+                        'searchable'     => false,
+                        'exportable'     => false,
+                        'printable'      => true,
+                        'width'          => '10px',
+                    ]
+
         ];
     }
 
@@ -71,7 +91,34 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
         return [
             'dom' => 'flrtipB',
             'buttons' => ['print', 'excel','pdf'],
-            'order' => [[1,'Asc']]
+            // 'order' => [[1,'Asc']],
+            'language'=> 
+                // ['url' => asset('dataTables/fr.json')],
+            [   
+            'processing' =>    'Traitement en cours...',
+            'zeroRecords'=>   'Aucun élément à afficher',
+        ]
+
+    //     search:         "Rechercher&nbsp;:",<font></font>
+    //     lengthMenu:    "Afficher _MENU_ &eacute;l&eacute;ments",<font></font>
+    //     info:           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",<font></font>
+    //     infoEmpty:      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",<font></font>
+    //     infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",<font></font>
+    //     infoPostFix:    "",<font></font>
+    //     loadingRecords: "Chargement en cours...",<font></font>
+    //     emptyTable:     "Aucune donnée disponible dans le tableau",<font></font>
+    //     paginate: {<font></font>
+    //         first:      "Premier",<font></font>
+    //         previous:   "Pr&eacute;c&eacute;dent",<font></font>
+    //         next:       "Suivant",<font></font>
+    //         last:       "Dernier"<font></font>
+    //     },<font></font>
+    //     aria: {<font></font>
+    //         sortAscending:  ": activer pour trier la colonne par ordre croissant",<font></font>
+    //         sortDescending: ": activer pour trier la colonne par ordre décroissant"<font></font>
+    //     }<font></font>
+    // }<font></font>
+
         ];
     }
     /**
@@ -89,11 +136,11 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
         return '
         <div class = "inline">
                 <button type="button" class="edit-modal btn btn-info" data-toggle="modal" data-target="#editModal"  data-info="'.$query->idetudiants.','.$query->matricule.','.$query->nom.','.$query->postnom.','.$query->prenom.','.$query->idauditoires.'">
-                  <span class="fa fa-edit"></span> Edit
+                  <span class="fa fa-edit"></span> 
                 </button>'
-                .
+                .'  '.
                 '<button class="delete-modal btn btn-danger" data-info="'.$query->idetudiants.','.$query->matricule.','.$query->nom.','.$query->postnom.','.$query->prenom.','.$query->idauditoires.'">
-                 <span class="fa fa-trash"></span> Delete
+                 <span class="fa fa-trash"></span> 
                 </button>
         </div>' ;
     }

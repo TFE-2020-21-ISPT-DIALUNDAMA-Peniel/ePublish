@@ -158,6 +158,14 @@ class Etudiant extends Model
 
     }
 
+    public static function scopeEtudiantNonSuccesParSession($query,$idsession){
+
+        return $query->leftJoin('etudiants_succes', 'etudiants.idetudiants', '=', 'etudiants_succes.idetudiants')
+                        ->whereRaw('(etudiants_succes.idetudiants is NULL  OR etudiants_succes.idsessions >'.$idsession.')');
+                        
+
+    }
+
     /**
     * recupere  les étudiants en tenant compte de la session 
     * l'étudiant qui ont reussi ne seront pas récupéré au session suivante 

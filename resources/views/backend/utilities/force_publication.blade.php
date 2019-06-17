@@ -17,11 +17,13 @@
 
 	<form action="{{ route('jury.publish') }}" id="form-force-publication" method="post" hidden="true">
   		@csrf 
+  		<input  name="idpublications" value="{{ $data['idpublications'] }}">
   		<input  name="idsessions" value="{{ $data['idsessions'] }}">
   		<input  name="idauditoires" value="{{ $data['idauditoires'] }}">
   		<input  name="mode_publication" value="{{ $data['mode_publication'] }}">
   		<input  name="date_publication" value="{{ $data['date_publication'] }}">
   		<input  name="force_publication" value="true">
+  		<input  name="suspendre_publication" value="{{ $data['suspendre_publication'] }}">
   	</form>
 @stop
 

@@ -17,6 +17,7 @@
   		 <span class="fa fa-plus"> </span> Ajouter un étudiant
 	</button>
 </div>
+
 	{!!$dataTable->table() !!}
 
 
@@ -113,7 +114,7 @@
 				'matricule': $("#fmatricule").val(),
 				'nom': $('#fnom').val(),
 				'postnom': $('#fpostnom').val(),
-				'postnom': $('#fprenom').val(),
+				'prenom': $('#fprenom').val(),
 				'idauditoires': $('#fidauditoires').val(),
 				// 'gender': $('#gender').val(),
 				// 'country': $('#country').val(),	
@@ -121,11 +122,9 @@
 				},
 
 			success: function(data) {
+				$('#dataTableBuilder').DataTable().draw(false);
 				$('#editModal').modal('hide');
-				flashy('Etudiant OK!!!!','#');
-				// on actualise la ligne
-				$('.item' + data.id).replaceWith("<tr class='item" + data.id + "'><td>" +data.id + "</td><td>" +data.first_name +
-					"</td><td>" + data.last_name + "</td><td>" + data.email + "</td><td>" +data.gender + "</td><td>" +data.country + "</td><td>" + data.salary +"</td><td><button class='edit-modal btn btn-info' data-info='" +data.id+","+data.first_name+","+data.last_name+","+data.email+","+"' ><spanclass='fa fa-trash'></span> Delete</button></td></tr>");
+				
 			},
 
 	        error:function(data) {

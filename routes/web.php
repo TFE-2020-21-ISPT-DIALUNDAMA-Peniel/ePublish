@@ -101,6 +101,8 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 				Route::get('/getAuditoires/auditoire/{auditoire}','Backend\Jury\DashboardController@showEtudiantsByAuditoires')->name('showEtudiants');
 				Route::resource('etudiant','Backend\EtudiantController');
 
+				Route::post('/importEtudiant','Backend\Jury\DashboardController@importEtudiantByAuditoire')->name('importEtudiantByAuditoire');
+
 				// Bulletin
 				Route::get('/getBulletin/session/{session}','Backend\Jury\DashboardController@showAuditoiresByBulletin')->name('getBulletinBySession');
 				Route::get('/getBulletin/session/{session}/auditoire/{auditoire}','Backend\Jury\DashboardController@showBulletinByAuditoireAndSession')->name('getBulletinByAuditoire');
@@ -110,8 +112,16 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 				Route::post('getBulletinImg','Backend\Jury\DashboardController@showBulletinImg')->name('showBulletinImg');
 				// Publication
 
-				Route::get('/getPublication/session/{session}','Backend\Jury\DashboardController@getPublicationBySession')->name('getPublicationBySession');
+				Route::get('/Publication/session/{session}','Backend\Jury\DashboardController@getPublicationBySession')->name('getPublicationBySession');
 				Route::post('/publish','Backend\Jury\DashboardController@publish')->name('publish');
+
+				// Palmarès
+				Route::get('/Palmares/session/{session}','Backend\Jury\DashboardController@getPalmaresBySession')->name('getPalmaresBySession');
+				Route::get('/Palmares/session/{session}/auditoire/{auditoire}','Backend\Jury\DashboardController@showPalmaresByAuditoireAndSession')->name('showPalmaresByAuditoireAndSession');
+				
+				Route::get('/etudiant_success/etudiant/{etudiant}/session/{session}','Backend\Jury\DashboardController@etudiantSucces')->name('etudiant_succes');
+				Route::get('/etudiant_success/{etudiants_succes}','Backend\Jury\DashboardController@etudiantNoSucces')->name('etudiant_no_succes');
+
 
 
 

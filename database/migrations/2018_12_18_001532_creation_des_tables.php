@@ -132,12 +132,12 @@ class CreationDesTables extends Migration
         });
 
          Schema::create('etudiants_succes', function (Blueprint $table) {
+            $table->increments('idetudiants_succes');
             $table->unsignedInteger('idetudiants');
             $table->unsignedInteger('idsessions');
             $table->unsignedInteger('idgestion_annees');
             $table->timestamps();
 
-            $table->primary(['idetudiants','idgestion_annees']);
             $table->foreign('idetudiants')
                   ->references('idetudiants')->on('etudiants')->onDelete('cascade');
             $table->foreign('idsessions')

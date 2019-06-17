@@ -34,9 +34,17 @@ class ListePublicationsBySessionDataTable extends DataTable
                 }
 
 
-                return $badge . '  <i class=" fas fa-edit" ></i><button type="button" class="edit-modal btn btn-info" data-toggle="modal" data-target="#editModal"  data-info="'.$query->idpublications.','.$query->idauditoires.','.$query->statut.','.$query->date_publication.','.$statut.'">
-                  <span class="fa fa-edit"></span> Edit
-                </button>';
+                return '<div class="row">
+                            <div class="col-8 h5 font-weight-bolde text-center">
+                                '.$badge.'
+                            </div>  
+                            <div class="col-4">
+                              <button type="button" class="edit-modal btn btn-light" data-toggle="modal" data-target="#editModal"  data-info="'.$query->idpublications.','.$query->idauditoires.','.$query->statut.','.$query->date_publication.','.$statut.','.$query->lib.'">
+                                  <span class="fa fa-edit"></span> 
+                                </button> 
+                            </div>
+                        </div>';
+
             });
     }
 
@@ -61,7 +69,7 @@ class ListePublicationsBySessionDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '180px'])
+                    ->addAction(['width' => '120px'])
                     ->parameters($this->getBuilderParameters());
     }
 

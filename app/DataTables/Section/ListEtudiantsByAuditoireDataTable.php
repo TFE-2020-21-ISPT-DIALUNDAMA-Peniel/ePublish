@@ -38,7 +38,7 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
     {
         return $model::EtudiantActif()
                        ->EtudiantParAuditoire($this->idauditoires)
-                       ->EtudiantParSection($this->idsections)
+                       ->EtudiantParSession($this->idsessions)
                        ->EtudiantCodeParSession($this->idsessions)
                        ->get();
     }

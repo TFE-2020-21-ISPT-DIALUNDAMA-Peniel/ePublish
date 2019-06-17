@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\Gestions\BulletinsController;
 use App\Http\Controllers\Gestions\PublicationsController;
+use App\Http\Controllers\Gestions\Etudiants_succesController;
+use App\Models\Etudiant;
+use App\Models\Etudiants_succes;
 use App\Models\Auditoire;
 use App\Models\Session;
 use App\Models\Bulletin;
@@ -14,8 +17,18 @@ use App\Models\Gestion_annee as Annee;
 use App\DataTables\Jury\ListAuditoiresDataTable;
 use App\DataTables\Jury\ListEtudiantsByAuditoireDataTable;
 use App\DataTables\Jury\ListeBulletinByAuditoireAndSessionDataTable;
+use App\DataTables\Jury\NoReussiPalmaresBySessionDataTable;
+use App\DataTables\Jury\ReussiPalmaresBySessionDataTable;
+
 use App\DataTables\Jury\ListePublicationsBySessionDataTable;
 use App\Http\Requests\PublicationRequest;
+use App\Http\Requests\ImportEtudiantByAuditoireRequest;
+
+// excel import
+use App\Imports\EtudiantsImport;
+use Maatwebsite\Excel\Facades\Excel;
+
+use Flashy;
 
 
 class DashboardController extends Controller
@@ -98,6 +111,10 @@ class DashboardController extends Controller
         // return view('backend.jury.liste_auditoires',compact('auditoires'));
     }
 
+    /**
+    * BULLETINS
+    */
+
     /****
     * Affiche la liste des etudiant
     * Avec leurs bulletins
@@ -147,25 +164,102 @@ class DashboardController extends Controller
         }
         return 'Aucun bulletin trouvé';
     }
+
+    /**
+    * PUBLICATION
+    */
+
     /**
     * renvoi la liste des auditoire publié par session
     */
-    public function getPublicationBySession(ListePublicationsBySessionDataTable $dataTables,Session $session){
-    return $dataTables->with(['idsessions'=>$session->idsessions])->render('backend.jury.liste_auditoires_publication',compact('session'));
+    public function getPublicationBySession(ListePublicationsBySessionDataTable $dataTables,Session $session)
+    {
+        return $dataTables->with(['idsessions'=>$session->idsessions])->render('backend.jury.liste_auditoires_publication',compact('session'));
     }
     /**
     * Publier les bulletins d'un auditoire
     */
-    public function publish(PublicationRequest $request){
+    public function publish(PublicationRequest $request)
+    {
         return PublicationsController::publish($request);
     }
 
 
+    /**
+    * PALMARÈS
+    */
+     /****
+    * Affiche la liste des auditoires
+    * Pour le palmarès
+    * Répartis par section 
+    *
+    ****/
+
+    public function getPalmaresBySession(Session $session)
+    {
+        // $route = ['route'=>'jury.getBulletinBySection','param'=>$session];
+        $route = route('jury.getPalmaresBySession',$session->idsessions);
+
+        return view('backend.jury.bulletinListe_auditoires',compact('route'));
+        // return $dataTables->render('backend.jury.liste_auditoires');
+    }
+    
+
+    public function showPalmaresByAuditoireAndSession(Session $session, Auditoire $auditoire,ReussiPalmaresBySessionDataTable $dataTables1, NoReussiPalmaresBySessionDataTable $dataTables2){
+        return $dataTables1->with(['idsessions'=>$session->idsessions])->render('backend.jury.show_palmares',compact('session','auditoire'));
+        // return $dataTables2->with(['idsessions'=>$session->idsessions,'idauditoires'=>$auditoire->idauditoires])->render('backend.jury.show_palmares',compact('session','auditoire'));
+    }
+
+    // Enregistre un étudiant qui a récu à la session
+
+    public function etudiantSucces(Etudiant $etudiant, Session $session){
+        if (Etudiants_succesController::etudiantSuccess($etudiant,$session)){
+            Flashy::message('Opération effectuée avec succès');
+            return redirect()->back();
+        }
+            Flashy::danger('Une erreure est survenue !!!');
+
+    }
+
+    // Supprime un étudiant qui a récu à la session
+
+    public function etudiantNoSucces(Etudiants_succes $etudiants_succes){
+        if (Etudiants_succesController::delete($etudiants_succes)){
+            Flashy::message('Opération effectuée avec succès');
+            return redirect()->back();
+        }
+            Flashy::danger('Une erreure est survenue !!!');
+
+    }
 
 
 
+    // METHODE SECONDAIRES
+    /**
+    * Importation des étudiants avec excel
+    */
 
-    //METHODES PRIVATE
+    public function importEtudiantByAuditoire(ImportEtudiantByAuditoireRequest $request){
+        try {
+            Excel::import(new EtudiantsImport, $request->file('file'));
+            Flashy::message('Importation effectuer avec succès');
+            dd('ok');
+        } catch (\Maatwebsite\Excel\Validators\ValidationException  $e) {
+            $failures = $e->failures();
+            foreach ($failures as $failure) {
+                dump($failure->row()); // row that went wrong
+                dump($failure->attribute()); // either heading key (if using heading
+                dump($failure->errors()); // Actual error messages from Laravel valid
+            } 
+        }
+
+    }
+
+
+
+    /**
+    * METHODES PRIVATE
+    */
     /**
     * return le statut de publication
     * 0=>suspendu,1=>publier,2=>planifier

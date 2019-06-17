@@ -2,10 +2,10 @@
 
 namespace App\DataTables\Jury;
 
-use App\Models\Auditoire;
+use App\Models\Etudiants_succes;
 use Yajra\DataTables\Services\DataTable;
 
-class ListAuditoiresDataTable extends DataTable
+class ReussiPalmaresBySessionDataTable extends DataTable
 {
     /**
      * Build DataTable class.
@@ -15,18 +15,23 @@ class ListAuditoiresDataTable extends DataTable
      */
     public function dataTable($query)
     {
-        return datatables($query);
+        return datatables($query)
+            ->addColumn('action', function($query){
+                                   return '<a href='.route("jury.etudiant_no_succes",[$query->idetudiants_succes]).' class="btn btn-success">N\'A PAS REUSSI</a>';
+                                });
     }
 
     /**
      * Get query source of dataTable.
      *
-     * @param \App\User $model
+     * @param \App\Etudiant_succes $model
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function query(Auditoire $model)
+    public function query(Etudiants_succes $model)
     {
-       return $model->newQuery()->select('idauditoires', 'lib');
+        return $model->JoinEtudiant()
+                    ->EtudiantSuccesParSession($this->idsessions)
+                    ->get();
     }
 
     /**
@@ -39,7 +44,8 @@ class ListAuditoiresDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px']);
+                    ->addAction(['width' => '80px'])
+                    ->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -50,16 +56,16 @@ class ListAuditoiresDataTable extends DataTable
     protected function getColumns()
     {
         return [
-            'lib'
-          
+            'idetudiants',
+            'matricule',
+            'nom',
+            'postnom',
+            'prenom',
         ];
     }
 
     protected function getBuilderParameters(){
         return [
-            'dom' => 'Bfrtip',
-            'buttons' => ['print', 'excel','copy'],
-            'order' => [[1,'Asc']]
             
         ];
     }
@@ -71,6 +77,6 @@ class ListAuditoiresDataTable extends DataTable
      */
     protected function filename()
     {
-        return 'Jury/ListAuditoires_' . date('YmdHis');
+        return 'Jury/ReussiPalmaresBySession_' . date('YmdHis');
     }
 }

@@ -30,7 +30,7 @@ class PublicationsController extends Controller
     	elseif ($nbrBulletin > 0) {
     		if ($nbrBulletin == $nbrEtudiant || $request->force_publication){
     			if(self::savePublish($request)){
-	    			Flashy::message('Publication effectué avec succèss');
+	    			Flashy::message('Opération effectuée avec succèss');
 	    			return redirect()->route('jury.getPublicationBySession',[$request->idsessions]); //route getPublication
     			}else{
     				return redirect()->route('jury.getPublicationBySession',[$request->idsessions]);
@@ -79,15 +79,20 @@ class PublicationsController extends Controller
     		Flashy::error('Une erreur est survenue lors du traitement de la publication... Veiller préciser une date de publication valide');
     		return false;
     	}
-
+        // si la case suspendre publication a été cocher
+        if (!empty($request->suspendre_publication) && $request->suspendre_publication) {
+            $statut = 0;
+        }
     	// On enregistre dans la BD
     	return Publication::updateOrCreate(
     		[
-    			'idsessions' => $request->idsessions,
-    			'idauditoires' => $request->idauditoires,
+                'idpublications' => $request->idpublications,
+    			
     		],
 
     		[
+                'idsessions' => $request->idsessions,
+                'idauditoires' => $request->idauditoires,
     			'date_publication' => new Carbon($date_publication),
     			'statut' => $statut
     		]
