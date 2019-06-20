@@ -12,10 +12,10 @@
 			    </div>
 			    <div id="{{ $section[0]->section_lib }}" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
 			      <div class="card-body">
-			        <ul>
+			        <ul class="list-style">
 			        	@foreach ($section as $auditoire)
-			        	<a href="{{ $route .'/auditoire/'.$auditoire->idauditoires }}" class="">
-			        		<li>{{ $auditoire->lib }}</li>
+			        	<a href="{{ $route .'/auditoire/'.$auditoire->idauditoires }}" class="text-body" >
+			        		<li> {{ $auditoire->lib }}</li>
 			        	</a>
 			        	@endforeach
 			        </ul>

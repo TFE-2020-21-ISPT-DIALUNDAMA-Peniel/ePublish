@@ -10,11 +10,11 @@ use App\Models\Session;
 
 class Etudiants_succesController extends Controller
 {
-    public static function etudiantSuccess(Etudiant $etudiant,Session $session){
+    public static function etudiantSuccess($request){
     	if (
     		Etudiants_succes::updateOrCreate([
-    		'idetudiants'=>$etudiant->idetudiants,
-    		'idsessions'=>$session->idsessions,
+    		'idetudiants'=>$request->idetudiants,
+    		'idsessions'=>$request->idsessions,
     	]))
     	{
 
@@ -25,7 +25,8 @@ class Etudiants_succesController extends Controller
     }
 
 
-    public static function delete(Etudiants_succes $etudiants_succes){
+    public static function delete($request){
+        $etudiants_succes = Etudiants_succes::find($request->idetudiants_succes);
     	if($etudiants_succes->forceDelete()){
     		return true;
     	}

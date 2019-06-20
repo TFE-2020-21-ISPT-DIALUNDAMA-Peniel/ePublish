@@ -17,7 +17,7 @@ class NoReussiPalmaresBySessionDataTable extends DataTable
     {
         return datatables($query)
             ->addColumn('action', function($query){
-                                   return '<a href='.route("jury.etudiant_succes",[$query->idetudiants,$this->idsessions]).' class="btn btn-success">A REUSSI</a>';
+                                   return $this->getBtn($query);
                                 });
     }
 
@@ -33,11 +33,11 @@ class NoReussiPalmaresBySessionDataTable extends DataTable
                        ->EtudiantParAuditoire($this->idauditoires)
                        ->EtudiantNonSuccesParSession($this->idsessions)
                        ->get([
-                        'etudiants.idetudiants',
-                        'etudiants.matricule',
-                        'etudiants.nom',
-                        'etudiants.postnom',
-                        'etudiants.prenom',
+                                'etudiants.idetudiants',
+                                'etudiants.matricule',
+                                'etudiants.nom',
+                                'etudiants.postnom',
+                                'etudiants.prenom',
                        ]);
     }
 
@@ -50,7 +50,7 @@ class NoReussiPalmaresBySessionDataTable extends DataTable
     {
         return $this->builder()
                     ->columns($this->getColumns())
-                    ->minifiedAjax()
+                    ->minifiedAjax(route('jury.showPalmaresByAuditoireAndSession',[$this->idsessions,$this->idauditoires]).'?param=NR')
                     ->addAction(['width' => '80px'])
                     ->parameters($this->getBuilderParameters());
     }
@@ -85,5 +85,20 @@ class NoReussiPalmaresBySessionDataTable extends DataTable
     protected function filename()
     {
         return 'Jury/NoReussiPalmaresBySession_' . date('YmdHis');
+    }
+
+    public function getBtn($query){
+           // onclick="event.preventDefault();document.getElementById(\'form-action'.$query->idetudiants.'\' ).submit();"
+        return 
+        '<a class="btn btn-success action-add"  href="#" data-info="'.$query->idetudiants.','.$this->idsessions.'">
+        A REUSSI
+        </a>
+
+        <form class="form-action" id="form-action'.$query->idetudiants.'" action="'. route("jury.etudiant_succes").'" method="POST" style="display: none;">
+             '.csrf_field().'
+           <input type="hidden" name="idetudiants" id="idetudiants" value ='.$query->idetudiants.' >
+           <input type="hidden" name="idsessions" id="idsessions" value ='.$this->idsessions.' >
+
+        </form>';
     }
 }

@@ -17,7 +17,7 @@ class ReussiPalmaresBySessionDataTable extends DataTable
     {
         return datatables($query)
             ->addColumn('action', function($query){
-                                   return '<a href='.route("jury.etudiant_no_succes",[$query->idetudiants_succes]).' class="btn btn-success">N\'A PAS REUSSI</a>';
+                                   return $this->getBtn($query);
                                 });
     }
 
@@ -43,7 +43,7 @@ class ReussiPalmaresBySessionDataTable extends DataTable
     {
         return $this->builder()
                     ->columns($this->getColumns())
-                    ->minifiedAjax()
+                    ->minifiedAjax(route('jury.showPalmaresByAuditoireAndSession',[$this->idsessions,$this->idauditoires]).'?param=R')
                     ->addAction(['width' => '80px'])
                     ->parameters($this->getBuilderParameters());
     }
@@ -78,5 +78,19 @@ class ReussiPalmaresBySessionDataTable extends DataTable
     protected function filename()
     {
         return 'Jury/ReussiPalmaresBySession_' . date('YmdHis');
+    }
+
+    public function getBtn($query){
+        // onclick="event.preventDefault();document.getElementById(\'form-action'.$query->idetudiants_succes.'\').submit();" 
+        return 
+        '<a class="btn btn-success action-del" href="#" data-info="'.$query->idetudiants_succes.',">
+        N\'A PAS REUSSI
+        </a>
+
+        <form id="form-action'.$query->idetudiants_succes.'" action="'. route("jury.etudiant_no_succes").'" method="POST" style="display: none;">
+            '.csrf_field().'
+           <input type="hidden" name="idetudiants_succes" value ='.$query->idetudiants_succes.' >
+
+        </form>';
     }
 }

@@ -13,3 +13,4 @@
         </div>
     </div>
 </div>
+        @include('frontend.partials._msgFlash')

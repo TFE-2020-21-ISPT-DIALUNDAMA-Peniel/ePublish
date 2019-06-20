@@ -9,7 +9,7 @@
        		 	<a href="{{ route('section.show',$s->idsessions) }}" class="sidebar-link">
        		 		<i class="fas fa-hand-point-right"></i>
        		 		<span class="hide-menu"> 
-       		 			{{ ucfirst($s->abbr) }} 
+       		 			{!! ucfirst($s->abbr) !!} 
        		 		</span>
        		 	</a>
        		 </li>
@@ -28,16 +28,14 @@
             <a href="{{ route('jury.getPublicationBySession',$s->idsessions) }}" class="sidebar-link">
               <i class="fas fa-hand-point-right"></i>
               <span class="hide-menu"> 
-                {{ ucfirst($s->abbr) }} 
+                {!! ucfirst($s->abbr) !!} 
               </span>
             </a>
            </li>
       @endforeach
     </ul>
 </li>
-<li class="sidebar-item">
- <a href="{{ route('jury.showAuditoires') }}" class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false"><i class=" fas fa-graduation-cap"></i><span class="hide-menu">Etudiants</span></a>
-</li>
+
  
 <li class="sidebar-item"> <a class="sidebar-link has-arrow waves-effect waves-dark" href="javascript:void(0)" aria-expanded="false"><i class=" fas fa-file-alt"></i><span class="hide-menu">Bulletins </span></a>
     <ul aria-expanded="false" class="collapse  first-level">
@@ -46,7 +44,7 @@
        		 	<a href="{{ route('jury.getBulletinBySession',$s->idsessions) }}" class="sidebar-link">
        		 		<i class="fas fa-hand-point-right"></i>
        		 		<span class="hide-menu"> 
-       		 			{{ ucfirst($s->abbr) }} 
+       		 			{!! ucfirst($s->abbr) !!} 
        		 		</span>
        		 	</a>
        		 </li>
@@ -61,11 +59,14 @@
             <a href="{{ route('jury.getPalmaresBySession',$s->idsessions) }}" class="sidebar-link">
               <i class="fas fa-hand-point-right"></i>
               <span class="hide-menu"> 
-                {{ ucfirst($s->abbr) }} 
+                {!! ucfirst($s->abbr) !!} 
               </span>
             </a>
            </li>
       @endforeach
     </ul>
+</li>
+<li class="sidebar-item">
+ <a href="{{ route('jury.showAuditoires') }}" class="sidebar-link waves-effect waves-dark sidebar-link" href="#" aria-expanded="false"><i class=" fas fa-graduation-cap"></i><span class="hide-menu">Etudiants</span></a>
 </li>
  @endif

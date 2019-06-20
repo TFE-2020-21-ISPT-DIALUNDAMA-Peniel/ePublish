@@ -19,9 +19,10 @@ use App\DataTables\Jury\ListEtudiantsByAuditoireDataTable;
 use App\DataTables\Jury\ListeBulletinByAuditoireAndSessionDataTable;
 use App\DataTables\Jury\NoReussiPalmaresBySessionDataTable;
 use App\DataTables\Jury\ReussiPalmaresBySessionDataTable;
-
 use App\DataTables\Jury\ListePublicationsBySessionDataTable;
 use App\Http\Requests\PublicationRequest;
+use App\Http\Requests\SetEtudiantSuccesRequest;
+use App\Http\Requests\DeleteEtudiantSuccesRequest;
 use App\Http\Requests\ImportEtudiantByAuditoireRequest;
 
 // excel import
@@ -206,14 +207,34 @@ class DashboardController extends Controller
     
 
     public function showPalmaresByAuditoireAndSession(Session $session, Auditoire $auditoire,ReussiPalmaresBySessionDataTable $dataTables1, NoReussiPalmaresBySessionDataTable $dataTables2){
-        return $dataTables1->with(['idsessions'=>$session->idsessions])->render('backend.jury.show_palmares',compact('session','auditoire'));
-        // return $dataTables2->with(['idsessions'=>$session->idsessions,'idauditoires'=>$auditoire->idauditoires])->render('backend.jury.show_palmares',compact('session','auditoire'));
+        
+        $dataTable1 = $dataTables1->with(['idsessions'=>$session->idsessions,'idauditoires'=>$auditoire->idauditoires])->html();
+        $dataTable2 = $dataTables2->with(['idsessions'=>$session->idsessions,'idauditoires'=>$auditoire->idauditoires])->html();
+        // two dataTable
+        if (request()->get('param') == 'R') {
+           return $dataTables2->with(['idsessions'=>$session->idsessions,'idauditoires'=>$auditoire->idauditoires])->render('backend.jury.show_palmares',compact('session','auditoire','dataTable1','dataTable2'));
+        }elseif (request()->get('param') == 'NR') {
+            return $dataTables1->with(['idsessions'=>$session->idsessions,'idauditoires'=>$auditoire->idauditoires])->render('backend.jury.show_palmares',compact('session','auditoire','dataTable1','dataTable2'));
+        }
+        return view('backend.jury.show_palmares',compact('session','auditoire','dataTable1','dataTable2'));
+
+        // etudiants_sucess
+        // return $dataTables1->with(['idsessions'=>$session->idsessions])->render('backend.jury.show_palmares',compact('session','auditoire'));
+
+        // etudiants_no_sucess
+        // return $dataTables1->with(['idsessions'=>$session->idsessions,'idauditoires'=>$auditoire->idauditoires])->render('backend.jury.show_palmares',compact('session','auditoire'));
     }
+
+    // //
+    // public function showAddEtudiantPalmaresByAuditoireAndSession(Session $session, Auditoire $auditoire, NoReussiPalmaresBySessionDataTable $dataTables){
+       
+    //     return $dataTables->with(['idsessions'=>$session->idsessions,'idauditoires'=>$auditoire->idauditoires])->render('backend.jury.show_add_etudiant_palmares',compact('session','auditoire'));
+    // }
 
     // Enregistre un étudiant qui a récu à la session
 
-    public function etudiantSucces(Etudiant $etudiant, Session $session){
-        if (Etudiants_succesController::etudiantSuccess($etudiant,$session)){
+    public function etudiantSucces(SetEtudiantSuccesRequest $request){
+        if (Etudiants_succesController::etudiantSuccess($request)){
             Flashy::message('Opération effectuée avec succès');
             return redirect()->back();
         }
@@ -223,8 +244,8 @@ class DashboardController extends Controller
 
     // Supprime un étudiant qui a récu à la session
 
-    public function etudiantNoSucces(Etudiants_succes $etudiants_succes){
-        if (Etudiants_succesController::delete($etudiants_succes)){
+    public function etudiantNoSucces(DeleteEtudiantSuccesRequest $request){
+        if (Etudiants_succesController::delete($request)){
             Flashy::message('Opération effectuée avec succès');
             return redirect()->back();
         }

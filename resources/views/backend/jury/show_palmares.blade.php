@@ -17,105 +17,89 @@
 		
 	</div>
 </div>
-
-	<div class="accordion" id="accordionExample">
-			<div class="card m-b-0">
-			    <div class="card-header" id="headingOne">
-			      <h5 class="mb-0">
-			        <a data-toggle="collapse" data-target="#UploadBulletin" aria-expanded="true" aria-controls="UploadBulletin" class="">
-			            
-			            <span>{{ $session->abbr }} - RÉUSSITE </span>
-			        </a>
-			      </h5>
-			    </div>
-			    <div id="UploadBulletin" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
-			    	<div class="card-body">
-			      		{!! $dataTable->table() !!}
-			    	</div>
-			    </div>
-			</div>
-	</div>
-	<div class="accordion " id="accordionExample">
-			<div class="card m-b-0">
-			    <div class="card-header" id="headingOne">
-			      <h5 class="mb-0">
-			        <a data-toggle="collapse" data-target="#listeBulletin" aria-expanded="true" aria-controls="listeBulletin" class="">
-			            
-			            <span>{{ $session->abbr }} - {{ $auditoire->abbr }} </span>
-			        </a>
-			      </h5>
-			    </div>
-			    <div id="listeBulletin" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
-			     
-			    </div>
-			</div>
-	</div>
-
-
-{{-- Modal affichage bullettin --}}
-
-<!-- Modal -->
-<div class="modal fade" id="showBulletin" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      {{-- <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalCenterTitle">Modifier</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div> --}}
-      <div class="modal-body">
-      	{{-- <img class="bullettinImg" id="modal-bulletin-img" > --}}
-      	<div class="img-fluid" id="imgViewBulletin">
-      		
-      	</div>
-      </div>
-     {{--  <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-        <button type="submit" class="save btn btn-primary">Modifier</button>
-      </div> --}}
-      </div>
-    </div>
+<nav>
+  <div class="nav nav-tabs text-dark" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link active text-dark" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">ONT RÉUSSI</a>
+    <a class="nav-item nav-link text-dark" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">AFFICHER TOUS</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+  	<div class="card-body">
+		{!! $dataTable2->table(['id'=>'dt2']) !!}
+  	</div>
+  	
+  </div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+  	<div class="card-body">
+  		{!! $dataTable1->table(['id'=>'dt1']) !!}
+  	</div>
+  </div>
 </div>
-
-{{-- Modal Publication--}}
-
-@include('backend.partials.includes.formulaires.publicationForm',['idauditoireSelected'=>$auditoire->idauditoires])
-
 
 @stop
 
 @push('scripts')
 
-{!!$dataTable->scripts() !!}
+{!!$dataTable1->scripts() !!}
+{!!$dataTable2->scripts() !!}
 
-{{-- <script type="text/javascript">
-		$(document).on('click', '.showBulletin', function() {
-		   var data = $(this).attr('data-info');
-		   // $('#modal-bulletin-img').attr('scr',data);
-			$.ajax({
-				type: 'post',
-				url: '{{ route('jury.showBulletinImg') }}',
-				data: {
-					'_token': $('input[name=_token]').val(),
-					'idbulletins': data,
-					},
-
-				success: function(data) {
-					$('#imgViewBulletin').html(data)
+<script type="text/javascript">
+	$(document).on('click', '.action-add', function(e){
+		e.preventDefault();
+		param = $(this).data('info').split(',');
+		$.ajax({
+			type: 'post',
+			url: '{{ route("jury.etudiant_succes") }}',
+			data: {
+				'_token': $('input[name=_token]').val(),
+				'idetudiants': param[0],
+				'idsessions': param[1],
 				},
 
-		        error:function(data) {
-			        $('#imgViewBulletin').html('une erreur est survenue')
-			    }
-			});
+			success: function(data) {
+				$('#dt1').DataTable().draw(false);
+				$('#dt2').DataTable().draw(false);
+				
+			},
+
+	        error:function(data) {
+		        var errors = data.responseJSON.errors;
+		          $.each(errors, function (key, value) {
+		          	document.getElementById('msgErrors').innerHTML += "<li>"+value+"</li>"
+		            $('#msgErrors').removeAttr('hidden');
+		        });
+		    }
 		});
+	});
+</script>
+<script type="text/javascript">
+	$(document).on('click', '.action-del', function(e){
+		e.preventDefault();
+		param = $(this).data('info').split(',');
+		$.ajax({
+			type: 'post',
+			url: '{{ route("jury.etudiant_no_succes") }}',
+			data: {
+				'_token': $('input[name=_token]').val(),
+				'idetudiants_succes': param[0],
+				},
 
-		$(document).on('click', '.uploadBulletin', function() {
-		  	$('#UploadBulletin').addClass('show');
+			success: function(data) {
+				$('#dt1').DataTable().draw(false);
+				$('#dt2').DataTable().draw(false);
+				
+			},
+
+	        error:function(data) {
+		        var errors = data.responseJSON.errors;
+		          $.each(errors, function (key, value) {
+		          	document.getElementById('msgErrors').innerHTML += "<li>"+value+"</li>"
+		            $('#msgErrors').removeAttr('hidden');
+		        });
+		    }
 		});
-
-</script> --}}
-
+	});
+</script>
 @endpush 
 

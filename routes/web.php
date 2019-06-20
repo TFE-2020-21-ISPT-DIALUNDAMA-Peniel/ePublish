@@ -118,9 +118,14 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 				// Palmarès
 				Route::get('/Palmares/session/{session}','Backend\Jury\DashboardController@getPalmaresBySession')->name('getPalmaresBySession');
 				Route::get('/Palmares/session/{session}/auditoire/{auditoire}','Backend\Jury\DashboardController@showPalmaresByAuditoireAndSession')->name('showPalmaresByAuditoireAndSession');
+				Route::get('/Palmares/Add/session/{session}/auditoire/{auditoire}','Backend\Jury\DashboardController@showAddEtudiantPalmaresByAuditoireAndSession')->name('showAddEtudiantPalmaresByAuditoireAndSession');
 				
-				Route::get('/etudiant_success/etudiant/{etudiant}/session/{session}','Backend\Jury\DashboardController@etudiantSucces')->name('etudiant_succes');
-				Route::get('/etudiant_success/{etudiants_succes}','Backend\Jury\DashboardController@etudiantNoSucces')->name('etudiant_no_succes');
+				// Route::get('/etudiant_success/etudiant/{etudiant}/session/{session}','Backend\Jury\DashboardController@etudiantSucces')->name('etudiant_succes');
+				// Ajoute un étudiant dans la table success
+				Route::post('/etudiant_success/','Backend\Jury\DashboardController@etudiantSucces')->name('etudiant_succes');
+				// Route::get('/etudiant_success/{etudiants_succes}','Backend\Jury\DashboardController@etudiantNoSucces')->name('etudiant_no_succes');
+				// Supprime un étudiant dans la table success
+				Route::post('/etudiant_no_success','Backend\Jury\DashboardController@etudiantNoSucces')->name('etudiant_no_succes');
 
 
 
