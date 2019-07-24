@@ -13,7 +13,7 @@
         {{-- msg d'erreur --}}
         @include('frontend.partials._msgFlash')
         {{-- Formualire d'import --}}
-        <form method="post" action="{{ route('jury.importEtudiantByAuditoire') }}" enctype="multipart/form-data">
+        <form method="post" action="{{ route(session('user')['role'].'.importEtudiantByAuditoire') }}" enctype="multipart/form-data">
             @csrf
             <input type="text" name="idauditoires" value="{{!empty($idauditoireSelected) ? $idauditoireSelected : '' }}" hidden="">
             <div class="form-group col-12">
@@ -35,7 +35,7 @@
         </form>
         <hr>
         {{-- Formulaire --}}
-        <form id="etudiantForm" action="{{ route('jury.etudiant.store') }}" method="POST" name="etudiantForm" class="form-horizontal">
+        <form id="etudiantForm" action="{{ route(session('user')['role'].'.etudiant.store') }}" method="POST" name="etudiantForm" class="form-horizontal">
             @csrf
            <input type="hidden" name="idetudiants" id="fidetudiants" >
             <div class="form-group">

@@ -12,6 +12,20 @@ class Code extends Model
      * @var array
      */
     protected $primaryKey = 'idcodes';
+
+     /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'code','idetudiants','idsessions'
+    ];
+
+    public function getRouteKeyName()
+    {
+        return 'code';
+    }
      /**
      * Recupere les informations dans la code en joiture avec la table etudiant
      *

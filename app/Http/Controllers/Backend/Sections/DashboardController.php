@@ -53,7 +53,7 @@ class DashboardController extends Controller
                                                 'idsections'=>request()->user()->idsections,
                                                 'idsessions'=>$session->idsessions
                                             ])      
-    								  ->render('backend.sections.listAuditoires');
+    								  ->render('backend.sections.listAuditoires',compact('session'));
 
     }
 
@@ -73,14 +73,15 @@ class DashboardController extends Controller
                                                 'auditoires_lib'=> $auditoire->lib,
 
     										])
-    								  ->render('backend.sections.listEtudiants');
+    								  ->render('backend.sections.listEtudiants',compact('session','auditoire'));
     }
 
     /**
     * l'activation ou la désactivation d'un code d'accès
     *
     **/
-    public function codeActivated(CodeActivatedFormRequest $codeRequest, Code $code){
+    public function codeActivated(CodeActivatedFormRequest $codeRequest){
+        $code = Code::find($codeRequest->idcodes);
         $code->active = $code->active == 0  ? 1 : 0;
         $code->save();
         $code->active == 1 ? Flashy::success('Code d\'accès activer') : Flashy::success('Code d\'accès désactiver');

@@ -32,13 +32,18 @@ class BulletinsController extends Controller
 		$etudiant = Etudiant::EtudiantCodeParSession($session->idsessions)->find($etudiant->idetudiants);
 		$path = self::getPathStorageBulletinByAuditoire($annee,$session,$auditoire);
 		$path_file  = $request->bulletins->move($path,$file);
+		// dump(fileperms($path_file)); 
+		// chmod($path_file, 0777); // le droit d'accès au fichier
+		// dump(fileperms($path_file));
+		// dd('h'); 
+		
 		// on stoque dans la BD
 		Bulletin::UpdateOrCreate([
 									'idetudiants'=>$etudiant->idetudiants,
 									'idcodes' => $etudiant->idcodes,
 								],
 								[
-									'file' => $path.DIRECTORY_SEPARATOR.$path_file,
+									'file' => $path_file,
 									'idsessions' => $session->idsessions
 								]
 							);
@@ -83,7 +88,7 @@ class BulletinsController extends Controller
 
   	private static function getPathStorageBulletinByAuditoire(Annee $annee,Session $session,Auditoire $auditoire){
 
-		$path = storage_path('app'.DS.'bulletins'.DS.$annee->annee_format.DS.str_slug($session->abbr).DS.str_slug($auditoire->abbr));
+		$path = storage_path('app'.DS.'bulletins'.DS.$annee->annee_format.DS.str_slug($session->lib).DS.str_slug($auditoire->abbr));
 		
 		return $path;	
     	
@@ -98,6 +103,7 @@ class BulletinsController extends Controller
 	 */
 
   	public static function getPathBulletinImg($path_file){
+
 		if (file_exists($path_file)) {
 			// on defini le nom du fichier img
   			$tab_path = explode(DIRECTORY_SEPARATOR,$path_file);
@@ -111,6 +117,7 @@ class BulletinsController extends Controller
   			if (file_exists($path_img)) {
 				return $url_img;
 			}
+			// chmod('/home/bilwifi/www/ePublish/storage/app/bulletins/2018-2019/premiere-session/prepo-a', 777);
 			// sinon on en crée une
 			$pdf = new \Spatie\PdfToImage\Pdf($path_file);
 			$img = $pdf->saveImage($path_img);

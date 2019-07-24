@@ -21,7 +21,7 @@ class ListAuditoiresBySectionDataTable extends DataTable
         // dd(datatables($query));
         return datatables($query)
                                 ->addColumn('action',function($query){
-                                   return '<a href='.route("section.show_auditoire",[$this->idsessions,$query->idauditoires]).'>Afficher</a>';
+                                   return '<a class="btn btn-info btn-block" href='.route("section.show_auditoire",[$this->idsessions,$query->idauditoires]).'><i class="fas fa-list-ul"></i> <strong>Lister les étudiants</strong></a>';
                                 });
 
 
@@ -49,7 +49,7 @@ class ListAuditoiresBySectionDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px'])
+                    ->addAction(['width' => '120px'])
                     ->parameters($this->getBuilderParameters());
     }
 

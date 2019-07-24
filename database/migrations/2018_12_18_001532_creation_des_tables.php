@@ -88,7 +88,7 @@ class CreationDesTables extends Migration
             $table->string('prenom',65)->nullable();
             $table->unsignedInteger('idauditoires');
             $table->unsignedInteger('annee_acad');
-            $table->boolean('statut')->default(false);
+            $table->boolean('statut')->default(true);
             $table->timestamps();
             $table->foreign('idauditoires')
                   ->references('idauditoires')->on('auditoires')->onDelete('cascade');
@@ -204,7 +204,7 @@ class CreationDesTables extends Migration
             $table->string('username',45)->unique();
             $table->string('name',65);
             $table->string('first_name',65);
-            $table->string('email',65)->nullable()->unique();
+            $table->string('email',65)->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->unsignedInteger('idsections')->nullable();

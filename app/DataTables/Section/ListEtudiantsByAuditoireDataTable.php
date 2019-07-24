@@ -20,7 +20,28 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
     {
         return datatables($query)
             ->addColumn('action',function($query){
-                                   return '<a href='.route("section.code_activated",$query->idcodes).'>Activer</a>';
+                if ($query->active == 1) {
+                    $btn = "btn btn-danger";
+                    $txt  = "Désactiver";                       
+                }else{
+                    $btn = "btn btn-success";
+                    $txt  = "Activer";
+                }                     
+                return '<button class="activate-code '.$btn.' btn-block" data-info="'.$query->idcodes.',">'.$txt.'</button>';
+
+                 // return '<input class="activate-code" type="checkbox"'.$check.' data-toggle="toggle" data-on="Activer" data-off="Désactiver" data-onstyle="primary" data-offstyle="danger" data-info="'.$query->idcodes.',">';
+
+
+                // return '<input  type="checkbox"'.$check.' data-toggle="toggle" data-on="Activer" data-off="Désactiver" data-onstyle="primary" data-offstyle="danger" onchange="document.getElementById(\'form-action'.$query->idcodes.'\' ).submit();" data-info="'.$query->idcodes.'">'
+                //     .' '.
+                //     '<form class="form-action" id="form-action'.$query->idcodes.'" action="'. route("section.code_activated").'" method="POST" style="display: none;">
+                //          '.csrf_field().'
+                //        <input type="hidden" name="idcodes" id="idcodes" value ='.$query->idcodes.' >
+
+                //     </form>';
+
+
+               
                                 });
         }
 
@@ -53,7 +74,7 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->minifiedAjax()
-                    ->addAction(['width' => '80px'])
+                    ->addAction(['width' => '120px'])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -71,8 +92,8 @@ class ListEtudiantsByAuditoireDataTable extends DataTable
             'postnom',
             'prenom',
             'code',
-            'active',
-            'statut',
+            // 'active',
+            // 'statut',
            
         ];
     }

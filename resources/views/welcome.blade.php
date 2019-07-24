@@ -162,7 +162,7 @@ fieldset:disabled a.btn {
                     {{ config('app.name') }}
                 </div>  
                 <div>
-                   <a class="btn btn-primary" href="{{ route('welcome.index') }}">Etudiants</a>
+                   <a class="btn btn-primary" href="{{ route('students.index') }}">Etudiants</a>
                     <br>
                     <br>
                     <br>

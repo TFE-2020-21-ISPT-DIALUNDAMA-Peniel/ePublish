@@ -18,42 +18,29 @@
 		
 	</div>
 </div>
+<nav>
+  <div class="nav nav-tabs text-dark" id="nav-tab" role="tablist">
+    <a class="nav-item nav-link text-dark" id="nav-profile-tab" data-toggle="tab" href="#nav-profile" role="tab" aria-controls="nav-profile" aria-selected="false">AFFICHER LES BULLETINS</a>
+    <a class="nav-item nav-link active text-dark" id="nav-home-tab" data-toggle="tab" href="#nav-home" role="tab" aria-controls="nav-home" aria-selected="true">IMPORTER LES BULLETINS</a>
+  </div>
+</nav>
+<div class="tab-content" id="nav-tabContent">
+  <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+  	<div class="card-body" id="bulletinUpload">
+	   {{-- upload de bulletin --}}
+		@include('backend.partials.includes.uploadFileBootstrap.upload-file-bootstrap',['annee'=>$annee,'session'=>$session,'auditoire'=>$auditoire])
+	</div>
+  	
+  	
+  </div>
+  <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+  	<div class="card-body">
+		{!!$dataTable->table() !!}
+  	</div>
+  </div>
+</div>
 
-	<div class="accordion" id="accordionExample">
-			<div class="card m-b-0">
-			    <div class="card-header" id="headingOne">
-			      <h5 class="mb-0">
-			        <a data-toggle="collapse" data-target="#UploadBulletin" aria-expanded="true" aria-controls="UploadBulletin" class="">
-			            
-			            <span>Uploader les bulletins</span>
-			        </a>
-			      </h5>
-			    </div>
-			    <div id="UploadBulletin" class="collapse " aria-labelledby="headingOne" data-parent="#accordionExample" style="">
-			      <div class="card-body" id="bulletinUpload">
-			       {{-- upload de bulletin --}}
-					@include('backend.partials.includes.uploadFileBootstrap.upload-file-bootstrap',['annee'=>$annee,'session'=>$session,'auditoire'=>$auditoire])
-			      </div>
-			    </div>
-			</div>
-	</div>
-	<div class="accordion " id="accordionExample">
-			<div class="card m-b-0">
-			    <div class="card-header" id="headingOne">
-			      <h5 class="mb-0">
-			        <a data-toggle="collapse" data-target="#listeBulletin" aria-expanded="true" aria-controls="listeBulletin" class="">
-			            
-			            <span>Lister les bulletins</span>
-			        </a>
-			      </h5>
-			    </div>
-			    <div id="listeBulletin" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample" style="">
-			      <div class="card-body">
-						{!!$dataTable->table() !!}
-			      </div>
-			    </div>
-			</div>
-	</div>
+
 
 
 {{-- Modal affichage bullettin --}}

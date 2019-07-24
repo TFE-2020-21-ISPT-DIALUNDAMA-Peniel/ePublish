@@ -9,7 +9,7 @@
   		 <span class="fa fa-plus"> </span> Ajouter un étudiant
 	</button>
 </div>
-<br><br><br>
+<br>
 <div class="row">
 	<div class="col-12">
 	@include('backend.partials.includes.liste_auditoire',['route' => $route])

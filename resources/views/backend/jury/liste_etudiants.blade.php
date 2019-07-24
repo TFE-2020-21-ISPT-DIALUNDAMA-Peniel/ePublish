@@ -46,7 +46,7 @@
   		$('#msgErrors').attr('hidden','true');
 
 		$('.modal-title').text('Ajouter');
-		// resetmodalData()
+		resetmodalData()
 		$('.form-horizontal').trigger("reset");
 		$('.form-horizontal').show();
 		$('#myModal').modal('show');
@@ -107,7 +107,7 @@
 
 		$.ajax({
 			type: 'post',
-			url: '{{ route('jury.etudiant.store') }}',
+			url: '{{ route(session('user')['role'].'.etudiant.store') }}',
 			data: {
 				'_token': $('input[name=_token]').val(),
 				'idetudiants': $("#fidetudiants").val(),

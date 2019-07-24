@@ -10,21 +10,22 @@ use Maatwebsite\Excel\Concerns\SkipsOnFailure;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
-class EtudiantsImport implements ToModel, WithValidation,SkipsOnFailure
+class EtudiantsImport implements ToModel
 {
-    use Importable;
+    // use Importable;
 
     public function model(array $row)
     {
+        // dd($row[0]);
         return Etudiant::updateOrCreate(
                 [
-                    'matricule'     => $row['matricule'],
-                    'nom'     => $row['postnom'],
+                    'matricule'     => $row[0],
+                    'nom'     => $row[1],
 
                 ],
                 [
-                    'postnom'     => $row['prenom'],
-                    'prenom'    => $row['prenom'],
+                    'postnom'     => $row[2],
+                    'prenom'    => $row[3],
                     'idauditoires' => 1,
                 ]
             );

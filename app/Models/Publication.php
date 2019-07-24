@@ -51,7 +51,7 @@ class Publication extends Model
 		                                    'publications.idauditoires'	=> $idAuditoire,
 		                                    'publications.annee'	=> $idAnnee
 		                        ])//contraite de la requette
-		                        ->exists(['idpublications']);
+		                        ->first(['idpublications']);
     }
 
 

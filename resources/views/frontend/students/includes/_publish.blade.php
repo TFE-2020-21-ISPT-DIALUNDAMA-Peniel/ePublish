@@ -1,10 +1,3 @@
-
-@extends('frontend.layouts.master',['title'=>'Bulletin'])	
-@section('stylesheet')
-{{-- <link rel="stylesheet" type="text/css" href="{{ asset('css/studentStyle.css') }}"> --}}
-@stop
-@section('container')
-<br>
 <div class="card container bg-light">
   <div class="card-header">
 
@@ -28,7 +21,3 @@
   </div>
   @include('partials._@kindev')
 </div>
-<br>
-@stop
-
-

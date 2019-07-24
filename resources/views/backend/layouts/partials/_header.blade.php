@@ -88,7 +88,7 @@
                 <!-- ============================================================== -->
                 <!-- Comment -->
                 <!-- ============================================================== -->
-                <li class="nav-item dropdown">
+            {{--     <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-bell font-24"></i>
                     </a>
                      <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -124,7 +124,7 @@
                             </li>
                         </ul>
                     </div>
-                </li>
+                </li> --}}
                 <!-- ============================================================== -->
                 <!-- End Messages -->
                 <!-- ============================================================== -->

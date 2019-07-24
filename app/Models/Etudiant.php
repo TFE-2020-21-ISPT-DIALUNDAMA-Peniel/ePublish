@@ -2,6 +2,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Http\Controllers\Gestions\CodesController;
+
 
 class Etudiant extends Model
 {
@@ -29,6 +31,18 @@ class Etudiant extends Model
 
         static::creating(function($etudiant){
             $etudiant->annee_acad = Gestion_annee::getAnneeAcademiqueEnCours()->idgestion_annees;
+        });
+
+        // Après création de l'étudiant ; on genère des code d'accès 
+        static::created(function($etudiant){
+            foreach (Session::get() as $session) {
+                 Code::create([
+                    'code' => CodesController::getUniqueCode(),
+                    'idetudiants' => $etudiant->idetudiants,
+                    'idsessions' => $session->idsessions
+                 ]);
+             } 
+
 
         });
     }

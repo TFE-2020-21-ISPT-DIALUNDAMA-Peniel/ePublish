@@ -3,9 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Models\Code;
 
-class CodeActivatedFormRequest extends FormRequest
+class CRUDUsersRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -13,8 +12,7 @@ class CodeActivatedFormRequest extends FormRequest
      * @return bool
      */
     public function authorize()
-    {   
-       
+    {
         return true;
     }
 
@@ -26,7 +24,9 @@ class CodeActivatedFormRequest extends FormRequest
     public function rules()
     {
         return [
-           'idcodes' =>'required|exists:codes'
+            'name' =>'required',
+            'email' => 'nullable|email',
+            'idusers_roles' => 'required|exists:users_roles'
         ];
     }
 }

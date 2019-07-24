@@ -88,6 +88,7 @@ class ListePublicationsBySessionDataTable extends DataTable
 
     protected function getBuilderParameters(){
         return [
+            'dom' => 'tp',
             
         ];
     }

@@ -22,9 +22,20 @@ $(function(){
         }
 
       });
-    $('body').ajaxStart(function(){
+    $('#formulaire').ajaxStart(function(){
       alert('a'); 
     });
 
   });
 });
+
+// Fonction d'ajout ou de suppression du "loader"
+function ajaxBox_loader(pState)
+{
+// Ajout d'un élement <img> d'id #ajaxBox_loader
+if (pState === true)
+$('#loader').append('<img id="ajaxBox_loader" src="{" />');
+// Suppression de l'élement d'id #ajaxBox_loader
+else
+$('#ajaxBox_loader').remove();
+}

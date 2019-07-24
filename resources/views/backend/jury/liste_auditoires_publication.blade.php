@@ -6,14 +6,17 @@
 
 @section('container')
 
-<div class="create">
-
-	<button type="button" id="addPublication" class="btn btn-info btn-bg" data-toggle="modal" data-target="#exampleModalCenter"><span class="fa fa-plus"> </span> <span class="h4">Publier</span>
-	</button>
+<div class="create row">
+      <div class="col-sm-3">
+         <button type="button" id="addPublication" class="btn btn-info btn-bg btn-block" data-toggle="modal" data-target="#exampleModalCenter"><span class="fa fa-plus"> </span> <span class="h4">Publication </span>
+      </button>   
+      </div>
 </div>
 <br>
 <div>
-	{!!$dataTable->table() !!}	
+      <div class="card-body">
+           {!!$dataTable->table() !!}	
+      </div>
 </div>
 {{-- Modal Ajout Publication --}}
 

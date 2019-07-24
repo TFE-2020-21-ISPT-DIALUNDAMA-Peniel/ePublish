@@ -264,15 +264,25 @@ class DashboardController extends Controller
         try {
             Excel::import(new EtudiantsImport, $request->file('file'));
             Flashy::message('Importation effectuer avec succès');
-            dd('ok');
-        } catch (\Maatwebsite\Excel\Validators\ValidationException  $e) {
-            $failures = $e->failures();
-            foreach ($failures as $failure) {
-                dump($failure->row()); // row that went wrong
-                dump($failure->attribute()); // either heading key (if using heading
-                dump($failure->errors()); // Actual error messages from Laravel valid
-            } 
+            return  redirect()->back();
+        } catch (Exception $e) {
+            return redirect()->back()->withErrors();
+
         }
+
+
+        // try {
+        //     Excel::import(new EtudiantsImport, $request->file('file'));
+        //     Flashy::message('Importation effectuer avec succès');
+        //     dd('ok');
+        // } catch (\Maatwebsite\Excel\Validators\ValidationException  $e) {
+        //     $failures = $e->failures();
+        //     foreach ($failures as $failure) {
+        //         dump($failure->row()); // row that went wrong
+        //         dump($failure->attribute()); // either heading key (if using heading
+        //         dump($failure->errors()); // Actual error messages from Laravel valid
+        //     } 
+        // }
 
     }
 
@@ -302,7 +312,7 @@ class DashboardController extends Controller
             $btn = "Modifier l'horaire du publication"; 
         }else if ($statut == 'suspendu') {
             $class = "primary";
-            $btn = "Republier"; 
+            $btn = "publier"; 
         }
 
         return '<a class="btn btn-'.$class.'" >'.$btn.'</a>';

@@ -5,17 +5,17 @@
 | Web Routes
 |--------------------------------------------------------------------------
 */
-	Route::get("test",function(){
-		$idsessions=1;
-		$idsections=2;
-		$idauditoires=10;
-		return App\Models\Auditoire::GetAuditoireNonPublieBySession($idsessions)->get();
-	});
+// 	Route::get("test",function(){
+// 		$idsessions=1;
+// 		$idsections=2;
+// 		$idauditoires=10;
+// 		return App\Models\Auditoire::GetAuditoireNonPublieBySession($idsessions)->get();
+// 	});
 
-Route::get('/testDatatable','Backend\Sections\DashboardController@testTable');
+// Route::get('/testDatatable','Backend\Sections\DashboardController@testTable');
 
 
-Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDataTable')->name('etudiantDataTable');
+// Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDataTable')->name('etudiantDataTable');
 
 
 
@@ -29,25 +29,38 @@ Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDa
 	| ROUTES POUR LE FRONTEND
 	|
 	**************************************/
-Route::domain('publication.ispt-kin.local')->group(function(){
+// Route::domain('publication.ispt-kin.local')->group(function(){
 	
 	//Accueil 
 	Route::get('/', function () {
-	    return redirect()->route('welcome.index');
+	    return redirect()->route('students.index');
 	});
 
-	Route::prefix('students')->group(function(){
-		Route::resource('welcome','Students\WelcomeController')->only('index','store');
-		Route::resource('auth','Students\AuthController')->only('index','store');
-		Route::resource('publish','Students\PublishController')->only('index','show');
-		// Route pour la vue et le télechargement de bulletin
-		Route::get('/viewBulletin/{pathToFile}', 'Students\PublishController@viewBulletin')
-				->name('viewBulletin');
-		Route::get('/dowloadBulletin/{pathToFile}', 'Students\PublishController@dowloadBulletin')
+	Route::prefix('publication')->group(function(){
+		Route::name('students.')->group(function () {
+			Route::get('/','Frontend\DashboardController@index')->name('index');
+		  	Route::post('/','Frontend\DashboardController@authentification')->name('authentification');
+			Route::get('/authentification/{publication}','Frontend\DashboardController@showAuthentificationForm')->name('show_authentification_form');
+			
+			Route::post('/Bulletin','Frontend\DashboardController@getBulletin')->name('showBulletin');
+			// Route::get('/{session}/{etudiant}/{code}','Frontend\DashboardController@showBulletin')->name('showBulletinStudent');
+			Route::post('/dowloadBulletin', 'Frontend\DashboardController@dowloadBulletin')
 				->name('dowloadBulletin');
+		});
+
+
+
+		// Route::resource('welcome','Students\WelcomeController')->only('index','store');
+		// Route::resource('auth','Students\AuthController')->only('index','store');
+		// Route::resource('publish','Students\PublishController')->only('index','show');
+		// // Route pour la vue et le télechargement de bulletin
+		// Route::get('/viewBulletin/{pathToFile}', 'Students\PublishController@viewBulletin')
+		// 		->name('viewBulletin');
+		// Route::get('/dowloadBulletin/{pathToFile}', 'Students\PublishController@dowloadBulletin')
+		// 		->name('dowloadBulletin');
 	});
 
-});
+// });
 
 
 	/**************************************
@@ -82,9 +95,24 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 		Route::prefix('admin')->group(function(){
 			Route::name('admin.')->group(function () {
 				Route::get('/', function () {
-					return 'PAGE ADMIN';
+					return redirect()->route('admin.showAuditoires');
 				})->name('index');
+				// Etudiant
+				// Partager avec l'interface Jury 
+				Route::get('/getAuditoires','Backend\Admin\DashboardController@showAuditoiresEtudiant')->name('showAuditoires');
+				Route::get('/getAuditoires/auditoire/{auditoire}','Backend\Admin\DashboardController@showEtudiantsByAuditoires')->name('showEtudiants');
+				Route::resource('etudiant','Backend\EtudiantController');
+				Route::post('/importEtudiant','Backend\Admin\DashboardController@importEtudiantByAuditoire')->name('importEtudiantByAuditoire');
+
+				// user
+				Route::get('/users/{users_roles}','Backend\Admin\DashboardController@getUser')->name('get_users');
+				Route::post('/gestion_users','Gestions\UsersController@store')->name('users_store');
+				Route::post('/user_activation','Gestions\UsersController@activation')->name('users_activation');
+
+
+
 			});
+
 		});
 
 		/*||||||||||||||||||||||||||||||||||||
@@ -148,7 +176,7 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 
 				// Route::get('/etudiantDataTable','Backend\Sections\DashboardController@etudiantDataTable')->name('etudiantDataTable');
 
-				Route::match(['get', 'post'],'/codeActivated/{code}','Backend\Sections\DashboardController@codeActivated')
+				Route::post('/codeActivated','Backend\Sections\DashboardController@codeActivated')
 						->name('code_activated');
 
 			});
@@ -157,7 +185,7 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 		// 	Route::resource('/','Backend\Sections\DashboardController');
 		});
 	});
-});
+// });
 
 
 
@@ -183,5 +211,5 @@ Route::group(['middleware'=>['auth','checkUserRole']],function(){
 
 // Route::get('/', function () {
 //     return "salut ceci est la page officielle de l'ispt-kin";
-// });
+});
 
